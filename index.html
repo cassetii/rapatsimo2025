@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIMO Meeting Planner</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #99bb1c;
+            --primary-blue: #023259;
+            --light-green: rgba(153, 187, 28, 0.1);
+            --light-blue: rgba(2, 50, 89, 0.1);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--light-blue) 0%, var(--light-green) 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .header-section {
+            background: linear-gradient(45deg, var(--primary-blue), var(--primary-green));
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 30px 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.95);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-green), var(--primary-blue));
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(153, 187, 28, 0.3);
+        }
+
+        .form-control, .form-select {
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+            padding: 12px 20px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 20px rgba(153, 187, 28, 0.2);
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            border: 1px solid #dee2e6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            margin: 3px;
+            min-height: 45px;
+            font-weight: 500;
+            background: white;
+        }
+
+        .calendar-day:hover {
+            background-color: var(--light-green);
+            transform: scale(1.05);
+        }
+
+        .calendar-day.has-meeting {
+            background: linear-gradient(45deg, var(--primary-green), var(--primary-blue));
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .table-container {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .table th {
+            background: linear-gradient(45deg, var(--primary-blue), var(--primary-green));
+            color: white;
+            border: none;
+            padding: 15px;
+        }
+
+        .table td {
+            padding: 15px;
+            border-color: #f8f9fa;
+            vertical-align: middle;
+        }
+
+        .badge-custom {
+            background: linear-gradient(45deg, var(--primary-green), var(--primary-blue));
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+        }
+
+        .badge-audience {
+            background-color: #000000;
+            color: #ffffff;
+            font-size: 0.8em;
+            border-radius: 12px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border: none;
+            margin-right: 6px;
+            margin-bottom: 4px;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .audience-badges {
+            line-height: 1.6;
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .icon-animation {
+            animation: bounce 2s infinite;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .calendar-header {
+            background: var(--primary-blue);
+            color: white;
+            padding: 15px;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .calendar-header-day {
+            padding: 12px 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--primary-blue);
+            text-align: center;
+            background: rgba(153, 187, 28, 0.1);
+            border-radius: 8px;
+            margin: 3px;
+        }
+
+        .custom-container {
+            max-width: 1400px;
+        }
+
+        .form-check-label {
+            font-size: 0.95rem;
+            color: #333;
+            font-weight: 500;
+            cursor: pointer;
+            padding-left: 8px;
+        }
+
+        .form-check {
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .form-check:hover {
+            background-color: rgba(153, 187, 28, 0.1);
+        }
+
+        .form-check-input {
+            margin-top: 0.25rem;
+            width: 1.2em;
+            height: 1.2em;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary-green);
+            border-color: var(--primary-green);
+        }
+
+        .audience-container {
+            transition: all 0.3s ease;
+        }
+
+        .audience-container:hover {
+            border-color: var(--primary-green) !important;
+        }
+
+        .calendar-grid {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .loading-spinner {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+
+        .connection-status {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            z-index: 1000;
+        }
+
+        .status-online {
+            background: #28a745;
+            color: white;
+        }
+
+        .status-offline {
+            background: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Connection Status -->
+    <div id="connectionStatus" class="connection-status status-offline">
+        <i class="fas fa-wifi me-1"></i>
+        Menghubungkan...
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <div class="header-section">
+        <div class="container custom-container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="mb-0 animate__animated animate__fadeInLeft">
+                        <i class="fas fa-calendar-alt icon-animation me-3"></i>
+                        SIMO Meeting Planner
+                    </h1>
+                    <p class="mb-0 mt-2 animate__animated animate__fadeInLeft animate__delay-1s">
+                        Sistem Informasi Manajemen Organisasi - Perencanaan Rapat
+                    </p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="animate__animated animate__fadeInRight animate__delay-2s">
+                        <i class="fas fa-users fa-3x opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container custom-container">
+        <div class="row">
+            <!-- Calendar dan Dashboard -->
+            <div class="col-lg-6">
+                <!-- Mini Calendar -->
+                <div class="card fade-in">
+                    <div class="calendar-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-calendar-alt me-2"></i>
+                            Kalender Rapat - <span id="currentMonth"></span>
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div id="calendar"></div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Rapat -->
+                <div class="card fade-in">
+                    <div class="card-header" style="background: linear-gradient(45deg, var(--primary-green), var(--primary-blue)); color: white; border-radius: 20px 20px 0 0;">
+                        <h5 class="mb-0">
+                            <i class="fas fa-list me-2"></i>
+                            Rapat Yang Akan Datang
+                            <span id="meetingCount" class="badge bg-light text-dark ms-2">0</span>
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <th>Keterangan</th>
+                                        <th>Pembuat</th>
+                                        <th>Audience</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="meetingTableBody">
+                                    <tr>
+                                        <td colspan="5" class="text-center py-4 text-muted">
+                                            <i class="fas fa-calendar-times fa-2x mb-2"></i><br>
+                                            Belum ada rapat yang dijadwalkan
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Input Rapat -->
+            <div class="col-lg-6">
+                <div class="card fade-in">
+                    <div class="card-header" style="background: linear-gradient(45deg, var(--primary-blue), var(--primary-green)); color: white; border-radius: 20px 20px 0 0;">
+                        <h4 class="mb-0">
+                            <i class="fas fa-plus-circle me-2"></i>
+                            Input Rapat Baru
+                        </h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <form id="meetingForm">
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-user me-2" style="color: var(--primary-green);"></i>
+                                    Pembuat Rapat
+                                </label>
+                                <select class="form-select" id="pembuatRapat" required>
+                                    <option value="">Pilih Divisi/Departemen</option>
+                                    <option value="DIVISI SIMO">DIVISI SIMO</option>
+                                    <option value="Dept.Perencanaan Strategis & Kinerja Organisasi">Dept.Perencanaan Strategis & Kinerja Organisasi</option>
+                                    <option value="Dept.Pembinaan Cabang">Dept.Pembinaan Cabang</option>
+                                    <option value="Dept.Pengembangan Organisasi">Dept.Pengembangan Organisasi</option>
+                                    <option value="Dept.Change Management Office">Dept.Change Management Office</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-users me-2" style="color: var(--primary-green);"></i>
+                                    Audience <small class="text-muted">(Pilih satu atau lebih)</small>
+                                </label>
+                                <div class="audience-container p-3" style="max-height: 250px; overflow-y: auto; border: 2px solid #e9ecef; border-radius: 15px; background: #f8f9fa;">
+                                    <div class="mb-2">
+                                        <small class="text-muted">Pilih satu atau lebih audience untuk rapat:</small>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="audience_direksi" value="Direksi Bank Sulselbar">
+                                                <label class="form-check-label" for="audience_direksi">Direksi Bank Sulselbar</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="audience_skai" value="SKAI">
+                                                <label class="form-check-label" for="audience_skai">SKAI</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="audience_dcs" value="DCS">
+                                                <label class="form-check-label" for="audience_dcs">DCS</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="audience_dhc" value="DHC">
+                                                <label class="form-check-label" for="audience_dhc">DHC</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="audience_ddl" value="DDL">
+                                                <label class="form-check-label" for="audience_ddl">DDL</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="audience_dka" value="DKA">
+                                                <label class="form-check-label" for="audience_dka">DKA</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="audience_dti" value="DTI">
+                                                <label class="form-check-label" for="audience_dti">DTI</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="audience_dum" value="DUM">
+                                                <label class="form-check-label" for="audience_dum">DUM</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="audience_djs" value="DJS">
+                                                <label class="form-check-label" for="audience_djs">DJS</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="audience_dtr" value="DTR">
+                                                <label class="form-check-label" for="audience_dtr">DTR</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="audience_dsy" value="DSY">
+                                                <label class="form-check-label" for="audience_dsy">DSY</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="audience_dib" value="DIB">
+                                                <label class="form-check-label" for="audience_dib">DIB</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="audience_dkk" value="DKK">
+                                                <label class="form-check-label" for="audience_dkk">DKK</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="audience_drk" value="DRK">
+                                                <label class="form-check-label" for="audience_drk">DRK</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="audience_skk" value="SKK">
+                                                <label class="form-check-label" for="audience_skk">SKK</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="audience_skmr" value="SKMR">
+                                                <label class="form-check-label" for="audience_skmr">SKMR</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="audience_dplk" value="DPLK">
+                                                <label class="form-check-label" for="audience_dplk">DPLK</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="audience_uppk" value="UPPK">
+                                                <label class="form-check-label" for="audience_uppk">UPPK</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr class="my-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="audience_lainnya" value="Lainnya">
+                                        <label class="form-check-label fw-bold" for="audience_lainnya">Lainnya</label>
+                                    </div>
+                                </div>
+                                <div class="mt-2">
+                                    <button type="button" class="btn btn-sm btn-outline-primary me-2" id="selectAllBtn">
+                                        <i class="fas fa-check-double me-1"></i>Pilih Semua
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="clearAllBtn">
+                                        <i class="fas fa-times me-1"></i>Bersihkan
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="mb-4" id="customAudienceDiv" style="display: none;">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-edit me-2" style="color: var(--primary-green);"></i>
+                                    Audience Lainnya
+                                </label>
+                                <input type="text" class="form-control" id="customAudience" placeholder="Masukkan audience lainnya">
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-info-circle me-2" style="color: var(--primary-green);"></i>
+                                    Keterangan Rapat
+                                </label>
+                                <textarea class="form-control" id="keteranganRapat" rows="3" placeholder="Masukkan keterangan rapat" required></textarea>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label fw-bold">
+                                        <i class="fas fa-calendar me-2" style="color: var(--primary-green);"></i>
+                                        Tanggal Rapat
+                                    </label>
+                                    <input type="date" class="form-control" id="tanggalRapat" required>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label fw-bold">
+                                        <i class="fas fa-clock me-2" style="color: var(--primary-green);"></i>
+                                        Jam Rapat
+                                    </label>
+                                    <select class="form-select" id="jamRapat" required>
+                                        <option value="">Pilih Jam</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-save me-2"></i>
+                                    Simpan Rapat
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        // Import Firebase SDKs
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, orderBy, query, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAmTSUEiLX0K1A8mPnN0citZmDAuzLkL_A",
+            authDomain: "rapat-simo-15b35.firebaseapp.com",
+            projectId: "rapat-simo-15b35",
+            storageBucket: "rapat-simo-15b35.firebasestorage.app",
+            messagingSenderId: "471527167515",
+            appId: "1:471527167515:web:7766a3f2ee1d6280e9cabe",
+            measurementId: "G-FCPTBCPHMB"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const analytics = getAnalytics(app);
+
+        // Global variables
+        let meetings = [];
+        let unsubscribe = null;
+
+        // Firebase operations
+        async function saveMeetingToFirebase(meetingData) {
+            try {
+                showLoading(true);
+                const docRef = await addDoc(collection(db, "meetings"), {
+                    ...meetingData,
+                    createdAt: new Date(),
+                    timestamp: Date.now()
+                });
+                console.log("Meeting saved with ID: ", docRef.id);
+                updateConnectionStatus(true);
+                return docRef.id;
+            } catch (error) {
+                console.error("Error adding meeting: ", error);
+                updateConnectionStatus(false);
+                throw error;
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        async function deleteMeetingFromFirebase(meetingId) {
+            try {
+                showLoading(true);
+                await deleteDoc(doc(db, "meetings", meetingId));
+                console.log("Meeting deleted with ID: ", meetingId);
+            } catch (error) {
+                console.error("Error deleting meeting: ", error);
+                throw error;
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function listenToMeetings() {
+            const q = query(collection(db, "meetings"), orderBy("tanggal", "asc"));
+            
+            unsubscribe = onSnapshot(q, (querySnapshot) => {
+                meetings = [];
+                querySnapshot.forEach((doc) => {
+                    meetings.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                updateMeetingTable();
+                generateCalendar();
+                updateConnectionStatus(true);
+            }, (error) => {
+                console.error("Error getting meetings: ", error);
+                updateConnectionStatus(false);
+            });
+        }
+
+        // UI Helper functions
+        function showLoading(show) {
+            const spinner = document.getElementById('loadingSpinner');
+            spinner.style.display = show ? 'block' : 'none';
+        }
+
+        function updateConnectionStatus(isOnline) {
+            const statusElement = document.getElementById('connectionStatus');
+            if (isOnline) {
+                statusElement.className = 'connection-status status-online';
+                statusElement.innerHTML = '<i class="fas fa-wifi me-1"></i>Online';
+            } else {
+                statusElement.className = 'connection-status status-offline';
+                statusElement.innerHTML = '<i class="fas fa-wifi me-1"></i>Offline';
+            }
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            notification.style.cssText = 'top: 60px; right: 10px; z-index: 1050; min-width: 300px;';
+            notification.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+
+        // Generate jam rapat (08:00 - 17:00)
+        function generateTimeOptions() {
+            const timeSelect = document.getElementById('jamRapat');
+            for (let hour = 8; hour <= 17; hour++) {
+                for (let minute = 0; minute < 60; minute += 30) {
+                    const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+                    const option = document.createElement('option');
+                    option.value = timeString;
+                    option.textContent = timeString;
+                    timeSelect.appendChild(option);
+                }
+            }
+        }
+
+        // Show/hide custom audience field
+        document.getElementById('audience_lainnya').addEventListener('change', function() {
+            const customDiv = document.getElementById('customAudienceDiv');
+            if (this.checked) {
+                customDiv.style.display = 'block';
+                customDiv.classList.add('animate__animated', 'animate__fadeInDown');
+            } else {
+                customDiv.style.display = 'none';
+            }
+        });
+
+        // Select All / Clear All functionality
+        document.getElementById('selectAllBtn').addEventListener('click', function() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"][id^="audience_"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = true;
+            });
+            if (document.getElementById('audience_lainnya').checked) {
+                document.getElementById('customAudienceDiv').style.display = 'block';
+            }
+        });
+
+        document.getElementById('clearAllBtn').addEventListener('click', function() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"][id^="audience_"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            document.getElementById('customAudienceDiv').style.display = 'none';
+        });
+
+        // Generate calendar
+        function generateCalendar() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth();
+            
+            document.getElementById('currentMonth').textContent = 
+                now.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            const calendar = document.getElementById('calendar');
+            calendar.innerHTML = '';
+            
+            // Create calendar grid
+            calendar.className = 'calendar-grid';
+            calendar.style.display = 'grid';
+            calendar.style.gridTemplateColumns = 'repeat(7, 1fr)';
+            calendar.style.gap = '0';
+
+            // Days of week header
+            const daysOfWeek = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+            daysOfWeek.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'calendar-header-day';
+                dayHeader.textContent = day;
+                calendar.appendChild(dayHeader);
+            });
+
+            // Empty cells for days before month starts
+            for (let i = 0; i < firstDay; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendar-day';
+                emptyDay.style.visibility = 'hidden';
+                calendar.appendChild(emptyDay);
+            }
+
+            // Days of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                dayElement.textContent = day;
+                
+                const dateString = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                const hasMeeting = meetings.some(meeting => meeting.tanggal === dateString);
+                
+                if (hasMeeting) {
+                    dayElement.classList.add('has-meeting');
+                }
+                
+                calendar.appendChild(dayElement);
+            }
+        }
+
+        // Update meeting table
+        function updateMeetingTable() {
+            const tbody = document.getElementById('meetingTableBody');
+            const countElement = document.getElementById('meetingCount');
+            
+            countElement.textContent = meetings.length;
+            
+            if (meetings.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-center py-4 text-muted">
+                            <i class="fas fa-calendar-times fa-2x mb-2"></i><br>
+                            Belum ada rapat yang dijadwalkan
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = '';
+            meetings.forEach((meeting, index) => {
+                const row = document.createElement('tr');
+                row.className = 'animate__animated animate__fadeInUp';
+                row.style.animationDelay = `${index * 0.1}s`;
+                
+                const formattedDate = new Date(meeting.tanggal).toLocaleDateString('id-ID', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                });
+
+                row.innerHTML = `
+                    <td>
+                        <div class="fw-bold">${formattedDate}</div>
+                        <small class="text-muted">${meeting.jam}</small>
+                    </td>
+                    <td>
+                        <div class="fw-bold">${meeting.keterangan}</div>
+                    </td>
+                    <td>
+                        <span class="badge-custom">${meeting.pembuat}</span>
+                    </td>
+                    <td>
+                        <div class="audience-badges">
+                            ${Array.isArray(meeting.audience) ? 
+                                meeting.audience.map(aud => `<span class="badge-audience me-1 mb-1">${aud}</span>`).join(' ') :
+                                `<span class="badge-audience">${meeting.audience}</span>`
+                            }
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteMeeting('${meeting.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Delete meeting function
+        window.deleteMeeting = async function(meetingId) {
+            if (confirm('Apakah Anda yakin ingin menghapus rapat ini?')) {
+                try {
+                    await deleteMeetingFromFirebase(meetingId);
+                    showNotification('Rapat berhasil dihapus!', 'success');
+                } catch (error) {
+                    showNotification('Gagal menghapus rapat. Silakan coba lagi.', 'danger');
+                }
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('meetingForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Get selected audiences
+            const selectedAudiences = [];
+            const audienceCheckboxes = document.querySelectorAll('input[type="checkbox"][id^="audience_"]:checked');
+            
+            audienceCheckboxes.forEach(checkbox => {
+                if (checkbox.value === 'Lainnya') {
+                    const customAudience = document.getElementById('customAudience').value;
+                    if (customAudience.trim()) {
+                        selectedAudiences.push(customAudience.trim());
+                    }
+                } else {
+                    selectedAudiences.push(checkbox.value);
+                }
+            });
+
+            // Validation
+            if (selectedAudiences.length === 0) {
+                showNotification('Silakan pilih minimal satu audience!', 'warning');
+                return;
+            }
+
+            const newMeeting = {
+                pembuat: document.getElementById('pembuatRapat').value,
+                audience: selectedAudiences,
+                keterangan: document.getElementById('keteranganRapat').value,
+                tanggal: document.getElementById('tanggalRapat').value,
+                jam: document.getElementById('jamRapat').value
+            };
+
+            try {
+                await saveMeetingToFirebase(newMeeting);
+                
+                // Reset form
+                this.reset();
+                document.getElementById('customAudienceDiv').style.display = 'none';
+                // Uncheck all audience checkboxes
+                const allCheckboxes = document.querySelectorAll('input[type="checkbox"][id^="audience_"]');
+                allCheckboxes.forEach(checkbox => checkbox.checked = false);
+                
+                // Show success animation
+                const submitBtn = document.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-check me-2"></i>Berhasil Disimpan!';
+                submitBtn.classList.remove('btn-primary');
+                submitBtn.classList.add('btn-success');
+                
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.classList.remove('btn-success');
+                    submitBtn.classList.add('btn-primary');
+                }, 2000);
+
+                showNotification('Rapat berhasil disimpan!', 'success');
+                
+            } catch (error) {
+                console.error('Error saving meeting:', error);
+                showNotification('Gagal menyimpan rapat. Silakan coba lagi.', 'danger');
+            }
+        });
+
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', function() {
+            generateTimeOptions();
+            generateCalendar();
+            updateMeetingTable();
+            
+            // Start listening to Firebase changes
+            listenToMeetings();
+            
+            // Update connection status initially
+            updateConnectionStatus(false);
+        });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (unsubscribe) {
+                unsubscribe();
+            }
+        });
+
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
