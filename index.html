@@ -267,6 +267,17 @@
             background: #dc3545;
             color: white;
         }
+
+        .btn-edit {
+            background: linear-gradient(45deg, #ffc107, #ff8f00);
+            border: none;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: linear-gradient(45deg, #ff8f00, #ffc107);
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -306,9 +317,8 @@
 
     <div class="container custom-container">
         <div class="row">
-            <!-- Calendar dan Dashboard -->
-            <div class="col-lg-6">
-                <!-- Mini Calendar -->
+            <!-- Calendar -->
+            <div class="col-lg-5">
                 <div class="card fade-in">
                     <div class="calendar-header">
                         <h5 class="mb-0">
@@ -320,8 +330,10 @@
                         <div id="calendar"></div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Dashboard Rapat -->
+            <!-- Tabel Rapat -->
+            <div class="col-lg-7">
                 <div class="card fade-in">
                     <div class="card-header" style="background: linear-gradient(45deg, var(--primary-green), var(--primary-blue)); color: white; border-radius: 20px 20px 0 0;">
                         <h5 class="mb-0">
@@ -336,7 +348,8 @@
                                 <thead>
                                     <tr>
                                         <th>Tanggal</th>
-                                        <th>Keterangan</th>
+                                        <th>Kegiatan</th>
+                                        <th>Tempat</th>
                                         <th>Pembuat</th>
                                         <th>Audience</th>
                                         <th>Aksi</th>
@@ -344,7 +357,7 @@
                                 </thead>
                                 <tbody id="meetingTableBody">
                                     <tr>
-                                        <td colspan="5" class="text-center py-4 text-muted">
+                                        <td colspan="6" class="text-center py-4 text-muted">
                                             <i class="fas fa-calendar-times fa-2x mb-2"></i><br>
                                             Belum ada rapat yang dijadwalkan
                                         </td>
@@ -355,31 +368,44 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Form Input Rapat -->
-            <div class="col-lg-6">
+        <!-- Form Input Rapat -->
+        <div class="row mt-4">
+            <div class="col-12">
                 <div class="card fade-in">
                     <div class="card-header" style="background: linear-gradient(45deg, var(--primary-blue), var(--primary-green)); color: white; border-radius: 20px 20px 0 0;">
                         <h4 class="mb-0">
                             <i class="fas fa-plus-circle me-2"></i>
-                            Input Rapat Baru
+                            <span id="formTitle">Input Rapat Baru</span>
                         </h4>
                     </div>
                     <div class="card-body p-4">
                         <form id="meetingForm">
-                            <div class="mb-4">
-                                <label class="form-label fw-bold">
-                                    <i class="fas fa-user me-2" style="color: var(--primary-green);"></i>
-                                    Pembuat Rapat
-                                </label>
-                                <select class="form-select" id="pembuatRapat" required>
-                                    <option value="">Pilih Divisi/Departemen</option>
-                                    <option value="DIVISI SIMO">DIVISI SIMO</option>
-                                    <option value="Dept.Perencanaan Strategis & Kinerja Organisasi">Dept.Perencanaan Strategis & Kinerja Organisasi</option>
-                                    <option value="Dept.Pembinaan Cabang">Dept.Pembinaan Cabang</option>
-                                    <option value="Dept.Pengembangan Organisasi">Dept.Pengembangan Organisasi</option>
-                                    <option value="Dept.Change Management Office">Dept.Change Management Office</option>
-                                </select>
+                            <input type="hidden" id="editingId" value="">
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label fw-bold">
+                                        <i class="fas fa-user me-2" style="color: var(--primary-green);"></i>
+                                        Pembuat Rapat
+                                    </label>
+                                    <select class="form-select" id="pembuatRapat" required>
+                                        <option value="">Pilih Divisi/Departemen</option>
+                                        <option value="DIVISI SIMO">DIVISI SIMO</option>
+                                        <option value="Dept.Perencanaan Strategis & Kinerja Organisasi">Dept.Perencanaan Strategis & Kinerja Organisasi</option>
+                                        <option value="Dept.Pembinaan Cabang">Dept.Pembinaan Cabang</option>
+                                        <option value="Dept.Pengembangan Organisasi">Dept.Pengembangan Organisasi</option>
+                                        <option value="Dept.Change Management Office">Dept.Change Management Office</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label fw-bold">
+                                        <i class="fas fa-map-marker-alt me-2" style="color: var(--primary-green);"></i>
+                                        Tempat Rapat
+                                    </label>
+                                    <input type="text" class="form-control" id="tempatRapat" placeholder="Masukkan tempat rapat" required>
+                                </div>
                             </div>
 
                             <div class="mb-4">
@@ -496,9 +522,9 @@
                             <div class="mb-4">
                                 <label class="form-label fw-bold">
                                     <i class="fas fa-info-circle me-2" style="color: var(--primary-green);"></i>
-                                    Keterangan Rapat
+                                    Kegiatan Rapat
                                 </label>
-                                <textarea class="form-control" id="keteranganRapat" rows="3" placeholder="Masukkan keterangan rapat" required></textarea>
+                                <textarea class="form-control" id="keteranganRapat" rows="3" placeholder="Masukkan kegiatan rapat" required></textarea>
                             </div>
 
                             <div class="row">
@@ -520,8 +546,12 @@
                                 </div>
                             </div>
 
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary btn-lg">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <button type="button" class="btn btn-secondary btn-lg me-md-2" id="cancelEditBtn" style="display: none;">
+                                    <i class="fas fa-times me-2"></i>
+                                    Batal
+                                </button>
+                                <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
                                     <i class="fas fa-save me-2"></i>
                                     Simpan Rapat
                                 </button>
@@ -537,7 +567,7 @@
     <script type="module">
         // Import Firebase SDKs
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-        import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, orderBy, query, onSnapshot, connectFirestoreEmulator } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+        import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, orderBy, query, onSnapshot, connectFirestoreEmulator } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 
         // Firebase configuration
         const firebaseConfig = {
@@ -558,6 +588,7 @@
         let meetings = [];
         let unsubscribe = null;
         let isFirebaseConnected = false;
+        let isEditing = false;
 
         // Test Firebase connection
         async function testFirebaseConnection() {
@@ -647,6 +678,44 @@
                 updateMeetingTable();
                 generateCalendar();
                 return newMeeting.id;
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        async function updateMeetingInFirebase(meetingId, meetingData) {
+            try {
+                showLoading(true);
+                
+                if (isFirebaseConnected) {
+                    await updateDoc(doc(db, "meetings", meetingId), {
+                        ...meetingData,
+                        updatedAt: new Date()
+                    });
+                    console.log("Meeting updated in Firebase with ID: ", meetingId);
+                } else {
+                    // Fallback to local storage
+                    const index = meetings.findIndex(meeting => meeting.id === meetingId);
+                    if (index !== -1) {
+                        meetings[index] = { ...meetings[index], ...meetingData, updatedAt: new Date() };
+                        meetings.sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal));
+                        saveToLocalStorage();
+                        updateMeetingTable();
+                        generateCalendar();
+                        console.log("Meeting updated in localStorage");
+                    }
+                }
+            } catch (error) {
+                console.error("Error updating meeting: ", error);
+                // Try localStorage as fallback
+                const index = meetings.findIndex(meeting => meeting.id === meetingId);
+                if (index !== -1) {
+                    meetings[index] = { ...meetings[index], ...meetingData, updatedAt: new Date() };
+                    meetings.sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal));
+                    saveToLocalStorage();
+                    updateMeetingTable();
+                    generateCalendar();
+                }
             } finally {
                 showLoading(false);
             }
@@ -790,6 +859,25 @@
             document.getElementById('customAudienceDiv').style.display = 'none';
         });
 
+        // Cancel edit functionality
+        document.getElementById('cancelEditBtn').addEventListener('click', function() {
+            resetForm();
+        });
+
+        function resetForm() {
+            isEditing = false;
+            document.getElementById('editingId').value = '';
+            document.getElementById('formTitle').textContent = 'Input Rapat Baru';
+            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save me-2"></i>Simpan Rapat';
+            document.getElementById('cancelEditBtn').style.display = 'none';
+            document.getElementById('meetingForm').reset();
+            document.getElementById('customAudienceDiv').style.display = 'none';
+            
+            // Uncheck all audience checkboxes
+            const allCheckboxes = document.querySelectorAll('input[type="checkbox"][id^="audience_"]');
+            allCheckboxes.forEach(checkbox => checkbox.checked = false);
+        }
+
         // Generate calendar
         function generateCalendar() {
             const now = new Date();
@@ -855,7 +943,7 @@
             if (meetings.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="5" class="text-center py-4 text-muted">
+                        <td colspan="6" class="text-center py-4 text-muted">
                             <i class="fas fa-calendar-times fa-2x mb-2"></i><br>
                             Belum ada rapat yang dijadwalkan
                         </td>
@@ -885,6 +973,9 @@
                         <div class="fw-bold">${meeting.keterangan}</div>
                     </td>
                     <td>
+                        <div class="fw-bold">${meeting.tempat || 'Tidak ditentukan'}</div>
+                    </td>
+                    <td>
                         <span class="badge-custom">${meeting.pembuat}</span>
                     </td>
                     <td>
@@ -896,6 +987,9 @@
                         </div>
                     </td>
                     <td>
+                        <button class="btn btn-sm btn-edit me-1" onclick="editMeeting('${meeting.id}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
                         <button class="btn btn-sm btn-outline-danger" onclick="deleteMeeting('${meeting.id}')">
                             <i class="fas fa-trash"></i>
                         </button>
@@ -903,6 +997,47 @@
                 `;
                 tbody.appendChild(row);
             });
+        }
+
+        // Edit meeting function
+        window.editMeeting = function(meetingId) {
+            const meeting = meetings.find(m => m.id === meetingId);
+            if (!meeting) return;
+
+            isEditing = true;
+            document.getElementById('editingId').value = meetingId;
+            document.getElementById('formTitle').textContent = 'Edit Rapat';
+            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save me-2"></i>Update Rapat';
+            document.getElementById('cancelEditBtn').style.display = 'inline-block';
+
+            // Fill form with meeting data
+            document.getElementById('pembuatRapat').value = meeting.pembuat;
+            document.getElementById('tempatRapat').value = meeting.tempat || '';
+            document.getElementById('keteranganRapat').value = meeting.keterangan;
+            document.getElementById('tanggalRapat').value = meeting.tanggal;
+            document.getElementById('jamRapat').value = meeting.jam;
+
+            // Clear all checkboxes first
+            const allCheckboxes = document.querySelectorAll('input[type="checkbox"][id^="audience_"]');
+            allCheckboxes.forEach(checkbox => checkbox.checked = false);
+
+            // Check the appropriate audience checkboxes
+            const audiences = Array.isArray(meeting.audience) ? meeting.audience : [meeting.audience];
+            audiences.forEach(aud => {
+                // Check if it's a standard audience
+                const checkbox = document.querySelector(`input[value="${aud}"]`);
+                if (checkbox) {
+                    checkbox.checked = true;
+                } else {
+                    // It's a custom audience
+                    document.getElementById('audience_lainnya').checked = true;
+                    document.getElementById('customAudience').value = aud;
+                    document.getElementById('customAudienceDiv').style.display = 'block';
+                }
+            });
+
+            // Scroll to form
+            document.getElementById('meetingForm').scrollIntoView({ behavior: 'smooth' });
         }
 
         // Delete meeting function
@@ -942,8 +1077,9 @@
                 return;
             }
 
-            const newMeeting = {
+            const meetingData = {
                 pembuat: document.getElementById('pembuatRapat').value,
+                tempat: document.getElementById('tempatRapat').value,
                 audience: selectedAudiences,
                 keterangan: document.getElementById('keteranganRapat').value,
                 tanggal: document.getElementById('tanggalRapat').value,
@@ -951,19 +1087,28 @@
             };
 
             try {
-                await saveMeetingToFirebase(newMeeting);
-                
-                // Reset form
-                this.reset();
-                document.getElementById('customAudienceDiv').style.display = 'none';
-                // Uncheck all audience checkboxes
-                const allCheckboxes = document.querySelectorAll('input[type="checkbox"][id^="audience_"]');
-                allCheckboxes.forEach(checkbox => checkbox.checked = false);
+                if (isEditing) {
+                    const editingId = document.getElementById('editingId').value;
+                    await updateMeetingInFirebase(editingId, meetingData);
+                    showNotification('Rapat berhasil diupdate!', 'success');
+                    resetForm();
+                } else {
+                    await saveMeetingToFirebase(meetingData);
+                    
+                    // Reset form
+                    this.reset();
+                    document.getElementById('customAudienceDiv').style.display = 'none';
+                    // Uncheck all audience checkboxes
+                    const allCheckboxes = document.querySelectorAll('input[type="checkbox"][id^="audience_"]');
+                    allCheckboxes.forEach(checkbox => checkbox.checked = false);
+                    
+                    showNotification('Rapat berhasil disimpan!', 'success');
+                }
                 
                 // Show success animation
                 const submitBtn = document.querySelector('button[type="submit"]');
                 const originalText = submitBtn.innerHTML;
-                submitBtn.innerHTML = '<i class="fas fa-check me-2"></i>Berhasil Disimpan!';
+                submitBtn.innerHTML = '<i class="fas fa-check me-2"></i>Berhasil!';
                 submitBtn.classList.remove('btn-primary');
                 submitBtn.classList.add('btn-success');
                 
@@ -974,14 +1119,14 @@
                 }, 2000);
 
                 if (isFirebaseConnected) {
-                    showNotification('Rapat berhasil disimpan ke Firebase!', 'success');
+                    showNotification('Data berhasil disimpan ke Firebase!', 'success');
                 } else {
-                    showNotification('Rapat disimpan secara lokal. Akan disinkronkan saat online.', 'info');
+                    showNotification('Data disimpan secara lokal. Akan disinkronkan saat online.', 'info');
                 }
                 
             } catch (error) {
                 console.error('Error saving meeting:', error);
-                showNotification('Rapat disimpan secara lokal karena masalah koneksi.', 'warning');
+                showNotification('Data disimpan secara lokal karena masalah koneksi.', 'warning');
             }
         });
 
