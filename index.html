@@ -22,7 +22,7 @@
         }
 
         .header-section {
-            background: linear-gradient(45deg, var(--primary-blue), var(--primary-green));
+            background: var(--primary-blue);
             color: white;
             padding: 2rem 0;
             margin-bottom: 2rem;
@@ -46,7 +46,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(45deg, var(--primary-green), var(--primary-blue));
+            background: var(--primary-green);
             border: none;
             border-radius: 25px;
             padding: 12px 30px;
@@ -57,6 +57,7 @@
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(153, 187, 28, 0.3);
+            background: var(--primary-green);
         }
 
         .form-control, .form-select {
@@ -92,7 +93,7 @@
         }
 
         .calendar-day.has-meeting {
-            background: linear-gradient(45deg, var(--primary-green), var(--primary-blue));
+            background: var(--primary-green);
             color: white;
             animation: pulse 2s infinite;
         }
@@ -101,13 +102,18 @@
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-height: 500px;
+            overflow-y: auto;
         }
 
         .table th {
-            background: linear-gradient(45deg, var(--primary-blue), var(--primary-green));
+            background: var(--primary-blue);
             color: white;
             border: none;
             padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
         .table td {
@@ -117,7 +123,7 @@
         }
 
         .badge-custom {
-            background: linear-gradient(45deg, var(--primary-green), var(--primary-blue));
+            background: var(--primary-green);
             color: white;
             padding: 8px 15px;
             border-radius: 20px;
@@ -269,14 +275,50 @@
         }
 
         .btn-edit {
-            background: linear-gradient(45deg, #ffc107, #ff8f00);
+            background: #ffc107;
             border: none;
             color: white;
         }
 
         .btn-edit:hover {
-            background: linear-gradient(45deg, #ff8f00, #ffc107);
+            background: #ff8f00;
             color: white;
+        }
+
+        .card-header {
+            background: var(--primary-green) !important;
+            color: white !important;
+            border-radius: 20px 20px 0 0 !important;
+        }
+
+        .meeting-table-wrapper {
+            max-height: 500px;
+            overflow-y: auto;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .meeting-table-wrapper::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .meeting-table-wrapper::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .meeting-table-wrapper::-webkit-scrollbar-thumb {
+            background: var(--primary-green);
+            border-radius: 4px;
+        }
+
+        .meeting-table-wrapper::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-blue);
+        }
+
+        .nearest-meeting-indicator {
+            background: var(--primary-blue);
+            color: white;
+            border-left: 4px solid var(--primary-green);
         }
     </style>
 </head>
@@ -335,36 +377,34 @@
             <!-- Tabel Rapat -->
             <div class="col-lg-7">
                 <div class="card fade-in">
-                    <div class="card-header" style="background: linear-gradient(45deg, var(--primary-green), var(--primary-blue)); color: white; border-radius: 20px 20px 0 0;">
+                    <div class="card-header">
                         <h5 class="mb-0">
                             <i class="fas fa-list me-2"></i>
                             Rapat Yang Akan Datang
                             <span id="meetingCount" class="badge bg-light text-dark ms-2">0</span>
                         </h5>
                     </div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-hover mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>Tanggal</th>
-                                        <th>Kegiatan</th>
-                                        <th>Tempat</th>
-                                        <th>Pembuat</th>
-                                        <th>Audience</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="meetingTableBody">
-                                    <tr>
-                                        <td colspan="6" class="text-center py-4 text-muted">
-                                            <i class="fas fa-calendar-times fa-2x mb-2"></i><br>
-                                            Belum ada rapat yang dijadwalkan
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="meeting-table-wrapper">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <th>Kegiatan</th>
+                                    <th>Tempat</th>
+                                    <th>Pembuat</th>
+                                    <th>Audience</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="meetingTableBody">
+                                <tr>
+                                    <td colspan="6" class="text-center py-4 text-muted">
+                                        <i class="fas fa-calendar-times fa-2x mb-2"></i><br>
+                                        Belum ada rapat yang dijadwalkan
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -374,7 +414,7 @@
         <div class="row mt-4">
             <div class="col-12">
                 <div class="card fade-in">
-                    <div class="card-header" style="background: linear-gradient(45deg, var(--primary-blue), var(--primary-green)); color: white; border-radius: 20px 20px 0 0;">
+                    <div class="card-header">
                         <h4 class="mb-0">
                             <i class="fas fa-plus-circle me-2"></i>
                             <span id="formTitle">Input Rapat Baru</span>
@@ -396,6 +436,24 @@
                                         <option value="Dept.Pembinaan Cabang">Dept.Pembinaan Cabang</option>
                                         <option value="Dept.Pengembangan Organisasi">Dept.Pengembangan Organisasi</option>
                                         <option value="Dept.Change Management Office">Dept.Change Management Office</option>
+                                        <option value="Direksi Bank Sulselbar">Direksi Bank Sulselbar</option>
+                                        <option value="SKAI">SKAI</option>
+                                        <option value="DCS">DCS</option>
+                                        <option value="DHC">DHC</option>
+                                        <option value="DDL">DDL</option>
+                                        <option value="DKA">DKA</option>
+                                        <option value="DTI">DTI</option>
+                                        <option value="DUM">DUM</option>
+                                        <option value="DJS">DJS</option>
+                                        <option value="DTR">DTR</option>
+                                        <option value="DSY">DSY</option>
+                                        <option value="DIB">DIB</option>
+                                        <option value="DKK">DKK</option>
+                                        <option value="DRK">DRK</option>
+                                        <option value="SKK">SKK</option>
+                                        <option value="SKMR">SKMR</option>
+                                        <option value="DPLK">DPLK</option>
+                                        <option value="UPPK">UPPK</option>
                                     </select>
                                 </div>
 
@@ -933,7 +991,7 @@
             }
         }
 
-        // Update meeting table
+        // Update meeting table with nearest meeting highlight
         function updateMeetingTable() {
             const tbody = document.getElementById('meetingTableBody');
             const countElement = document.getElementById('meetingCount');
@@ -952,11 +1010,37 @@
                 return;
             }
 
+            // Find the nearest upcoming meeting
+            const now = new Date();
+            const today = now.toISOString().split('T')[0];
+            const currentTime = now.toTimeString().slice(0, 5);
+            
+            let nearestMeetingId = null;
+            let nearestDate = null;
+            
+            for (const meeting of meetings) {
+                const meetingDate = meeting.tanggal;
+                const meetingTime = meeting.jam;
+                
+                // Check if meeting is today and in the future, or in future dates
+                if (meetingDate > today || (meetingDate === today && meetingTime > currentTime)) {
+                    if (!nearestDate || meetingDate < nearestDate || (meetingDate === nearestDate && meetingTime < meetings.find(m => m.id === nearestMeetingId)?.jam)) {
+                        nearestDate = meetingDate;
+                        nearestMeetingId = meeting.id;
+                    }
+                }
+            }
+
             tbody.innerHTML = '';
             meetings.forEach((meeting, index) => {
                 const row = document.createElement('tr');
                 row.className = 'animate__animated animate__fadeInUp';
                 row.style.animationDelay = `${index * 0.1}s`;
+                
+                // Highlight nearest meeting
+                if (meeting.id === nearestMeetingId) {
+                    row.classList.add('nearest-meeting-indicator');
+                }
                 
                 const formattedDate = new Date(meeting.tanggal).toLocaleDateString('id-ID', {
                     day: 'numeric',
