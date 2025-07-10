@@ -13,6 +13,8 @@
             --primary-blue: #023259;
             --light-green: rgba(153, 187, 28, 0.1);
             --light-blue: rgba(2, 50, 89, 0.1);
+            --external-color: #6f42c1;
+            --external-light: rgba(111, 66, 193, 0.1);
         }
 
         body {
@@ -70,6 +72,59 @@
         .form-control:focus, .form-select:focus {
             border-color: var(--primary-green);
             box-shadow: 0 0 20px rgba(153, 187, 28, 0.2);
+        }
+
+        .external-input {
+            border-color: var(--external-color) !important;
+            background: var(--external-light);
+        }
+
+        .external-input:focus {
+            border-color: var(--external-color) !important;
+            box-shadow: 0 0 20px rgba(111, 66, 193, 0.2) !important;
+        }
+
+        .external-field {
+            background: linear-gradient(135deg, var(--external-light) 0%, rgba(255,255,255,0.8) 100%);
+            border: 2px dashed var(--external-color);
+            border-radius: 15px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .external-field::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(111, 66, 193, 0.1), transparent);
+            animation: shimmer 3s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .external-label {
+            color: var(--external-color);
+            font-weight: 700;
+            text-shadow: 0 1px 3px rgba(111, 66, 193, 0.2);
+        }
+
+        .external-icon {
+            color: var(--external-color);
+            animation: pulse-external 2s infinite;
+        }
+
+        @keyframes pulse-external {
+            0% { transform: scale(1); color: var(--external-color); }
+            50% { transform: scale(1.1); color: #8b5cf6; }
+            100% { transform: scale(1); color: var(--external-color); }
         }
 
         .calendar-day {
@@ -130,6 +185,33 @@
             font-size: 0.85em;
         }
 
+        .badge-external {
+            background: var(--external-color);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .badge-external::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: badge-shine 3s infinite;
+        }
+
+        @keyframes badge-shine {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+
         .badge-audience {
             background-color: #000000;
             color: #ffffff;
@@ -150,6 +232,40 @@
 
         .fade-in {
             animation: fadeInUp 0.6s ease-out;
+        }
+
+        .slide-down {
+            animation: slideDownFade 0.5s ease-out;
+        }
+
+        .slide-up {
+            animation: slideUpFade 0.3s ease-out;
+        }
+
+        @keyframes slideDownFade {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+                max-height: 0;
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+                max-height: 200px;
+            }
+        }
+
+        @keyframes slideUpFade {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+                max-height: 200px;
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-20px);
+                max-height: 0;
+            }
         }
 
         @keyframes fadeInUp {
@@ -320,6 +436,40 @@
             color: white;
             border-left: 4px solid var(--primary-green);
         }
+
+        .form-floating-custom {
+            position: relative;
+        }
+
+        .floating-label {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            color: #6c757d;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            font-size: 1rem;
+        }
+
+        .form-control:focus + .floating-label,
+        .form-control:not(:placeholder-shown) + .floating-label {
+            top: -10px;
+            left: 15px;
+            font-size: 0.75rem;
+            color: var(--primary-green);
+            background: white;
+            padding: 0 5px;
+        }
+
+        .success-pulse {
+            animation: successPulse 0.6s ease-out;
+        }
+
+        @keyframes successPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); background-color: #28a745; }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 <body>
@@ -454,6 +604,7 @@
                                         <option value="SKMR">SKMR</option>
                                         <option value="DPLK">DPLK</option>
                                         <option value="UPPK">UPPK</option>
+                                        <option value="External" style="background-color: var(--external-light); color: var(--external-color); font-weight: bold;">🌐 External</option>
                                     </select>
                                 </div>
 
@@ -463,6 +614,22 @@
                                         Tempat Rapat
                                     </label>
                                     <input type="text" class="form-control" id="tempatRapat" placeholder="Masukkan tempat rapat" required>
+                                </div>
+                            </div>
+
+                            <!-- External Creator Field -->
+                            <div class="mb-4 external-field slide-down" id="externalCreatorDiv" style="display: none;">
+                                <label class="form-label fw-bold external-label">
+                                    <i class="fas fa-globe external-icon me-2"></i>
+                                    Detail Pembuat External
+                                </label>
+                                <div class="form-floating-custom">
+                                    <input type="text" class="form-control external-input" id="externalCreator" placeholder=" ">
+                                    <label class="floating-label">Nama Perusahaan/Organisasi External</label>
+                                </div>
+                                <div class="form-text text-muted mt-2">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Contoh: PT. ABC Corporation, Universitas XYZ, Kementerian ABC, dll.
                                 </div>
                             </div>
 
@@ -887,6 +1054,38 @@
             }
         }
 
+        // Handle external creator dropdown change
+        document.getElementById('pembuatRapat').addEventListener('change', function() {
+            const externalDiv = document.getElementById('externalCreatorDiv');
+            const externalInput = document.getElementById('externalCreator');
+            
+            if (this.value === 'External') {
+                externalDiv.style.display = 'block';
+                externalDiv.classList.remove('slide-up');
+                externalDiv.classList.add('slide-down');
+                externalInput.required = true;
+                
+                // Add pulse animation to highlight the field
+                setTimeout(() => {
+                    externalInput.focus();
+                    externalInput.classList.add('animate__animated', 'animate__pulse');
+                    setTimeout(() => {
+                        externalInput.classList.remove('animate__animated', 'animate__pulse');
+                    }, 1000);
+                }, 300);
+            } else {
+                if (externalDiv.style.display !== 'none') {
+                    externalDiv.classList.remove('slide-down');
+                    externalDiv.classList.add('slide-up');
+                    setTimeout(() => {
+                        externalDiv.style.display = 'none';
+                    }, 300);
+                }
+                externalInput.required = false;
+                externalInput.value = '';
+            }
+        });
+
         // Show/hide custom audience field
         document.getElementById('audience_lainnya').addEventListener('change', function() {
             const customDiv = document.getElementById('customAudienceDiv');
@@ -907,6 +1106,12 @@
             if (document.getElementById('audience_lainnya').checked) {
                 document.getElementById('customAudienceDiv').style.display = 'block';
             }
+            
+            // Add success animation
+            this.classList.add('success-pulse');
+            setTimeout(() => {
+                this.classList.remove('success-pulse');
+            }, 600);
         });
 
         document.getElementById('clearAllBtn').addEventListener('click', function() {
@@ -915,6 +1120,12 @@
                 checkbox.checked = false;
             });
             document.getElementById('customAudienceDiv').style.display = 'none';
+            
+            // Add clear animation
+            this.classList.add('animate__animated', 'animate__shakeX');
+            setTimeout(() => {
+                this.classList.remove('animate__animated', 'animate__shakeX');
+            }, 1000);
         });
 
         // Cancel edit functionality
@@ -930,6 +1141,8 @@
             document.getElementById('cancelEditBtn').style.display = 'none';
             document.getElementById('meetingForm').reset();
             document.getElementById('customAudienceDiv').style.display = 'none';
+            document.getElementById('externalCreatorDiv').style.display = 'none';
+            document.getElementById('externalCreator').required = false;
             
             // Uncheck all audience checkboxes
             const allCheckboxes = document.querySelectorAll('input[type="checkbox"][id^="audience_"]');
@@ -1048,6 +1261,10 @@
                     year: 'numeric'
                 });
 
+                // Determine badge class based on creator type
+                const creatorBadgeClass = meeting.pembuat === 'External' || meeting.isExternal ? 'badge-external' : 'badge-custom';
+                const creatorText = meeting.isExternal ? meeting.externalCreator : meeting.pembuat;
+
                 row.innerHTML = `
                     <td>
                         <div class="fw-bold">${formattedDate}</div>
@@ -1060,7 +1277,7 @@
                         <div class="fw-bold">${meeting.tempat || 'Tidak ditentukan'}</div>
                     </td>
                     <td>
-                        <span class="badge-custom">${meeting.pembuat}</span>
+                        <span class="${creatorBadgeClass}">${creatorText}</span>
                     </td>
                     <td>
                         <div class="audience-badges">
@@ -1095,7 +1312,17 @@
             document.getElementById('cancelEditBtn').style.display = 'inline-block';
 
             // Fill form with meeting data
-            document.getElementById('pembuatRapat').value = meeting.pembuat;
+            if (meeting.isExternal) {
+                document.getElementById('pembuatRapat').value = 'External';
+                document.getElementById('externalCreator').value = meeting.externalCreator;
+                document.getElementById('externalCreatorDiv').style.display = 'block';
+                document.getElementById('externalCreator').required = true;
+            } else {
+                document.getElementById('pembuatRapat').value = meeting.pembuat;
+                document.getElementById('externalCreatorDiv').style.display = 'none';
+                document.getElementById('externalCreator').required = false;
+            }
+            
             document.getElementById('tempatRapat').value = meeting.tempat || '';
             document.getElementById('keteranganRapat').value = meeting.keterangan;
             document.getElementById('tanggalRapat').value = meeting.tanggal;
@@ -1161,8 +1388,23 @@
                 return;
             }
 
+            const pembuatValue = document.getElementById('pembuatRapat').value;
+            const isExternal = pembuatValue === 'External';
+            
+            // Additional validation for external creator
+            if (isExternal) {
+                const externalCreator = document.getElementById('externalCreator').value.trim();
+                if (!externalCreator) {
+                    showNotification('Silakan isi detail pembuat external!', 'warning');
+                    document.getElementById('externalCreator').focus();
+                    return;
+                }
+            }
+
             const meetingData = {
-                pembuat: document.getElementById('pembuatRapat').value,
+                pembuat: isExternal ? 'External' : pembuatValue,
+                isExternal: isExternal,
+                externalCreator: isExternal ? document.getElementById('externalCreator').value.trim() : null,
                 tempat: document.getElementById('tempatRapat').value,
                 audience: selectedAudiences,
                 keterangan: document.getElementById('keteranganRapat').value,
@@ -1182,6 +1424,8 @@
                     // Reset form
                     this.reset();
                     document.getElementById('customAudienceDiv').style.display = 'none';
+                    document.getElementById('externalCreatorDiv').style.display = 'none';
+                    document.getElementById('externalCreator').required = false;
                     // Uncheck all audience checkboxes
                     const allCheckboxes = document.querySelectorAll('input[type="checkbox"][id^="audience_"]');
                     allCheckboxes.forEach(checkbox => checkbox.checked = false);
