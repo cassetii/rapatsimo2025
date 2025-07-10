@@ -486,19 +486,22 @@
             background-size: 200% 200%;
             animation: audienceBadgeFlow 4s ease infinite;
             color: #ffffff;
-            font-size: 0.8em;
-            border-radius: 15px;
+            font-size: 0.75em;
+            border-radius: 12px;
             font-weight: 600;
-            padding: 8px 14px;
+            padding: 6px 10px;
             border: 2px solid rgba(153, 187, 28, 0.3);
-            margin-right: 6px;
-            margin-bottom: 6px;
+            margin-right: 4px;
+            margin-bottom: 4px;
             display: inline-block;
             text-decoration: none;
             position: relative;
             overflow: hidden;
             transition: all 0.3s ease;
             box-shadow: 0 3px 10px rgba(2, 50, 89, 0.2);
+            white-space: nowrap;
+            max-width: 100%;
+            text-overflow: ellipsis;
         }
 
         .badge-audience::before {
@@ -890,11 +893,11 @@
                         <table class="table table-hover mb-0">
                             <thead>
                                 <tr>
-                                    <th style="width: 15%;">📅 Tanggal</th>
-                                    <th style="width: 25%;">📋 Kegiatan</th>
-                                    <th style="width: 20%;">📍 Tempat</th>
-                                    <th style="width: 15%;">👤 Pembuat</th>
-                                    <th style="width: 15%;">👥 Audience</th>
+                                    <th style="width: 14%;">📅 Tanggal</th>
+                                    <th style="width: 28%;">📋 Kegiatan</th>
+                                    <th style="width: 18%;">📍 Tempat</th>
+                                    <th style="width: 13%;">👤 Pembuat</th>
+                                    <th style="width: 17%;">👥 Audience</th>
                                     <th style="width: 10%;">⚙️ Aksi</th>
                                 </tr>
                             </thead>
