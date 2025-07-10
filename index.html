@@ -18,18 +18,144 @@
         }
 
         body {
-            background: linear-gradient(135deg, var(--light-blue) 0%, var(--light-green) 100%);
+            background: linear-gradient(135deg, var(--light-blue) 0%, rgba(153, 187, 28, 0.05) 25%, var(--light-green) 50%, rgba(2, 50, 89, 0.08) 75%, var(--light-blue) 100%);
+            background-size: 400% 400%;
+            animation: gradientBackground 15s ease infinite;
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(153, 187, 28, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(2, 50, 89, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(153, 187, 28, 0.05) 0%, transparent 50%);
+            animation: floatingOrbs 20s ease infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.02), transparent);
+            animation: backgroundShimmer 8s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes gradientBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes floatingOrbs {
+            0%, 100% { 
+                transform: translate(0, 0) scale(1);
+                opacity: 0.3;
+            }
+            33% { 
+                transform: translate(30px, -30px) scale(1.1);
+                opacity: 0.5;
+            }
+            66% { 
+                transform: translate(-20px, 20px) scale(0.9);
+                opacity: 0.4;
+            }
+        }
+
+        @keyframes backgroundShimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
 
         .header-section {
-            background: var(--primary-blue);
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #034a73 25%, #0056b3 50%, #034a73 75%, var(--primary-blue) 100%);
+            background-size: 300% 300%;
+            animation: headerGradientFlow 8s ease infinite;
             color: white;
-            padding: 2rem 0;
+            padding: 3rem 0;
             margin-bottom: 2rem;
-            border-radius: 0 0 30px 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 0 0 40px 40px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-section::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent, rgba(255,255,255,0.05), transparent);
+            animation: headerShimmer 6s linear infinite;
+            pointer-events: none;
+        }
+
+        .header-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-green) 0%, #7d9c1a 50%, var(--primary-green) 100%);
+            background-size: 200% 200%;
+            animation: borderFlow 3s ease infinite;
+        }
+
+        @keyframes headerGradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes headerShimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        @keyframes borderFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header-section h1 {
+            text-shadow: 0 3px 6px rgba(0,0,0,0.3);
+            animation: titleGlow 3s ease-in-out infinite alternate;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-section p {
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes titleGlow {
+            from { 
+                text-shadow: 0 3px 6px rgba(0,0,0,0.3), 0 0 15px rgba(255,255,255,0.1);
+            }
+            to { 
+                text-shadow: 0 3px 6px rgba(0,0,0,0.3), 0 0 25px rgba(255,255,255,0.2);
+            }
         }
 
         .card {
@@ -356,17 +482,52 @@
         }
 
         .badge-audience {
-            background-color: #000000;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #034a73 50%, var(--primary-blue) 100%);
+            background-size: 200% 200%;
+            animation: audienceBadgeFlow 4s ease infinite;
             color: #ffffff;
             font-size: 0.8em;
-            border-radius: 12px;
+            border-radius: 15px;
             font-weight: 600;
-            padding: 6px 12px;
-            border: none;
+            padding: 8px 14px;
+            border: 2px solid rgba(153, 187, 28, 0.3);
             margin-right: 6px;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             display: inline-block;
             text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(2, 50, 89, 0.2);
+        }
+
+        .badge-audience::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(153, 187, 28, 0.3), transparent);
+            animation: audienceBadgeShine 3s infinite;
+        }
+
+        .badge-audience:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(2, 50, 89, 0.3);
+            border-color: var(--primary-green);
+        }
+
+        @keyframes audienceBadgeFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes audienceBadgeShine {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
         }
 
         .audience-badges {
@@ -1458,35 +1619,54 @@
 
                 row.innerHTML = `
                     <td>
-                        <div class="fw-bold">${formattedDate}</div>
-                        <small class="text-muted">${meeting.jam}</small>
+                        <div class="meeting-date-info">
+                            <div class="date-main">${formattedDate}</div>
+                            <div class="date-time">⏰ ${meeting.jam}</div>
+                        </div>
                     </td>
                     <td>
-                        <div class="fw-bold">${meeting.keterangan}</div>
+                        <div class="meeting-title" title="${meeting.keterangan}">
+                            ${meeting.keterangan}
+                        </div>
                     </td>
                     <td>
-                        <div class="fw-bold">${meeting.tempat || 'Tidak ditentukan'}</div>
+                        <div class="meeting-location" title="${meeting.tempat || 'Tidak ditentukan'}">
+                            <i class="fas fa-map-marker-alt location-icon"></i>
+                            ${meeting.tempat || 'Tidak ditentukan'}
+                        </div>
                     </td>
                     <td>
-                        <span class="${creatorBadgeClass}">${creatorText}</span>
+                        <span class="${creatorBadgeClass}" title="${creatorText}">
+                            ${creatorText.length > 12 ? creatorText.substring(0, 12) + '...' : creatorText}
+                        </span>
                     </td>
                     <td>
                         <div class="audience-badges">
                             ${Array.isArray(meeting.audience) ? 
-                                meeting.audience.map(aud => `<span class="badge-audience me-1 mb-1">${aud}</span>`).join(' ') :
-                                `<span class="badge-audience">${meeting.audience}</span>`
+                                meeting.audience.slice(0, 2).map(aud => 
+                                    `<span class="badge-audience me-1 mb-1" title="${aud}">
+                                        ${aud.length > 8 ? aud.substring(0, 8) + '...' : aud}
+                                    </span>`
+                                ).join(' ') + 
+                                (meeting.audience.length > 2 ? `<span class="badge-audience" title="Dan ${meeting.audience.length - 2} lainnya">+${meeting.audience.length - 2}</span>` : '') :
+                                `<span class="badge-audience" title="${meeting.audience}">${meeting.audience.length > 8 ? meeting.audience.substring(0, 8) + '...' : meeting.audience}</span>`
                             }
                         </div>
                     </td>
                     <td>
-                        <button class="btn btn-sm btn-edit me-1" onclick="editMeeting('${meeting.id}')">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger" onclick="deleteMeeting('${meeting.id}')">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-sm btn-edit" onclick="editMeeting('${meeting.id}')" title="Edit Rapat">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteMeeting('${meeting.id}')" title="Hapus Rapat">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                     </td>
                 `;
+                
+                // Add enhanced animation class
+                row.classList.add('meeting-row-animation');
                 tbody.appendChild(row);
             });
         }
