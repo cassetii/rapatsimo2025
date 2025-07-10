@@ -486,22 +486,23 @@
             background-size: 200% 200%;
             animation: audienceBadgeFlow 4s ease infinite;
             color: #ffffff;
-            font-size: 0.75em;
-            border-radius: 12px;
+            font-size: 0.65em;
+            border-radius: 8px;
             font-weight: 600;
-            padding: 6px 10px;
-            border: 2px solid rgba(153, 187, 28, 0.3);
-            margin-right: 4px;
-            margin-bottom: 4px;
+            padding: 4px 6px;
+            border: 1px solid rgba(153, 187, 28, 0.3);
+            margin-right: 2px;
+            margin-bottom: 2px;
             display: inline-block;
             text-decoration: none;
             position: relative;
             overflow: hidden;
             transition: all 0.3s ease;
-            box-shadow: 0 3px 10px rgba(2, 50, 89, 0.2);
+            box-shadow: 0 2px 6px rgba(2, 50, 89, 0.2);
             white-space: nowrap;
             max-width: 100%;
             text-overflow: ellipsis;
+            line-height: 1.2;
         }
 
         .badge-audience::before {
@@ -893,11 +894,11 @@
                         <table class="table table-hover mb-0">
                             <thead>
                                 <tr>
-                                    <th style="width: 14%;">📅 Tanggal</th>
-                                    <th style="width: 28%;">📋 Kegiatan</th>
-                                    <th style="width: 18%;">📍 Tempat</th>
-                                    <th style="width: 13%;">👤 Pembuat</th>
-                                    <th style="width: 17%;">👥 Audience</th>
+                                    <th style="width: 12%;">📅 Tanggal</th>
+                                    <th style="width: 30%;">📋 Kegiatan</th>
+                                    <th style="width: 16%;">📍 Tempat</th>
+                                    <th style="width: 12%;">👤 Pembuat</th>
+                                    <th style="width: 20%;">👥 Audience</th>
                                     <th style="width: 10%;">⚙️ Aksi</th>
                                 </tr>
                             </thead>
@@ -1644,15 +1645,15 @@
                         </span>
                     </td>
                     <td>
-                        <div class="audience-badges">
+                        <div class="audience-badges audience-cell">
                             ${Array.isArray(meeting.audience) ? 
-                                meeting.audience.slice(0, 2).map(aud => 
-                                    `<span class="badge-audience me-1 mb-1" title="${aud}">
-                                        ${aud.length > 8 ? aud.substring(0, 8) + '...' : aud}
+                                meeting.audience.slice(0, 4).map(aud => 
+                                    `<span class="badge-audience" title="${aud}">
+                                        ${aud}
                                     </span>`
-                                ).join(' ') + 
-                                (meeting.audience.length > 2 ? `<span class="badge-audience" title="Dan ${meeting.audience.length - 2} lainnya">+${meeting.audience.length - 2}</span>` : '') :
-                                `<span class="badge-audience" title="${meeting.audience}">${meeting.audience.length > 8 ? meeting.audience.substring(0, 8) + '...' : meeting.audience}</span>`
+                                ).join('') + 
+                                (meeting.audience.length > 4 ? `<span class="badge-audience" title="Dan ${meeting.audience.length - 4} lainnya">+${meeting.audience.length - 4}</span>` : '') :
+                                `<span class="badge-audience" title="${meeting.audience}">${meeting.audience}</span>`
                             }
                         </div>
                     </td>
