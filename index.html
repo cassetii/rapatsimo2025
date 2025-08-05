@@ -15,6 +15,8 @@
             --light-blue: rgba(2, 50, 89, 0.1);
             --external-color: #6f42c1;
             --external-light: rgba(111, 66, 193, 0.1);
+            --duration-color: #ff6b35;
+            --duration-light: rgba(255, 107, 53, 0.1);
         }
 
         body {
@@ -314,6 +316,25 @@
             animation: bounce 2s infinite;
         }
 
+        .calendar-day.has-meeting-range {
+            background: linear-gradient(135deg, var(--duration-color) 0%, #ff8f5a 50%, var(--duration-color) 100%);
+            background-size: 200% 200%;
+            animation: durationPulse 3s ease infinite;
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .calendar-day.has-meeting-range::after {
+            content: '📅⏱️';
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            font-size: 0.6rem;
+            animation: bounce 2s infinite;
+        }
+
         @keyframes meetingPulse {
             0% { 
                 background-position: 0% 50%;
@@ -326,6 +347,21 @@
             100% { 
                 background-position: 0% 50%;
                 box-shadow: 0 6px 20px rgba(153, 187, 28, 0.4);
+            }
+        }
+
+        @keyframes durationPulse {
+            0% { 
+                background-position: 0% 50%;
+                box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+            }
+            50% { 
+                background-position: 100% 50%;
+                box-shadow: 0 8px 30px rgba(255, 107, 53, 0.6);
+            }
+            100% { 
+                background-position: 0% 50%;
+                box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
             }
         }
 
@@ -398,7 +434,7 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            min-width: 120px;
+            min-width: 140px;
         }
 
         .date-main {
@@ -415,6 +451,16 @@
             padding: 2px 8px;
             border-radius: 12px;
             font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .date-duration {
+            font-size: 0.75rem;
+            color: var(--duration-color);
+            background: var(--duration-light);
+            padding: 1px 6px;
+            border-radius: 8px;
+            font-weight: 600;
         }
 
         .meeting-title {
@@ -826,6 +872,56 @@
             50% { transform: scale(1.05); background-color: #28a745; }
             100% { transform: scale(1); }
         }
+
+        .date-range-section {
+            background: linear-gradient(135deg, var(--duration-light) 0%, rgba(255,255,255,0.8) 100%);
+            border: 2px solid var(--duration-color);
+            border-radius: 15px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .date-range-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 107, 53, 0.1), transparent);
+            animation: shimmer 3s infinite;
+            pointer-events: none;
+        }
+
+        .date-range-label {
+            color: var(--duration-color);
+            font-weight: 700;
+            text-shadow: 0 1px 3px rgba(255, 107, 53, 0.2);
+        }
+
+        .date-range-icon {
+            color: var(--duration-color);
+            animation: pulse-duration 2s infinite;
+        }
+
+        @keyframes pulse-duration {
+            0% { transform: scale(1); color: var(--duration-color); }
+            50% { transform: scale(1.1); color: #ff8f5a; }
+            100% { transform: scale(1); color: var(--duration-color); }
+        }
+
+        .validation-error {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .form-control.is-invalid {
+            border-color: #dc3545;
+            background-color: rgba(220, 53, 69, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -851,7 +947,7 @@
                         SIMO Meeting Planner
                     </h1>
                     <p class="mb-0 mt-2 animate__animated animate__fadeInLeft animate__delay-1s">
-                        Sistem Informasi Manajemen Organisasi - Perencanaan Rapat
+                        Sistem Informasi Manajemen Organisasi - Perencanaan Rapat dengan Rentang Waktu
                     </p>
                 </div>
                 <div class="col-md-4 text-end">
@@ -876,6 +972,13 @@
                     </div>
                     <div class="card-body p-4">
                         <div id="calendar"></div>
+                        <div class="mt-3">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                <span style="color: var(--primary-green);">● Rapat 1 hari</span> &nbsp;
+                                <span style="color: var(--duration-color);">● Rapat multi-hari</span>
+                            </small>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -894,9 +997,9 @@
                         <table class="table table-hover mb-0">
                             <thead>
                                 <tr>
-                                    <th style="width: 12%;">📅 Tanggal</th>
-                                    <th style="width: 30%;">📋 Kegiatan</th>
-                                    <th style="width: 16%;">📍 Tempat</th>
+                                    <th style="width: 15%;">📅 Tanggal & Waktu</th>
+                                    <th style="width: 28%;">📋 Kegiatan</th>
+                                    <th style="width: 15%;">📍 Tempat</th>
                                     <th style="width: 12%;">👤 Pembuat</th>
                                     <th style="width: 20%;">👥 Audience</th>
                                     <th style="width: 10%;">⚙️ Aksi</th>
@@ -1108,22 +1211,61 @@
                                 <textarea class="form-control" id="keteranganRapat" rows="3" placeholder="Masukkan kegiatan rapat" required></textarea>
                             </div>
 
-                            <div class="row">
-                                <div class="col-md-6 mb-4">
-                                    <label class="form-label fw-bold">
-                                        <i class="fas fa-calendar me-2" style="color: var(--primary-green);"></i>
-                                        Tanggal Rapat
-                                    </label>
-                                    <input type="date" class="form-control" id="tanggalRapat" required>
+                            <!-- Date & Time Range Section -->
+                            <div class="mb-4 date-range-section">
+                                <label class="form-label fw-bold date-range-label mb-3">
+                                    <i class="fas fa-calendar-week date-range-icon me-2"></i>
+                                    Rentang Tanggal & Waktu Rapat
+                                </label>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">
+                                            <i class="fas fa-calendar-day me-2" style="color: var(--duration-color);"></i>
+                                            Tanggal Mulai
+                                        </label>
+                                        <input type="date" class="form-control" id="tanggalMulai" required>
+                                        <div class="validation-error" id="tanggalMulaiError">Tanggal mulai harus diisi</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">
+                                            <i class="fas fa-calendar-check me-2" style="color: var(--duration-color);"></i>
+                                            Tanggal Selesai
+                                        </label>
+                                        <input type="date" class="form-control" id="tanggalSelesai" required>
+                                        <div class="validation-error" id="tanggalSelesaiError">Tanggal selesai tidak boleh lebih awal dari tanggal mulai</div>
+                                    </div>
                                 </div>
-                                <div class="col-md-6 mb-4">
-                                    <label class="form-label fw-bold">
-                                        <i class="fas fa-clock me-2" style="color: var(--primary-green);"></i>
-                                        Jam Rapat
-                                    </label>
-                                    <select class="form-select" id="jamRapat" required>
-                                        <option value="">Pilih Jam</option>
-                                    </select>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">
+                                            <i class="fas fa-clock me-2" style="color: var(--duration-color);"></i>
+                                            Jam Mulai
+                                        </label>
+                                        <select class="form-select" id="jamMulai" required>
+                                            <option value="">Pilih Jam Mulai</option>
+                                        </select>
+                                        <div class="validation-error" id="jamMulaiError">Jam mulai harus dipilih</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">
+                                            <i class="fas fa-clock me-2" style="color: var(--duration-color);"></i>
+                                            Jam Selesai
+                                        </label>
+                                        <select class="form-select" id="jamSelesai" required>
+                                            <option value="">Pilih Jam Selesai</option>
+                                        </select>
+                                        <div class="validation-error" id="jamSelesaiError">Jam selesai tidak boleh lebih awal dari jam mulai (untuk tanggal yang sama)</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-3">
+                                    <small class="text-muted">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        <strong>Tips:</strong> Untuk rapat 1 hari, pilih tanggal mulai dan selesai yang sama. 
+                                        Untuk rapat multi-hari, pilih rentang tanggal yang sesuai.
+                                    </small>
                                 </div>
                             </div>
 
@@ -1174,7 +1316,6 @@
         // Test Firebase connection
         async function testFirebaseConnection() {
             try {
-                // Try to read from Firestore
                 const testQuery = query(collection(db, "meetings"));
                 const snapshot = await getDocs(testQuery);
                 isFirebaseConnected = true;
@@ -1185,8 +1326,6 @@
                 console.error("Firebase connection failed:", error);
                 isFirebaseConnected = false;
                 updateConnectionStatus(false);
-                
-                // Fallback to local storage
                 loadFromLocalStorage();
                 return false;
             }
@@ -1229,7 +1368,6 @@
                     console.log("Meeting saved to Firebase with ID: ", docRef.id);
                     return docRef.id;
                 } else {
-                    // Fallback to local storage
                     const newMeeting = {
                         id: Date.now().toString(),
                         ...meetingData,
@@ -1237,7 +1375,7 @@
                         timestamp: Date.now()
                     };
                     meetings.push(newMeeting);
-                    meetings.sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal));
+                    meetings.sort((a, b) => new Date(a.tanggalMulai) - new Date(b.tanggalMulai));
                     saveToLocalStorage();
                     updateMeetingTable();
                     generateCalendar();
@@ -1246,7 +1384,6 @@
                 }
             } catch (error) {
                 console.error("Error saving meeting: ", error);
-                // Try localStorage as fallback
                 const newMeeting = {
                     id: Date.now().toString(),
                     ...meetingData,
@@ -1254,7 +1391,7 @@
                     timestamp: Date.now()
                 };
                 meetings.push(newMeeting);
-                meetings.sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal));
+                meetings.sort((a, b) => new Date(a.tanggalMulai) - new Date(b.tanggalMulai));
                 saveToLocalStorage();
                 updateMeetingTable();
                 generateCalendar();
@@ -1275,11 +1412,10 @@
                     });
                     console.log("Meeting updated in Firebase with ID: ", meetingId);
                 } else {
-                    // Fallback to local storage
                     const index = meetings.findIndex(meeting => meeting.id === meetingId);
                     if (index !== -1) {
                         meetings[index] = { ...meetings[index], ...meetingData, updatedAt: new Date() };
-                        meetings.sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal));
+                        meetings.sort((a, b) => new Date(a.tanggalMulai) - new Date(b.tanggalMulai));
                         saveToLocalStorage();
                         updateMeetingTable();
                         generateCalendar();
@@ -1288,11 +1424,10 @@
                 }
             } catch (error) {
                 console.error("Error updating meeting: ", error);
-                // Try localStorage as fallback
                 const index = meetings.findIndex(meeting => meeting.id === meetingId);
                 if (index !== -1) {
                     meetings[index] = { ...meetings[index], ...meetingData, updatedAt: new Date() };
-                    meetings.sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal));
+                    meetings.sort((a, b) => new Date(a.tanggalMulai) - new Date(b.tanggalMulai));
                     saveToLocalStorage();
                     updateMeetingTable();
                     generateCalendar();
@@ -1310,7 +1445,6 @@
                     await deleteDoc(doc(db, "meetings", meetingId));
                     console.log("Meeting deleted from Firebase with ID: ", meetingId);
                 } else {
-                    // Fallback to local storage
                     meetings = meetings.filter(meeting => meeting.id !== meetingId);
                     saveToLocalStorage();
                     updateMeetingTable();
@@ -1319,7 +1453,6 @@
                 }
             } catch (error) {
                 console.error("Error deleting meeting: ", error);
-                // Try localStorage as fallback
                 meetings = meetings.filter(meeting => meeting.id !== meetingId);
                 saveToLocalStorage();
                 updateMeetingTable();
@@ -1335,7 +1468,7 @@
                 return;
             }
 
-            const q = query(collection(db, "meetings"), orderBy("tanggal", "asc"));
+            const q = query(collection(db, "meetings"), orderBy("tanggalMulai", "asc"));
             
             unsubscribe = onSnapshot(q, (querySnapshot) => {
                 meetings = [];
@@ -1348,13 +1481,10 @@
                 updateMeetingTable();
                 generateCalendar();
                 updateConnectionStatus(true);
-                
-                // Also save to localStorage as backup
                 saveToLocalStorage();
             }, (error) => {
                 console.error("Error getting meetings: ", error);
                 updateConnectionStatus(false);
-                // Load from localStorage on error
                 loadFromLocalStorage();
             });
         }
@@ -1398,16 +1528,92 @@
 
         // Generate jam rapat (08:00 - 17:00)
         function generateTimeOptions() {
-            const timeSelect = document.getElementById('jamRapat');
-            for (let hour = 8; hour <= 17; hour++) {
-                for (let minute = 0; minute < 60; minute += 30) {
-                    const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-                    const option = document.createElement('option');
-                    option.value = timeString;
-                    option.textContent = timeString;
-                    timeSelect.appendChild(option);
+            const timeSelects = ['jamMulai', 'jamSelesai'];
+            timeSelects.forEach(selectId => {
+                const timeSelect = document.getElementById(selectId);
+                timeSelect.innerHTML = '<option value="">Pilih Jam</option>';
+                for (let hour = 8; hour <= 17; hour++) {
+                    for (let minute = 0; minute < 60; minute += 30) {
+                        const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+                        const option = document.createElement('option');
+                        option.value = timeString;
+                        option.textContent = timeString;
+                        timeSelect.appendChild(option);
+                    }
                 }
+            });
+        }
+
+        // Calculate meeting duration
+        function calculateDuration(startDate, endDate, startTime, endTime) {
+            const start = new Date(`${startDate}T${startTime}`);
+            const end = new Date(`${endDate}T${endTime}`);
+            const diffMs = end - start;
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+            
+            if (diffDays > 0) {
+                return `${diffDays}h ${diffHours}j ${diffMinutes}m`;
+            } else if (diffHours > 0) {
+                return `${diffHours}j ${diffMinutes}m`;
+            } else {
+                return `${diffMinutes}m`;
             }
+        }
+
+        // Form validation functions
+        function validateDateRange() {
+            const startDate = document.getElementById('tanggalMulai').value;
+            const endDate = document.getElementById('tanggalSelesai').value;
+            const startTime = document.getElementById('jamMulai').value;
+            const endTime = document.getElementById('jamSelesai').value;
+            
+            let isValid = true;
+            
+            // Clear previous errors
+            document.querySelectorAll('.validation-error').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.form-control, .form-select').forEach(el => el.classList.remove('is-invalid'));
+            
+            // Validate dates
+            if (!startDate) {
+                showFieldError('tanggalMulai', 'tanggalMulaiError');
+                isValid = false;
+            }
+            
+            if (!endDate) {
+                showFieldError('tanggalSelesai', 'tanggalSelesaiError');
+                isValid = false;
+            }
+            
+            if (startDate && endDate && new Date(endDate) < new Date(startDate)) {
+                showFieldError('tanggalSelesai', 'tanggalSelesaiError');
+                isValid = false;
+            }
+            
+            // Validate times
+            if (!startTime) {
+                showFieldError('jamMulai', 'jamMulaiError');
+                isValid = false;
+            }
+            
+            if (!endTime) {
+                showFieldError('jamSelesai', 'jamSelesaiError');
+                isValid = false;
+            }
+            
+            // If same date, check time order
+            if (startDate && endDate && startTime && endTime && startDate === endDate && endTime <= startTime) {
+                showFieldError('jamSelesai', 'jamSelesaiError');
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+
+        function showFieldError(fieldId, errorId) {
+            document.getElementById(fieldId).classList.add('is-invalid');
+            document.getElementById(errorId).style.display = 'block';
         }
 
         // Handle external creator dropdown change
@@ -1421,7 +1627,6 @@
                 externalDiv.classList.add('slide-down');
                 externalInput.required = true;
                 
-                // Add pulse animation to highlight the field
                 setTimeout(() => {
                     externalInput.focus();
                     externalInput.classList.add('animate__animated', 'animate__pulse');
@@ -1463,7 +1668,6 @@
                 document.getElementById('customAudienceDiv').style.display = 'block';
             }
             
-            // Add success animation
             this.classList.add('success-pulse');
             setTimeout(() => {
                 this.classList.remove('success-pulse');
@@ -1477,7 +1681,6 @@
             });
             document.getElementById('customAudienceDiv').style.display = 'none';
             
-            // Add clear animation
             this.classList.add('animate__animated', 'animate__shakeX');
             setTimeout(() => {
                 this.classList.remove('animate__animated', 'animate__shakeX');
@@ -1500,12 +1703,15 @@
             document.getElementById('externalCreatorDiv').style.display = 'none';
             document.getElementById('externalCreator').required = false;
             
-            // Uncheck all audience checkboxes
+            // Clear validation errors
+            document.querySelectorAll('.validation-error').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.form-control, .form-select').forEach(el => el.classList.remove('is-invalid'));
+            
             const allCheckboxes = document.querySelectorAll('input[type="checkbox"][id^="audience_"]');
             allCheckboxes.forEach(checkbox => checkbox.checked = false);
         }
 
-        // Generate calendar
+        // Generate calendar with date range support
         function generateCalendar() {
             const now = new Date();
             const year = now.getFullYear();
@@ -1520,7 +1726,6 @@
             const calendar = document.getElementById('calendar');
             calendar.innerHTML = '';
             
-            // Create calendar grid
             calendar.className = 'calendar-grid';
             calendar.style.display = 'grid';
             calendar.style.gridTemplateColumns = 'repeat(7, 1fr)';
@@ -1550,9 +1755,22 @@
                 dayElement.textContent = day;
                 
                 const dateString = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-                const hasMeeting = meetings.some(meeting => meeting.tanggal === dateString);
                 
-                if (hasMeeting) {
+                // Check if this date has meetings
+                const hasSingleDayMeeting = meetings.some(meeting => 
+                    meeting.tanggalMulai === dateString && meeting.tanggalSelesai === dateString
+                );
+                
+                const hasMultiDayMeeting = meetings.some(meeting => {
+                    const startDate = new Date(meeting.tanggalMulai);
+                    const endDate = new Date(meeting.tanggalSelesai);
+                    const currentDate = new Date(dateString);
+                    return currentDate >= startDate && currentDate <= endDate && meeting.tanggalMulai !== meeting.tanggalSelesai;
+                });
+                
+                if (hasMultiDayMeeting) {
+                    dayElement.classList.add('has-meeting-range');
+                } else if (hasSingleDayMeeting) {
                     dayElement.classList.add('has-meeting');
                 }
                 
@@ -1560,7 +1778,7 @@
             }
         }
 
-        // Update meeting table with nearest meeting highlight
+        // Update meeting table with date range support
         function updateMeetingTable() {
             const tbody = document.getElementById('meetingTableBody');
             const countElement = document.getElementById('meetingCount');
@@ -1588,12 +1806,11 @@
             let nearestDate = null;
             
             for (const meeting of meetings) {
-                const meetingDate = meeting.tanggal;
-                const meetingTime = meeting.jam;
+                const meetingDate = meeting.tanggalMulai;
+                const meetingTime = meeting.jamMulai;
                 
-                // Check if meeting is today and in the future, or in future dates
                 if (meetingDate > today || (meetingDate === today && meetingTime > currentTime)) {
-                    if (!nearestDate || meetingDate < nearestDate || (meetingDate === nearestDate && meetingTime < meetings.find(m => m.id === nearestMeetingId)?.jam)) {
+                    if (!nearestDate || meetingDate < nearestDate || (meetingDate === nearestDate && meetingTime < meetings.find(m => m.id === nearestMeetingId)?.jamMulai)) {
                         nearestDate = meetingDate;
                         nearestMeetingId = meeting.id;
                     }
@@ -1606,26 +1823,36 @@
                 row.className = 'animate__animated animate__fadeInUp';
                 row.style.animationDelay = `${index * 0.1}s`;
                 
-                // Highlight nearest meeting
                 if (meeting.id === nearestMeetingId) {
                     row.classList.add('nearest-meeting-indicator');
                 }
                 
-                const formattedDate = new Date(meeting.tanggal).toLocaleDateString('id-ID', {
+                const formattedStartDate = new Date(meeting.tanggalMulai).toLocaleDateString('id-ID', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                });
+                
+                const formattedEndDate = new Date(meeting.tanggalSelesai).toLocaleDateString('id-ID', {
                     day: 'numeric',
                     month: 'short',
                     year: 'numeric'
                 });
 
-                // Determine badge class based on creator type
+                const isMultiDay = meeting.tanggalMulai !== meeting.tanggalSelesai;
+                const dateDisplay = isMultiDay ? `${formattedStartDate} - ${formattedEndDate}` : formattedStartDate;
+                const timeDisplay = `${meeting.jamMulai} - ${meeting.jamSelesai}`;
+                const duration = calculateDuration(meeting.tanggalMulai, meeting.tanggalSelesai, meeting.jamMulai, meeting.jamSelesai);
+
                 const creatorBadgeClass = meeting.pembuat === 'External' || meeting.isExternal ? 'badge-external' : 'badge-custom';
                 const creatorText = meeting.isExternal ? meeting.externalCreator : meeting.pembuat;
 
                 row.innerHTML = `
                     <td>
                         <div class="meeting-date-info">
-                            <div class="date-main">${formattedDate}</div>
-                            <div class="date-time">⏰ ${meeting.jam}</div>
+                            <div class="date-main">${dateDisplay}</div>
+                            <div class="date-time">⏰ ${timeDisplay}</div>
+                            <div class="date-duration">⏱️ ${duration}</div>
                         </div>
                     </td>
                     <td>
@@ -1669,7 +1896,6 @@
                     </td>
                 `;
                 
-                // Add enhanced animation class
                 row.classList.add('meeting-row-animation');
                 tbody.appendChild(row);
             });
@@ -1700,8 +1926,10 @@
             
             document.getElementById('tempatRapat').value = meeting.tempat || '';
             document.getElementById('keteranganRapat').value = meeting.keterangan;
-            document.getElementById('tanggalRapat').value = meeting.tanggal;
-            document.getElementById('jamRapat').value = meeting.jam;
+            document.getElementById('tanggalMulai').value = meeting.tanggalMulai;
+            document.getElementById('tanggalSelesai').value = meeting.tanggalSelesai;
+            document.getElementById('jamMulai').value = meeting.jamMulai;
+            document.getElementById('jamSelesai').value = meeting.jamSelesai;
 
             // Clear all checkboxes first
             const allCheckboxes = document.querySelectorAll('input[type="checkbox"][id^="audience_"]');
@@ -1710,19 +1938,16 @@
             // Check the appropriate audience checkboxes
             const audiences = Array.isArray(meeting.audience) ? meeting.audience : [meeting.audience];
             audiences.forEach(aud => {
-                // Check if it's a standard audience
                 const checkbox = document.querySelector(`input[value="${aud}"]`);
                 if (checkbox) {
                     checkbox.checked = true;
                 } else {
-                    // It's a custom audience
                     document.getElementById('audience_lainnya').checked = true;
                     document.getElementById('customAudience').value = aud;
                     document.getElementById('customAudienceDiv').style.display = 'block';
                 }
             });
 
-            // Scroll to form
             document.getElementById('meetingForm').scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -1742,6 +1967,12 @@
         document.getElementById('meetingForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            // Validate date and time range
+            if (!validateDateRange()) {
+                showNotification('Silakan perbaiki error pada form tanggal dan waktu!', 'warning');
+                return;
+            }
+            
             // Get selected audiences
             const selectedAudiences = [];
             const audienceCheckboxes = document.querySelectorAll('input[type="checkbox"][id^="audience_"]:checked');
@@ -1757,7 +1988,6 @@
                 }
             });
 
-            // Validation
             if (selectedAudiences.length === 0) {
                 showNotification('Silakan pilih minimal satu audience!', 'warning');
                 return;
@@ -1766,7 +1996,6 @@
             const pembuatValue = document.getElementById('pembuatRapat').value;
             const isExternal = pembuatValue === 'External';
             
-            // Additional validation for external creator
             if (isExternal) {
                 const externalCreator = document.getElementById('externalCreator').value.trim();
                 if (!externalCreator) {
@@ -1783,8 +2012,10 @@
                 tempat: document.getElementById('tempatRapat').value,
                 audience: selectedAudiences,
                 keterangan: document.getElementById('keteranganRapat').value,
-                tanggal: document.getElementById('tanggalRapat').value,
-                jam: document.getElementById('jamRapat').value
+                tanggalMulai: document.getElementById('tanggalMulai').value,
+                tanggalSelesai: document.getElementById('tanggalSelesai').value,
+                jamMulai: document.getElementById('jamMulai').value,
+                jamSelesai: document.getElementById('jamSelesai').value
             };
 
             try {
@@ -1796,19 +2027,16 @@
                 } else {
                     await saveMeetingToFirebase(meetingData);
                     
-                    // Reset form
                     this.reset();
                     document.getElementById('customAudienceDiv').style.display = 'none';
                     document.getElementById('externalCreatorDiv').style.display = 'none';
                     document.getElementById('externalCreator').required = false;
-                    // Uncheck all audience checkboxes
                     const allCheckboxes = document.querySelectorAll('input[type="checkbox"][id^="audience_"]');
                     allCheckboxes.forEach(checkbox => checkbox.checked = false);
                     
                     showNotification('Rapat berhasil disimpan!', 'success');
                 }
                 
-                // Show success animation
                 const submitBtn = document.querySelector('button[type="submit"]');
                 const originalText = submitBtn.innerHTML;
                 submitBtn.innerHTML = '<i class="fas fa-check me-2"></i>Berhasil!';
@@ -1839,23 +2067,18 @@
             generateCalendar();
             updateMeetingTable();
             
-            // Initialize connection status
             updateConnectionStatus(false);
             
-            // Test Firebase connection first
             const connected = await testFirebaseConnection();
             
             if (connected) {
-                // Start listening to Firebase changes
                 listenToMeetings();
                 showNotification('Terhubung ke Firebase!', 'success');
             } else {
-                // Use local storage
                 loadFromLocalStorage();
                 showNotification('Mode offline - Data disimpan lokal', 'warning');
             }
             
-            // Try to reconnect every 30 seconds if offline
             if (!connected) {
                 setInterval(async () => {
                     if (!isFirebaseConnected) {
@@ -1869,7 +2092,6 @@
             }
         });
 
-        // Cleanup on page unload
         window.addEventListener('beforeunload', () => {
             if (unsubscribe) {
                 unsubscribe();
