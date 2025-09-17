@@ -8,23 +8,19 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary: #257180;
-            --primary-dark: #1e5a66;
-            --secondary: #CB6040;
-            --accent: #FD8B51;
-            --success: #257180;
-            --warning: #FD8B51;
-            --danger: #CB6040;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #1e40af;
+            --accent: #3b82f6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
             --dark: #1e293b;
-            --light: #F2E5BF;
+            --light: #e0f2fe;
             --surface: #ffffff;
             --muted: #64748b;
-            
-            --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            --gradient-accent: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
-            --gradient-success: linear-gradient(135deg, var(--success) 0%, var(--accent) 100%);
-            --gradient-surface: linear-gradient(135deg, #ffffff 0%, var(--light) 100%);
-            --gradient-secondary: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            --card-bg: #1e40af;
+            --main-bg: #3b82f6;
             
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
             --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
@@ -47,24 +43,10 @@
 
         body {
             font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            background: var(--main-bg);
             min-height: 100vh;
             color: var(--dark);
             overflow-x: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 25% 25%, rgba(37, 113, 128, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 75% 75%, rgba(203, 96, 64, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: -1;
         }
 
         /* Header */
@@ -79,10 +61,7 @@
         .brand-logo {
             font-size: 1.5rem;
             font-weight: 800;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--primary);
         }
 
         .status-indicator {
@@ -97,12 +76,12 @@
         }
 
         .status-online {
-            background: var(--gradient-success);
+            background: var(--success);
             color: white;
         }
 
         .status-offline {
-            background: var(--gradient-accent);
+            background: var(--accent);
             color: white;
         }
 
@@ -146,7 +125,7 @@
         }
 
         .card-header-modern {
-            background: var(--gradient-primary);
+            background: var(--card-bg);
             color: white;
             padding: 1.5rem 2rem;
             border: none;
@@ -197,7 +176,7 @@
             text-align: center;
             font-weight: 700;
             color: var(--muted);
-            background: var(--gradient-surface);
+            background: var(--light);
             border-radius: var(--radius-md);
             font-size: 0.875rem;
         }
@@ -218,20 +197,20 @@
         }
 
         .calendar-day:hover {
-            background: var(--gradient-primary);
+            background: var(--primary);
             color: white;
             transform: scale(1.05);
             border-color: var(--primary);
         }
 
         .calendar-day.has-meeting {
-            background: var(--gradient-success);
+            background: var(--success);
             color: white;
             border-color: var(--success);
         }
 
         .calendar-day.has-meeting-range {
-            background: var(--gradient-accent);
+            background: var(--accent);
             color: white;
             border-color: var(--accent);
         }
@@ -259,7 +238,7 @@
             gap: 1rem;
             margin-top: 1.5rem;
             padding: 1rem;
-            background: rgba(242, 229, 191, 0.8);
+            background: rgba(224, 242, 254, 0.8);
             border-radius: var(--radius-md);
         }
 
@@ -297,7 +276,7 @@
         }
 
         .table-modern thead th {
-            background: var(--gradient-primary);
+            background: var(--card-bg);
             color: white;
             padding: 1rem 1.5rem;
             text-align: left;
@@ -357,7 +336,7 @@
         }
 
         .date-time {
-            background: var(--gradient-primary);
+            background: var(--primary);
             color: white;
             padding: 0.25rem 0.75rem;
             border-radius: var(--radius-sm);
@@ -367,7 +346,7 @@
         }
 
         .date-duration {
-            background: var(--gradient-accent);
+            background: var(--accent);
             color: white;
             padding: 0.25rem 0.75rem;
             border-radius: var(--radius-sm);
@@ -391,7 +370,7 @@
         }
 
         .creator-badge {
-            background: var(--gradient-primary);
+            background: var(--primary);
             color: white;
             padding: 0.5rem 1rem;
             border-radius: var(--radius-lg);
@@ -405,7 +384,7 @@
         }
 
         .creator-badge.external {
-            background: var(--gradient-accent);
+            background: var(--accent);
         }
 
         .audience-tags {
@@ -416,7 +395,7 @@
         }
 
         .audience-tag {
-            background: var(--gradient-secondary);
+            background: var(--secondary);
             color: white;
             padding: 0.25rem 0.5rem;
             border-radius: var(--radius-sm);
@@ -445,7 +424,7 @@
         }
 
         .btn-edit {
-            background: var(--gradient-accent);
+            background: var(--accent);
             color: white;
         }
 
@@ -455,7 +434,7 @@
         }
 
         .btn-delete {
-            background: linear-gradient(135deg, var(--danger) 0%, #a53e2b 100%);
+            background: var(--danger);
             color: white;
         }
 
@@ -472,7 +451,7 @@
             width: 64px;
             height: 64px;
             border-radius: 50%;
-            background: var(--gradient-primary);
+            background: var(--primary);
             color: white;
             border: none;
             font-size: 1.5rem;
@@ -499,7 +478,7 @@
         }
 
         .modal-header {
-            background: var(--gradient-primary);
+            background: var(--card-bg);
             color: white;
             border: none;
             border-radius: var(--radius-xl) var(--radius-xl) 0 0;
@@ -533,17 +512,17 @@
         }
 
         .form-control-modern, .form-select-modern {
-            border: 2px solid rgba(37, 113, 128, 0.1);
+            border: 2px solid rgba(37, 99, 235, 0.2);
             border-radius: var(--radius-md);
             padding: 0.875rem 1rem;
             font-size: 0.875rem;
             transition: var(--transition);
-            background: rgba(242, 229, 191, 0.3);
+            background: var(--light);
         }
 
         .form-control-modern:focus, .form-select-modern:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 113, 128, 0.1);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
             background: white;
             outline: none;
         }
@@ -559,15 +538,15 @@
         }
 
         .external-section {
-            background: linear-gradient(135deg, rgba(253, 139, 81, 0.1) 0%, rgba(37, 113, 128, 0.05) 100%);
+            background: rgba(59, 130, 246, 0.1);
             border: 2px dashed var(--accent);
             border-radius: var(--radius-lg);
             padding: 1.5rem;
         }
 
         .date-range-section {
-            background: linear-gradient(135deg, rgba(203, 96, 64, 0.1) 0%, rgba(37, 113, 128, 0.05) 100%);
-            border: 2px solid rgba(203, 96, 64, 0.2);
+            background: rgba(30, 64, 175, 0.1);
+            border: 2px solid rgba(30, 64, 175, 0.2);
             border-radius: var(--radius-lg);
             padding: 1.5rem;
         }
@@ -608,7 +587,7 @@
         }
 
         .form-check-input-modern:checked {
-            background: var(--gradient-primary);
+            background: var(--primary);
             border-color: var(--primary);
         }
 
@@ -633,7 +612,7 @@
         }
 
         .btn-primary-modern {
-            background: var(--gradient-primary);
+            background: var(--primary);
             color: white;
         }
 
@@ -645,11 +624,11 @@
         .btn-secondary-modern {
             background: var(--light);
             color: var(--muted);
-            border: 2px solid rgba(37, 113, 128, 0.1);
+            border: 2px solid rgba(37, 99, 235, 0.2);
         }
 
         .btn-secondary-modern:hover {
-            background: rgba(37, 113, 128, 0.05);
+            background: rgba(37, 99, 235, 0.05);
             border-color: var(--primary);
         }
 
@@ -779,12 +758,12 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: rgba(242, 229, 191, 0.5);
+            background: rgba(224, 242, 254, 0.5);
             border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: var(--gradient-primary);
+            background: var(--primary);
             border-radius: 4px;
         }
 
