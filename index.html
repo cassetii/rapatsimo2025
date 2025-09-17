@@ -3,29 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIMO Meeting Planner</title>
+    <title>SIMO Meeting Hub</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-gradient: linear-gradient(135deg, #A0C878 0%, #27667B 100%);
-            --secondary-gradient: linear-gradient(135deg, #DDEB9D 0%, #A0C878 100%);
-            --success-gradient: linear-gradient(135deg, #27667B 0%, #143D60 100%);
-            --warning-gradient: linear-gradient(135deg, #DDEB9D 0%, #A0C878 100%);
-            --danger-gradient: linear-gradient(135deg, #27667B 0%, #143D60 100%);
-            --dark-gradient: linear-gradient(135deg, #143D60 0%, #27667B 100%);
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --surface: #ffffff;
+            --muted: #64748b;
             
-            --primary-color: #A0C878;
-            --secondary-color: #DDEB9D;
-            --success-color: #27667B;
-            --warning-color: #A0C878;
-            --danger-color: #143D60;
-            --dark-color: #143D60;
+            --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            --gradient-accent: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+            --gradient-success: linear-gradient(135deg, var(--success) 0%, var(--accent) 100%);
+            --gradient-surface: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
             
-            --card-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            --card-shadow-hover: 0 20px 60px rgba(0,0,0,0.15);
-            --border-radius: 20px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+            --shadow-xl: 0 20px 40px rgba(0,0,0,0.1);
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -36,19 +45,11 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, 
-                #DDEB9D 0%, 
-                #A0C878 25%, 
-                #27667B 50%, 
-                #143D60 75%, 
-                #A0C878 100%
-            );
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            color: var(--dark);
             overflow-x: hidden;
-            position: relative;
         }
 
         body::before {
@@ -59,130 +60,119 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 80%, rgba(221, 235, 157, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(160, 200, 120, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(39, 102, 123, 0.1) 0%, transparent 50%);
+                radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
             pointer-events: none;
             z-index: -1;
         }
 
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Header */
+        .navbar-modern {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: var(--shadow-md);
+            padding: 1rem 0;
         }
 
-        /* Header Styles */
-        .main-header {
-            background: var(--primary-gradient);
-            color: white;
-            padding: 1.5rem 0;
-            box-shadow: var(--card-shadow);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .main-header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-            animation: shimmer 3s infinite;
-            pointer-events: none;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-
-        .main-title {
-            font-size: 2.5rem;
+        .brand-logo {
+            font-size: 1.5rem;
             font-weight: 800;
-            text-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            position: relative;
-            z-index: 2;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .main-subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            position: relative;
-            z-index: 2;
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-lg);
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: var(--transition);
         }
 
-        /* Main Container */
+        .status-online {
+            background: var(--gradient-success);
+            color: white;
+        }
+
+        .status-offline {
+            background: var(--gradient-accent);
+            color: white;
+        }
+
+        /* Main Layout */
         .main-container {
             padding: 2rem 1rem;
-            max-width: 100%;
-            height: calc(100vh - 120px);
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
-        /* Grid Layout for Fullscreen */
         .dashboard-grid {
             display: grid;
             grid-template-columns: 400px 1fr;
             gap: 2rem;
-            height: 100%;
-            max-height: calc(100vh - 200px);
+            height: calc(100vh - 140px);
         }
 
         @media (max-width: 1200px) {
             .dashboard-grid {
                 grid-template-columns: 1fr;
                 grid-template-rows: auto 1fr;
-                max-height: none;
+                gap: 1.5rem;
+                height: auto;
             }
         }
 
-        /* Card Styles */
-        .glass-card {
+        /* Modern Cards */
+        .card-modern {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
+            border-radius: var(--radius-xl);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: var(--border-radius);
-            box-shadow: var(--card-shadow);
+            box-shadow: var(--shadow-lg);
             transition: var(--transition);
             overflow: hidden;
         }
 
-        .glass-card:hover {
-            box-shadow: var(--card-shadow-hover);
-            transform: translateY(-2px);
+        .card-modern:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
         }
 
-        .card-header-custom {
-            background: var(--primary-gradient);
+        .card-header-modern {
+            background: var(--gradient-primary);
             color: white;
-            padding: 1.5rem;
+            padding: 1.5rem 2rem;
             border: none;
-            position: relative;
-            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .card-header-custom::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-            animation: shimmer 4s infinite;
-            pointer-events: none;
-        }
-
-        .card-header-custom h5 {
-            position: relative;
-            z-index: 2;
-            margin: 0;
+        .card-title-modern {
+            font-size: 1.125rem;
             font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
 
-        /* Calendar Styles */
+        .badge-modern {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-lg);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Calendar Redesign */
         .calendar-container {
             height: 100%;
             display: flex;
@@ -191,25 +181,24 @@
 
         .calendar-body {
             flex: 1;
-            padding: 1.5rem;
-            overflow-y: auto;
+            padding: 2rem;
         }
 
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 0.5rem;
-            margin-top: 1rem;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
         }
 
         .calendar-day-header {
-            padding: 1rem 0.5rem;
+            padding: 1rem;
             text-align: center;
             font-weight: 700;
-            color: var(--dark-color);
-            background: linear-gradient(135deg, rgba(221, 235, 157, 0.3), rgba(160, 200, 120, 0.2));
-            border-radius: 10px;
-            margin-bottom: 0.5rem;
+            color: var(--muted);
+            background: var(--gradient-surface);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
         }
 
         .calendar-day {
@@ -217,61 +206,77 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 12px;
+            border-radius: var(--radius-md);
             cursor: pointer;
             font-weight: 600;
-            background: linear-gradient(135deg, #f8f9ff, #ffffff);
+            background: var(--surface);
             border: 2px solid transparent;
             transition: var(--transition);
             position: relative;
-            overflow: hidden;
-        }
-
-        .calendar-day::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.5s;
-        }
-
-        .calendar-day:hover::before {
-            left: 100%;
+            font-size: 0.875rem;
         }
 
         .calendar-day:hover {
-            background: var(--primary-gradient);
+            background: var(--gradient-primary);
             color: white;
-            transform: scale(1.1);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            transform: scale(1.05);
+            border-color: var(--primary);
         }
 
         .calendar-day.has-meeting {
-            background: var(--success-gradient);
+            background: var(--gradient-success);
             color: white;
-            border-color: rgba(255,255,255,0.3);
+            border-color: var(--success);
         }
 
         .calendar-day.has-meeting-range {
-            background: var(--warning-gradient);
+            background: var(--gradient-accent);
             color: white;
-            border-color: rgba(255,255,255,0.3);
+            border-color: var(--accent);
         }
 
         .calendar-day.has-meeting::after,
         .calendar-day.has-meeting-range::after {
-            content: '📅';
+            content: '';
             position: absolute;
-            top: 2px;
-            right: 2px;
-            font-size: 0.7rem;
-            animation: bounce 2s infinite;
+            top: 4px;
+            right: 4px;
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
         }
 
-        /* Meeting Table Styles */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .calendar-legend {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(248, 250, 252, 0.8);
+            border-radius: var(--radius-md);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--muted);
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* Table Redesign */
         .table-container {
             height: 100%;
             display: flex;
@@ -281,123 +286,183 @@
         .table-wrapper {
             flex: 1;
             overflow-y: auto;
-            padding: 1.5rem;
+            padding: 2rem;
         }
 
-        .table-custom {
+        .table-modern {
             width: 100%;
             border-collapse: separate;
-            border-spacing: 0 0.5rem;
+            border-spacing: 0 1rem;
         }
 
-        .table-custom thead th {
-            background: var(--dark-gradient);
+        .table-modern thead th {
+            background: var(--gradient-primary);
             color: white;
-            padding: 1rem;
-            text-align: center;
+            padding: 1rem 1.5rem;
+            text-align: left;
             font-weight: 600;
             border: none;
             position: sticky;
             top: 0;
             z-index: 10;
+            font-size: 0.875rem;
         }
 
-        .table-custom thead th:first-child {
-            border-radius: 15px 0 0 15px;
+        .table-modern thead th:first-child {
+            border-radius: var(--radius-lg) 0 0 var(--radius-lg);
         }
 
-        .table-custom thead th:last-child {
-            border-radius: 0 15px 15px 0;
+        .table-modern thead th:last-child {
+            border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
         }
 
-        .table-custom tbody tr {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        .table-modern tbody tr {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
             transition: var(--transition);
         }
 
-        .table-custom tbody tr:hover {
-            transform: translateX(5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            background: rgba(255, 255, 255, 1);
+        .table-modern tbody tr:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
-        .table-custom tbody td {
-            padding: 1rem;
+        .table-modern tbody td {
+            padding: 1.5rem;
             border: none;
             vertical-align: middle;
+            font-size: 0.875rem;
         }
 
-        .table-custom tbody td:first-child {
-            border-radius: 15px 0 0 15px;
+        .table-modern tbody td:first-child {
+            border-radius: var(--radius-lg) 0 0 var(--radius-lg);
         }
 
-        .table-custom tbody td:last-child {
-            border-radius: 0 15px 15px 0;
+        .table-modern tbody td:last-child {
+            border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
         }
 
-        /* Meeting Info Styles */
-        .meeting-date-info {
+        .meeting-date-card {
             display: flex;
             flex-direction: column;
-            gap: 0.25rem;
+            gap: 0.5rem;
         }
 
-        .date-main {
+        .date-primary {
             font-weight: 700;
-            color: var(--dark-color);
+            color: var(--dark);
+            font-size: 0.9rem;
         }
 
         .date-time {
-            font-size: 0.85rem;
-            background: var(--primary-gradient);
+            background: var(--gradient-primary);
             color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 8px;
-            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
             width: fit-content;
         }
 
         .date-duration {
-            font-size: 0.75rem;
-            background: var(--warning-gradient);
+            background: var(--gradient-accent);
             color: white;
-            padding: 0.2rem 0.4rem;
-            border-radius: 6px;
-            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
             width: fit-content;
         }
 
-        /* Badge Styles */
-        .badge-custom {
-            background: var(--primary-gradient);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 15px;
-            font-size: 0.85rem;
+        .meeting-title {
             font-weight: 600;
+            color: var(--dark);
+            line-height: 1.4;
         }
 
-        .badge-external {
-            background: var(--secondary-gradient);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 15px;
-            font-size: 0.85rem;
-            font-weight: 600;
+        .location-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--muted);
+            font-size: 0.875rem;
         }
 
-        .badge-audience {
-            background: var(--success-gradient);
+        .creator-badge {
+            background: var(--gradient-primary);
             color: white;
-            font-size: 0.7rem;
-            padding: 0.3rem 0.6rem;
-            border-radius: 8px;
-            margin: 0.1rem;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-lg);
+            font-size: 0.75rem;
+            font-weight: 600;
             display: inline-block;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .creator-badge.external {
+            background: var(--gradient-accent);
+        }
+
+        .audience-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+        }
+
+        .audience-tag {
+            background: var(--gradient-success);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.7rem;
             font-weight: 500;
+        }
+
+        .audience-tag.more {
+            background: var(--muted);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-action {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-edit {
+            background: var(--gradient-accent);
+            color: white;
+        }
+
+        .btn-edit:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-delete {
+            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
+            color: white;
+        }
+
+        .btn-delete:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-md);
         }
 
         /* Floating Action Button */
@@ -405,361 +470,419 @@
             position: fixed;
             bottom: 2rem;
             right: 2rem;
-            width: 60px;
-            height: 60px;
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
-            background: var(--primary-gradient);
+            background: var(--gradient-primary);
             color: white;
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
-            box-shadow: 0 8px 25px rgba(160, 200, 120, 0.4);
+            box-shadow: var(--shadow-lg);
             transition: var(--transition);
             z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .fab:hover {
             transform: scale(1.1) rotate(90deg);
-            box-shadow: 0 12px 35px rgba(160, 200, 120, 0.6);
+            box-shadow: var(--shadow-xl);
         }
 
-        /* Connection Status */
-        .connection-status {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            z-index: 1001;
-            backdrop-filter: blur(10px);
-        }
-
-        .status-online {
-            background: var(--success-gradient);
-            color: white;
-        }
-
-        .status-offline {
-            background: var(--danger-gradient);
-            color: white;
-        }
-
-        /* Modal Styles */
+        /* Modal Redesign */
         .modal-content {
             border: none;
-            border-radius: var(--border-radius);
-            backdrop-filter: blur(20px);
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: var(--card-shadow-hover);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            background: var(--surface);
         }
 
         .modal-header {
-            background: var(--primary-gradient);
+            background: var(--gradient-primary);
             color: white;
             border: none;
-            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            padding: 2rem;
+        }
+
+        .modal-title {
+            font-weight: 700;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
 
         .modal-body {
             padding: 2rem;
         }
 
-        /* Form Styles */
-        .form-control, .form-select {
-            border: 2px solid rgba(160, 200, 120, 0.3);
-            border-radius: 12px;
-            padding: 0.75rem 1rem;
-            transition: var(--transition);
-            background: rgba(221, 235, 157, 0.1);
+        .form-section {
+            margin-bottom: 2rem;
         }
 
-        .form-control:focus, .form-select:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 20px rgba(160, 200, 120, 0.3);
-            background: white;
-        }
-
-        .btn-gradient {
-            background: var(--primary-gradient);
-            border: none;
-            color: white;
-            border-radius: 12px;
-            padding: 0.75rem 2rem;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .btn-gradient:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(160, 200, 120, 0.4);
-            color: white;
-        }
-
-        .btn-secondary-gradient {
-            background: var(--secondary-gradient);
-            border: none;
-            color: white;
-        }
-
-        .btn-success-gradient {
-            background: var(--success-gradient);
-            border: none;
-            color: white;
-        }
-
-        .btn-warning-gradient {
-            background: var(--warning-gradient);
-            border: none;
-            color: white;
-        }
-
-        .btn-danger-gradient {
-            background: var(--danger-gradient);
-            border: none;
-            color: white;
-        }
-
-        /* External and Special Fields */
-        .external-field {
-            background: linear-gradient(135deg, rgba(221, 235, 157, 0.2), rgba(255, 255, 255, 0.8));
-            border: 2px dashed var(--secondary-color);
-            border-radius: 15px;
-            padding: 1.5rem;
-        }
-
-        .external-label {
-            color: #A0C878;
+        .form-section-title {
             font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .form-control-modern, .form-select-modern {
+            border: 2px solid rgba(99, 102, 241, 0.1);
+            border-radius: var(--radius-md);
+            padding: 0.875rem 1rem;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            background: rgba(248, 250, 252, 0.5);
+        }
+
+        .form-control-modern:focus, .form-select-modern:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            background: white;
+            outline: none;
+        }
+
+        .form-label-modern {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .external-section {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(99, 102, 241, 0.05) 100%);
+            border: 2px dashed var(--accent);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
         }
 
         .date-range-section {
-            background: linear-gradient(135deg, rgba(221, 235, 157, 0.2), rgba(255, 255, 255, 0.8));
-            border: 2px solid var(--warning-color);
-            border-radius: 15px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(99, 102, 241, 0.05) 100%);
+            border: 2px solid rgba(139, 92, 246, 0.2);
+            border-radius: var(--radius-lg);
             padding: 1.5rem;
         }
 
-        .date-range-label {
-            color: var(--warning-color);
-            font-weight: 700;
-        }
-
-        /* Audience Container */
-        .audience-container {
+        .audience-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
             max-height: 300px;
             overflow-y: auto;
-            border: 2px solid rgba(160, 200, 120, 0.3);
-            border-radius: 15px;
-            background: rgba(221, 235, 157, 0.1);
-            padding: 1.5rem;
+            padding: 1rem;
+            background: rgba(248, 250, 252, 0.5);
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(99, 102, 241, 0.1);
         }
 
-        .form-check {
-            padding: 0.5rem 1rem;
-            border-radius: 10px;
+        .form-check-modern {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
             transition: var(--transition);
+            cursor: pointer;
         }
 
-        .form-check:hover {
-            background: rgba(160, 200, 120, 0.2);
+        .form-check-modern:hover {
+            background: rgba(99, 102, 241, 0.05);
         }
 
-        .form-check-input:checked {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
+        .form-check-input-modern {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
         }
 
-        /* Loading and Notifications */
-        .loading-spinner {
+        .form-check-input-modern:checked {
+            background: var(--gradient-primary);
+            border-color: var(--primary);
+        }
+
+        .form-check-label-modern {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--dark);
+            cursor: pointer;
+        }
+
+        .btn-modern {
+            padding: 0.875rem 2rem;
+            border-radius: var(--radius-md);
+            border: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .btn-primary-modern {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .btn-primary-modern:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary-modern {
+            background: var(--light);
+            color: var(--muted);
+            border: 2px solid rgba(99, 102, 241, 0.1);
+        }
+
+        .btn-secondary-modern:hover {
+            background: rgba(99, 102, 241, 0.05);
+            border-color: var(--primary);
+        }
+
+        .btn-group-modern {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: flex-end;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--muted);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            opacity: 0.3;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        /* Loading */
+        .loading-overlay {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             z-index: 9999;
         }
 
-        /* Animation Classes */
-        .fade-in {
-            animation: fadeInUp 0.6s ease-out;
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(99, 102, 241, 0.1);
+            border-left-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
 
-        @keyframes fadeInUp {
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 2rem;
+            max-width: 400px;
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            border-left: 4px solid var(--success);
+            padding: 1rem 1.5rem;
+            z-index: 1050;
+            backdrop-filter: blur(20px);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .notification.error {
+            border-left-color: var(--danger);
+        }
+
+        .notification.warning {
+            border-left-color: var(--warning);
+        }
+
+        @keyframes slideIn {
             from {
+                transform: translateX(100%);
                 opacity: 0;
-                transform: translateY(30px);
             }
             to {
+                transform: translateX(0);
                 opacity: 1;
-                transform: translateY(0);
             }
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); }
         }
 
         /* Responsive Design */
-        @media (max-height: 800px) {
-            .main-title {
-                font-size: 2rem;
-            }
-            .main-header {
-                padding: 1rem 0;
-            }
+        @media (max-width: 768px) {
             .main-container {
                 padding: 1rem;
-                height: calc(100vh - 80px);
             }
-        }
-
-        @media (max-width: 768px) {
+            
             .fab {
                 bottom: 1rem;
                 right: 1rem;
-                width: 50px;
-                height: 50px;
-                font-size: 1.2rem;
+                width: 56px;
+                height: 56px;
+                font-size: 1.25rem;
             }
             
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-            
-            .table-wrapper {
+            .table-wrapper, .calendar-body {
                 padding: 1rem;
+            }
+            
+            .modal-body {
+                padding: 1.5rem;
+            }
+            
+            .audience-grid {
+                grid-template-columns: 1fr;
             }
         }
 
-        /* Scrollbar Styles */
+        /* Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
 
         ::-webkit-scrollbar-track {
-            background: rgba(221, 235, 157, 0.2);
+            background: rgba(248, 250, 252, 0.5);
             border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: var(--primary-gradient);
+            background: var(--gradient-primary);
             border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: var(--success-gradient);
-        }
-
-        /* Utility Classes */
-        .text-gradient {
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 700;
-        }
-
-        .glass-blur {
-            backdrop-filter: blur(20px);
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--primary-dark);
         }
     </style>
 </head>
 <body>
-    <!-- Connection Status -->
-    <div id="connectionStatus" class="connection-status status-offline">
-        <i class="fas fa-wifi me-1"></i>
-        Menghubungkan...
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner"></div>
     </div>
 
-    <!-- Loading Spinner -->
-    <div id="loadingSpinner" class="loading-spinner" style="display: none;">
-        <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-    </div>
-
-    <!-- Header -->
-    <header class="main-header">
+    <!-- Navigation -->
+    <nav class="navbar-modern">
         <div class="container-fluid">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <h1 class="main-title animate__animated animate__fadeInLeft">
-                        <i class="fas fa-calendar-alt me-3"></i>
-                        SIMO Meeting Planner
-                    </h1>
-                    <p class="main-subtitle animate__animated animate__fadeInLeft animate__delay-1s">
-                        Sistem Informasi Manajemen Organisasi - Dashboard Rapat Terintegrasi
-                    </p>
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="brand-logo">
+                    <i class="fas fa-calendar-check me-2"></i>
+                    SIMO Meeting Hub
                 </div>
-                <div class="col-md-4 text-end">
-                    <div class="animate__animated animate__fadeInRight animate__delay-2s">
-                        <i class="fas fa-users fa-3x opacity-75"></i>
-                    </div>
+                <div id="connectionStatus" class="status-indicator status-offline">
+                    <i class="fas fa-wifi"></i>
+                    <span>Connecting...</span>
                 </div>
             </div>
         </div>
-    </header>
+    </nav>
 
     <!-- Main Content -->
     <main class="main-container">
-        <div class="container-fluid">
-            <div class="dashboard-grid">
-                <!-- Calendar Section -->
-                <div class="glass-card calendar-container fade-in">
-                    <div class="card-header-custom">
-                        <h5>
-                            <i class="fas fa-calendar-alt me-2"></i>
-                            Kalender Rapat - <span id="currentMonth"></span>
-                        </h5>
+        <div class="dashboard-grid">
+            <!-- Calendar Section -->
+            <div class="card-modern calendar-container">
+                <div class="card-header-modern">
+                    <h5 class="card-title-modern">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span id="currentMonth">Calendar</span>
+                    </h5>
+                </div>
+                <div class="calendar-body">
+                    <div id="calendarHeader" class="calendar-grid">
+                        <!-- Calendar headers will be generated here -->
                     </div>
-                    <div class="calendar-body">
-                        <div id="calendarHeader" class="calendar-grid">
-                            <!-- Calendar headers will be generated here -->
+                    <div id="calendar" class="calendar-grid">
+                        <!-- Calendar days will be generated here -->
+                    </div>
+                    <div class="calendar-legend">
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: var(--gradient-success);"></div>
+                            <span>Single Day</span>
                         </div>
-                        <div id="calendar" class="calendar-grid">
-                            <!-- Calendar days will be generated here -->
-                        </div>
-                        <div class="mt-3">
-                            <small class="text-muted">
-                                <i class="fas fa-info-circle me-1"></i>
-                                <span style="display: inline-block; width: 15px; height: 15px; background: var(--success-gradient); border-radius: 50%; margin-right: 5px;"></span>
-                                Rapat 1 hari &nbsp;
-                                <span style="display: inline-block; width: 15px; height: 15px; background: var(--warning-gradient); border-radius: 50%; margin-right: 5px;"></span>
-                                Rapat multi-hari
-                            </small>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: var(--gradient-accent);"></div>
+                            <span>Multi-Day</span>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Meeting Cards Section -->
-                <div class="glass-card meetings-container fade-in">
-                    <div class="card-header-custom">
-                        <h5>
-                            <i class="fas fa-calendar-clock me-2"></i>
-                            Rapat Yang Akan Datang
-                            <span id="meetingCount" class="badge bg-light text-dark ms-2">0</span>
-                        </h5>
-                    </div>
-                    <div class="meetings-wrapper p-4">
-                        <div id="meetingCardsContainer" class="meetings-grid">
-                            <div class="no-meetings-placeholder text-center py-5">
-                                <i class="fas fa-calendar-times fa-4x mb-3 text-muted opacity-50"></i>
-                                <h5 class="text-muted mb-2">Belum ada rapat yang dijadwalkan</h5>
-                                <p class="text-muted">Klik tombol + untuk menambah rapat baru</p>
-                            </div>
-                        </div>
-                    </div>
+            <!-- Meetings Section -->
+            <div class="card-modern table-container">
+                <div class="card-header-modern">
+                    <h5 class="card-title-modern">
+                        <i class="fas fa-list-check"></i>
+                        Upcoming Meetings
+                    </h5>
+                    <span id="meetingCount" class="badge-modern">0</span>
+                </div>
+                <div class="table-wrapper">
+                    <table class="table-modern">
+                        <thead>
+                            <tr>
+                                <th style="width: 20%;">Schedule</th>
+                                <th style="width: 30%;">Meeting</th>
+                                <th style="width: 18%;">Location</th>
+                                <th style="width: 12%;">Creator</th>
+                                <th style="width: 15%;">Audience</th>
+                                <th style="width: 5%;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="meetingTableBody">
+                            <tr>
+                                <td colspan="6" class="empty-state">
+                                    <div class="empty-state-icon">
+                                        <i class="fas fa-calendar-plus"></i>
+                                    </div>
+                                    <div class="empty-state-title">No meetings scheduled</div>
+                                    <div>Click the + button to add your first meeting</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </main>
 
     <!-- Floating Action Button -->
-    <button class="fab animate__animated animate__bounceIn" id="addMeetingBtn" title="Tambah Rapat Baru">
+    <button class="fab" id="addMeetingBtn" title="Add New Meeting">
         <i class="fas fa-plus"></i>
     </button>
 
@@ -769,8 +892,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="meetingModalLabel">
-                        <i class="fas fa-plus-circle me-2"></i>
-                        <span id="formTitle">Tambah Rapat Baru</span>
+                        <i class="fas fa-plus-circle"></i>
+                        <span id="formTitle">Add New Meeting</span>
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -778,236 +901,243 @@
                     <form id="meetingForm">
                         <input type="hidden" id="editingId" value="">
                         
-                        <!-- Basic Info Row -->
-                        <div class="row">
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label fw-bold text-gradient">
-                                    <i class="fas fa-user me-2"></i>
-                                    Pembuat Rapat
-                                </label>
-                                <select class="form-select" id="pembuatRapat" required>
-                                    <option value="">Pilih Divisi/Departemen</option>
-                                    <option value="DIVISI SIMO">DIVISI SIMO</option>
-                                    <option value="Dept.Perencanaan Strategis & Kinerja Organisasi">Dept.Perencanaan Strategis & Kinerja Organisasi</option>
-                                    <option value="Dept.Pembinaan Cabang">Dept.Pembinaan Cabang</option>
-                                    <option value="Dept.Pengembangan Organisasi">Dept.Pengembangan Organisasi</option>
-                                    <option value="Dept.Change Management Office">Dept.Change Management Office</option>
-                                    <option value="Direksi Bank Sulselbar">Direksi Bank Sulselbar</option>
-                                    <option value="SKAI">SKAI</option>
-                                    <option value="DCS">DCS</option>
-                                    <option value="DHC">DHC</option>
-                                    <option value="DDL">DDL</option>
-                                    <option value="DKA">DKA</option>
-                                    <option value="DTI">DTI</option>
-                                    <option value="DUM">DUM</option>
-                                    <option value="DJS">DJS</option>
-                                    <option value="DTR">DTR</option>
-                                    <option value="DSY">DSY</option>
-                                    <option value="DIB">DIB</option>
-                                    <option value="DKK">DKK</option>
-                                    <option value="DRK">DRK</option>
-                                    <option value="SKK">SKK</option>
-                                    <option value="SKMR">SKMR</option>
-                                    <option value="DPLK">DPLK</option>
-                                    <option value="UPPK">UPPK</option>
-                                    <option value="External">🌐 External</option>
-                                </select>
+                        <!-- Basic Info Section -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="fas fa-info-circle"></i>
+                                Basic Information
                             </div>
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label fw-bold text-gradient">
-                                    <i class="fas fa-map-marker-alt me-2"></i>
-                                    Tempat Rapat
-                                </label>
-                                <input type="text" class="form-control" id="tempatRapat" placeholder="Masukkan tempat rapat" required>
-                            </div>
-                        </div>
-
-                        <!-- External Creator Field -->
-                        <div class="mb-4 external-field" id="externalCreatorDiv" style="display: none;">
-                            <label class="form-label fw-bold external-label">
-                                <i class="fas fa-globe me-2"></i>
-                                Detail Pembuat External
-                            </label>
-                            <input type="text" class="form-control" id="externalCreator" placeholder="Nama Perusahaan/Organisasi External">
-                            <div class="form-text text-muted mt-2">
-                                <i class="fas fa-info-circle me-1"></i>
-                                Contoh: PT. ABC Corporation, Universitas XYZ, Kementerian ABC, dll.
-                            </div>
-                        </div>
-
-                        <!-- Meeting Details -->
-                        <div class="mb-4">
-                            <label class="form-label fw-bold text-gradient">
-                                <i class="fas fa-info-circle me-2"></i>
-                                Kegiatan Rapat
-                            </label>
-                            <textarea class="form-control" id="keteranganRapat" rows="3" placeholder="Masukkan kegiatan rapat" required></textarea>
-                        </div>
-
-                        <!-- Date & Time Range Section -->
-                        <div class="mb-4 date-range-section">
-                            <label class="form-label fw-bold date-range-label mb-3">
-                                <i class="fas fa-calendar-week me-2"></i>
-                                Rentang Tanggal & Waktu Rapat
-                            </label>
-                            
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-bold">
-                                        <i class="fas fa-calendar-day me-2"></i>
-                                        Tanggal Mulai
+                                    <label class="form-label-modern">
+                                        <i class="fas fa-user"></i>
+                                        Meeting Creator
                                     </label>
-                                    <input type="date" class="form-control" id="tanggalMulai" required>
+                                    <select class="form-select-modern" id="pembuatRapat" required>
+                                        <option value="">Select Department/Division</option>
+                                        <option value="DIVISI SIMO">DIVISI SIMO</option>
+                                        <option value="Dept.Perencanaan Strategis & Kinerja Organisasi">Dept.Perencanaan Strategis & Kinerja Organisasi</option>
+                                        <option value="Dept.Pembinaan Cabang">Dept.Pembinaan Cabang</option>
+                                        <option value="Dept.Pengembangan Organisasi">Dept.Pengembangan Organisasi</option>
+                                        <option value="Dept.Change Management Office">Dept.Change Management Office</option>
+                                        <option value="Direksi Bank Sulselbar">Direksi Bank Sulselbar</option>
+                                        <option value="SKAI">SKAI</option>
+                                        <option value="DCS">DCS</option>
+                                        <option value="DHC">DHC</option>
+                                        <option value="DDL">DDL</option>
+                                        <option value="DKA">DKA</option>
+                                        <option value="DTI">DTI</option>
+                                        <option value="DUM">DUM</option>
+                                        <option value="DJS">DJS</option>
+                                        <option value="DTR">DTR</option>
+                                        <option value="DSY">DSY</option>
+                                        <option value="DIB">DIB</option>
+                                        <option value="DKK">DKK</option>
+                                        <option value="DRK">DRK</option>
+                                        <option value="SKK">SKK</option>
+                                        <option value="SKMR">SKMR</option>
+                                        <option value="DPLK">DPLK</option>
+                                        <option value="UPPK">UPPK</option>
+                                        <option value="External">External Organization</option>
+                                    </select>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-bold">
-                                        <i class="fas fa-calendar-check me-2"></i>
-                                        Tanggal Selesai
+                                    <label class="form-label-modern">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        Location
                                     </label>
-                                    <input type="date" class="form-control" id="tanggalSelesai" required>
+                                    <input type="text" class="form-control-modern" id="tempatRapat" placeholder="Enter meeting location" required>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- External Creator Section -->
+                        <div class="form-section external-section" id="externalCreatorDiv" style="display: none;">
+                            <div class="form-section-title" style="color: var(--accent);">
+                                <i class="fas fa-globe"></i>
+                                External Organization Details
+                            </div>
+                            <input type="text" class="form-control-modern" id="externalCreator" placeholder="Company/Organization Name">
+                            <div class="mt-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Example: PT. ABC Corporation, XYZ University, Ministry of ABC, etc.
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- Meeting Details Section -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="fas fa-clipboard-list"></i>
+                                Meeting Details
+                            </div>
+                            <label class="form-label-modern">
+                                <i class="fas fa-comment-dots"></i>
+                                Meeting Description
+                            </label>
+                            <textarea class="form-control-modern" id="keteranganRapat" rows="3" placeholder="Enter meeting description" required></textarea>
+                        </div>
+
+                        <!-- Date & Time Section -->
+                        <div class="form-section date-range-section">
+                            <div class="form-section-title" style="color: var(--secondary);">
+                                <i class="fas fa-calendar-week"></i>
+                                Schedule & Duration
                             </div>
                             
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-bold">
-                                        <i class="fas fa-clock me-2"></i>
-                                        Jam Mulai
+                                    <label class="form-label-modern">
+                                        <i class="fas fa-calendar-day"></i>
+                                        Start Date
                                     </label>
-                                    <select class="form-select" id="jamMulai" required>
-                                        <option value="">Pilih Jam Mulai</option>
+                                    <input type="date" class="form-control-modern" id="tanggalMulai" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label-modern">
+                                        <i class="fas fa-calendar-check"></i>
+                                        End Date
+                                    </label>
+                                    <input type="date" class="form-control-modern" id="tanggalSelesai" required>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label-modern">
+                                        <i class="fas fa-clock"></i>
+                                        Start Time
+                                    </label>
+                                    <select class="form-select-modern" id="jamMulai" required>
+                                        <option value="">Select Start Time</option>
                                     </select>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-bold">
-                                        <i class="fas fa-clock me-2"></i>
-                                        Jam Selesai
+                                    <label class="form-label-modern">
+                                        <i class="fas fa-clock"></i>
+                                        End Time
                                     </label>
-                                    <select class="form-select" id="jamSelesai" required>
-                                        <option value="">Pilih Jam Selesai</option>
+                                    <select class="form-select-modern" id="jamSelesai" required>
+                                        <option value="">Select End Time</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Audience Selection -->
-                        <div class="mb-4">
-                            <label class="form-label fw-bold text-gradient">
-                                <i class="fas fa-users me-2"></i>
-                                Audience <small class="text-muted">(Pilih satu atau lebih)</small>
-                            </label>
-                            <div class="audience-container">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" id="audience_direksi" value="Direksi Bank Sulselbar">
-                                            <label class="form-check-label" for="audience_direksi">Direksi Bank Sulselbar</label>
-                                        </div>
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" id="audience_skai" value="SKAI">
-                                            <label class="form-check-label" for="audience_skai">SKAI</label>
-                                        </div>
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" id="audience_dcs" value="DCS">
-                                            <label class="form-check-label" for="audience_dcs">DCS</label>
-                                        </div>
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" id="audience_dhc" value="DHC">
-                                            <label class="form-check-label" for="audience_dhc">DHC</label>
-                                        </div>
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" id="audience_ddl" value="DDL">
-                                            <label class="form-check-label" for="audience_ddl">DDL</label>
-                                        </div>
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" id="audience_dka" value="DKA">
-                                            <label class="form-check-label" for="audience_dka">DKA</label>
-                                        </div>
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" id="audience_dti" value="DTI">
-                                            <label class="form-check-label" for="audience_dti">DTI</label>
-                                        </div>
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" id="audience_dum" value="DUM">
-                                            <label class="form-check-label" for="audience_dum">DUM</label>
-                                        </div>
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" id="audience_djs" value="DJS">
-                                            <label class="form-check-label" for="audience_djs">DJS</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" id="audience_dtr" value="DTR">
-                                            <label class="form-check-label" for="audience_dtr">DTR</label>
-                                        </div>
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" id="audience_dsy" value="DSY">
-                                            <label class="form-check-label" for="audience_dsy">DSY</label>
-                                        </div>
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" id="audience_dib" value="DIB">
-                                            <label class="form-check-label" for="audience_dib">DIB</label>
-                                        </div>
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" id="audience_dkk" value="DKK">
-                                            <label class="form-check-label" for="audience_dkk">DKK</label>
-                                        </div>
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" id="audience_drk" value="DRK">
-                                            <label class="form-check-label" for="audience_drk">DRK</label>
-                                        </div>
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" id="audience_skk" value="SKK">
-                                            <label class="form-check-label" for="audience_skk">SKK</label>
-                                        </div>
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" id="audience_skmr" value="SKMR">
-                                            <label class="form-check-label" for="audience_skmr">SKMR</label>
-                                        </div>
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" id="audience_dplk" value="DPLK">
-                                            <label class="form-check-label" for="audience_dplk">DPLK</label>
-                                        </div>
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" id="audience_uppk" value="UPPK">
-                                            <label class="form-check-label" for="audience_uppk">UPPK</label>
-                                        </div>
-                                    </div>
+                        <!-- Audience Section -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="fas fa-users"></i>
+                                Meeting Audience
+                            </div>
+                            <div class="audience-grid">
+                                <div class="form-check-modern">
+                                    <input class="form-check-input-modern" type="checkbox" id="audience_direksi" value="Direksi Bank Sulselbar">
+                                    <label class="form-check-label-modern" for="audience_direksi">Direksi Bank Sulselbar</label>
                                 </div>
-                                <hr class="my-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="audience_lainnya" value="Lainnya">
-                                    <label class="form-check-label fw-bold" for="audience_lainnya">Lainnya</label>
+                                <div class="form-check-modern">
+                                    <input class="form-check-input-modern" type="checkbox" id="audience_skai" value="SKAI">
+                                    <label class="form-check-label-modern" for="audience_skai">SKAI</label>
+                                </div>
+                                <div class="form-check-modern">
+                                    <input class="form-check-input-modern" type="checkbox" id="audience_dcs" value="DCS">
+                                    <label class="form-check-label-modern" for="audience_dcs">DCS</label>
+                                </div>
+                                <div class="form-check-modern">
+                                    <input class="form-check-input-modern" type="checkbox" id="audience_dhc" value="DHC">
+                                    <label class="form-check-label-modern" for="audience_dhc">DHC</label>
+                                </div>
+                                <div class="form-check-modern">
+                                    <input class="form-check-input-modern" type="checkbox" id="audience_ddl" value="DDL">
+                                    <label class="form-check-label-modern" for="audience_ddl">DDL</label>
+                                </div>
+                                <div class="form-check-modern">
+                                    <input class="form-check-input-modern" type="checkbox" id="audience_dka" value="DKA">
+                                    <label class="form-check-label-modern" for="audience_dka">DKA</label>
+                                </div>
+                                <div class="form-check-modern">
+                                    <input class="form-check-input-modern" type="checkbox" id="audience_dti" value="DTI">
+                                    <label class="form-check-label-modern" for="audience_dti">DTI</label>
+                                </div>
+                                <div class="form-check-modern">
+                                    <input class="form-check-input-modern" type="checkbox" id="audience_dum" value="DUM">
+                                    <label class="form-check-label-modern" for="audience_dum">DUM</label>
+                                </div>
+                                <div class="form-check-modern">
+                                    <input class="form-check-input-modern" type="checkbox" id="audience_djs" value="DJS">
+                                    <label class="form-check-label-modern" for="audience_djs">DJS</label>
+                                </div>
+                                <div class="form-check-modern">
+                                    <input class="form-check-input-modern" type="checkbox" id="audience_dtr" value="DTR">
+                                    <label class="form-check-label-modern" for="audience_dtr">DTR</label>
+                                </div>
+                                <div class="form-check-modern">
+                                    <input class="form-check-input-modern" type="checkbox" id="audience_dsy" value="DSY">
+                                    <label class="form-check-label-modern" for="audience_dsy">DSY</label>
+                                </div>
+                                <div class="form-check-modern">
+                                    <input class="form-check-input-modern" type="checkbox" id="audience_dib" value="DIB">
+                                    <label class="form-check-label-modern" for="audience_dib">DIB</label>
+                                </div>
+                                <div class="form-check-modern">
+                                    <input class="form-check-input-modern" type="checkbox" id="audience_dkk" value="DKK">
+                                    <label class="form-check-label-modern" for="audience_dkk">DKK</label>
+                                </div>
+                                <div class="form-check-modern">
+                                    <input class="form-check-input-modern" type="checkbox" id="audience_drk" value="DRK">
+                                    <label class="form-check-label-modern" for="audience_drk">DRK</label>
+                                </div>
+                                <div class="form-check-modern">
+                                    <input class="form-check-input-modern" type="checkbox" id="audience_skk" value="SKK">
+                                    <label class="form-check-label-modern" for="audience_skk">SKK</label>
+                                </div>
+                                <div class="form-check-modern">
+                                    <input class="form-check-input-modern" type="checkbox" id="audience_skmr" value="SKMR">
+                                    <label class="form-check-label-modern" for="audience_skmr">SKMR</label>
+                                </div>
+                                <div class="form-check-modern">
+                                    <input class="form-check-input-modern" type="checkbox" id="audience_dplk" value="DPLK">
+                                    <label class="form-check-label-modern" for="audience_dplk">DPLK</label>
+                                </div>
+                                <div class="form-check-modern">
+                                    <input class="form-check-input-modern" type="checkbox" id="audience_uppk" value="UPPK">
+                                    <label class="form-check-label-modern" for="audience_uppk">UPPK</label>
+                                </div>
+                                <div class="form-check-modern">
+                                    <input class="form-check-input-modern" type="checkbox" id="audience_lainnya" value="Lainnya">
+                                    <label class="form-check-label-modern" for="audience_lainnya">Others</label>
                                 </div>
                             </div>
-                            <div class="mt-3">
-                                <button type="button" class="btn btn-sm btn-gradient me-2" id="selectAllBtn">
-                                    <i class="fas fa-check-double me-1"></i>Pilih Semua
+                            <div class="mt-3 d-flex gap-2">
+                                <button type="button" class="btn-modern btn-primary-modern" id="selectAllBtn">
+                                    <i class="fas fa-check-double"></i>Select All
                                 </button>
-                                <button type="button" class="btn btn-sm btn-secondary-gradient" id="clearAllBtn">
-                                    <i class="fas fa-times me-1"></i>Bersihkan
+                                <button type="button" class="btn-modern btn-secondary-modern" id="clearAllBtn">
+                                    <i class="fas fa-times"></i>Clear All
                                 </button>
                             </div>
                         </div>
 
                         <!-- Custom Audience -->
-                        <div class="mb-4" id="customAudienceDiv" style="display: none;">
-                            <label class="form-label fw-bold text-gradient">
-                                <i class="fas fa-edit me-2"></i>
-                                Audience Lainnya
+                        <div class="form-section" id="customAudienceDiv" style="display: none;">
+                            <label class="form-label-modern">
+                                <i class="fas fa-edit"></i>
+                                Other Audience
                             </label>
-                            <input type="text" class="form-control" id="customAudience" placeholder="Masukkan audience lainnya">
+                            <input type="text" class="form-control-modern" id="customAudience" placeholder="Enter other audience">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary-gradient" data-bs-dismiss="modal" id="cancelBtn">
-                        <i class="fas fa-times me-2"></i>Batal
-                    </button>
-                    <button type="submit" form="meetingForm" class="btn btn-gradient" id="submitBtn">
-                        <i class="fas fa-save me-2"></i>Simpan Rapat
-                    </button>
+                    <div class="btn-group-modern">
+                        <button type="button" class="btn-modern btn-secondary-modern" data-bs-dismiss="modal" id="cancelBtn">
+                            <i class="fas fa-times"></i>Cancel
+                        </button>
+                        <button type="submit" form="meetingForm" class="btn-modern btn-primary-modern" id="submitBtn">
+                            <i class="fas fa-save"></i>Save Meeting
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1019,7 +1149,7 @@
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
         import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, orderBy, query, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 
-        // Firebase configuration
+        // Firebase configuration - using the same config as original
         const firebaseConfig = {
             apiKey: "AIzaSyAmTSUEiLX0K1A8mPnN0citZmDAuzLkL_A",
             authDomain: "rapat-simo-15b35.firebaseapp.com",
@@ -1039,8 +1169,6 @@
         let unsubscribe = null;
         let isFirebaseConnected = false;
         let isEditing = false;
-
-        // Initialize Bootstrap modal
         let meetingModal;
 
         // Test Firebase connection
@@ -1075,7 +1203,7 @@
                 const stored = localStorage.getItem('simo_meetings');
                 if (stored) {
                     meetings = JSON.parse(stored);
-                    updateMeetingCards();
+                    updateMeetingTable();
                     generateCalendar();
                 }
             } catch (error) {
@@ -1107,7 +1235,7 @@
                     meetings.push(newMeeting);
                     meetings.sort((a, b) => new Date(a.tanggalMulai) - new Date(b.tanggalMulai));
                     saveToLocalStorage();
-                    updateMeetingCards();
+                    updateMeetingTable();
                     generateCalendar();
                     console.log("Meeting saved to localStorage");
                     return newMeeting.id;
@@ -1147,7 +1275,7 @@
                         meetings[index] = { ...meetings[index], ...meetingData, updatedAt: new Date() };
                         meetings.sort((a, b) => new Date(a.tanggalMulai) - new Date(b.tanggalMulai));
                         saveToLocalStorage();
-                        updateMeetingCards();
+                        updateMeetingTable();
                         generateCalendar();
                         console.log("Meeting updated in localStorage");
                     }
@@ -1159,7 +1287,7 @@
                     meetings[index] = { ...meetings[index], ...meetingData, updatedAt: new Date() };
                     meetings.sort((a, b) => new Date(a.tanggalMulai) - new Date(b.tanggalMulai));
                     saveToLocalStorage();
-                    updateMeetingCards();
+                    updateMeetingTable();
                     generateCalendar();
                 }
             } finally {
@@ -1177,7 +1305,7 @@
                 } else {
                     meetings = meetings.filter(meeting => meeting.id !== meetingId);
                     saveToLocalStorage();
-                    updateMeetingCards();
+                    updateMeetingTable();
                     generateCalendar();
                     console.log("Meeting deleted from localStorage");
                 }
@@ -1208,7 +1336,7 @@
                         ...doc.data()
                     });
                 });
-                updateMeetingCards();
+                updateMeetingTable();
                 generateCalendar();
                 updateConnectionStatus(true);
                 saveToLocalStorage();
@@ -1221,28 +1349,35 @@
 
         // UI Helper functions
         function showLoading(show) {
-            const spinner = document.getElementById('loadingSpinner');
-            spinner.style.display = show ? 'block' : 'none';
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.style.display = show ? 'flex' : 'none';
         }
 
         function updateConnectionStatus(isOnline) {
             const statusElement = document.getElementById('connectionStatus');
+            const icon = statusElement.querySelector('i');
+            const text = statusElement.querySelector('span');
+            
             if (isOnline && isFirebaseConnected) {
-                statusElement.className = 'connection-status status-online';
-                statusElement.innerHTML = '<i class="fas fa-cloud me-1"></i>Online';
+                statusElement.className = 'status-indicator status-online';
+                icon.className = 'fas fa-cloud';
+                text.textContent = 'Online';
             } else {
-                statusElement.className = 'connection-status status-offline';
-                statusElement.innerHTML = '<i class="fas fa-save me-1"></i>Offline';
+                statusElement.className = 'status-indicator status-offline';
+                icon.className = 'fas fa-save';
+                text.textContent = 'Offline';
             }
         }
 
         function showNotification(message, type = 'success') {
             const notification = document.createElement('div');
-            notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
-            notification.style.cssText = 'top: 80px; right: 20px; z-index: 1050; min-width: 300px; backdrop-filter: blur(10px);';
+            notification.className = `notification ${type}`;
             notification.innerHTML = `
-                ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                    <div style="flex: 1;">${message}</div>
+                    <button onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; font-size: 1.25rem; opacity: 0.5; cursor: pointer;">&times;</button>
+                </div>
             `;
             document.body.appendChild(notification);
             
@@ -1258,19 +1393,19 @@
             const timeSelects = ['jamMulai', 'jamSelesai'];
             timeSelects.forEach(selectId => {
                 const timeSelect = document.getElementById(selectId);
-                timeSelect.innerHTML = '<option value="">Pilih Jam</option>';
+                timeSelect.innerHTML = '<option value="">Select Time</option>';
                 
                 // Add Tentative option
                 const tentativeOption = document.createElement('option');
                 tentativeOption.value = 'tentative';
-                tentativeOption.textContent = '🕐 Tentative (Belum Pasti)';
-                tentativeOption.style.cssText = 'background-color: #fff3cd; color: #856404; font-weight: bold;';
+                tentativeOption.textContent = 'Tentative (TBD)';
+                tentativeOption.style.cssText = 'background-color: #fef3c7; color: #92400e; font-weight: bold;';
                 timeSelect.appendChild(tentativeOption);
                 
                 // Add separator
                 const separatorOption = document.createElement('option');
                 separatorOption.disabled = true;
-                separatorOption.textContent = '─────────────────────';
+                separatorOption.textContent = '──────────────';
                 timeSelect.appendChild(separatorOption);
                 
                 // Add regular time options
@@ -1294,9 +1429,9 @@
                 const diffDays = Math.floor((endD - startD) / (1000 * 60 * 60 * 24));
                 
                 if (diffDays > 0) {
-                    return `${diffDays + 1}h (Tentative)`;
+                    return `${diffDays + 1}d (TBD)`;
                 } else {
-                    return `Tentative`;
+                    return `TBD`;
                 }
             }
             
@@ -1308,9 +1443,9 @@
             const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
             
             if (diffDays > 0) {
-                return `${diffDays}h ${diffHours}j`;
+                return `${diffDays}d ${diffHours}h`;
             } else if (diffHours > 0) {
-                return `${diffHours}j ${diffMinutes}m`;
+                return `${diffHours}h ${diffMinutes}m`;
             } else {
                 return `${diffMinutes}m`;
             }
@@ -1323,7 +1458,7 @@
             const month = now.getMonth();
             
             document.getElementById('currentMonth').textContent = 
-                now.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+                now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
             const firstDay = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -1332,7 +1467,7 @@
             const calendar = document.getElementById('calendar');
             
             // Generate headers
-            const daysOfWeek = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+            const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
             calendarHeader.innerHTML = '';
             daysOfWeek.forEach(day => {
                 const dayHeader = document.createElement('div');
@@ -1392,10 +1527,12 @@
             if (meetings.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="6" class="text-center py-5 text-muted">
-                            <i class="fas fa-calendar-times fa-3x mb-3 opacity-50"></i><br>
-                            <strong>Belum ada rapat yang dijadwalkan</strong><br>
-                            <small>Klik tombol + untuk menambah rapat baru</small>
+                        <td colspan="6" class="empty-state">
+                            <div class="empty-state-icon">
+                                <i class="fas fa-calendar-plus"></i>
+                            </div>
+                            <div class="empty-state-title">No meetings scheduled</div>
+                            <div>Click the + button to add your first meeting</div>
                         </td>
                     </tr>
                 `;
@@ -1403,16 +1540,15 @@
             }
 
             tbody.innerHTML = '';
-            meetings.forEach((meeting, index) => {
+            meetings.forEach((meeting) => {
                 const row = document.createElement('tr');
-                row.style.animationDelay = `${index * 0.1}s`;
                 
-                const formattedStartDate = new Date(meeting.tanggalMulai).toLocaleDateString('id-ID', {
+                const formattedStartDate = new Date(meeting.tanggalMulai).toLocaleDateString('en-US', {
                     day: '2-digit',
                     month: 'short'
                 });
                 
-                const formattedEndDate = new Date(meeting.tanggalSelesai).toLocaleDateString('id-ID', {
+                const formattedEndDate = new Date(meeting.tanggalSelesai).toLocaleDateString('en-US', {
                     day: '2-digit',
                     month: 'short'
                 });
@@ -1422,50 +1558,50 @@
                 const timeDisplay = `${meeting.jamMulai} - ${meeting.jamSelesai}`;
                 const duration = calculateDuration(meeting.tanggalMulai, meeting.tanggalSelesai, meeting.jamMulai, meeting.jamSelesai);
 
-                const creatorBadgeClass = meeting.pembuat === 'External' || meeting.isExternal ? 'badge-external' : 'badge-custom';
+                const creatorBadgeClass = meeting.pembuat === 'External' || meeting.isExternal ? 'creator-badge external' : 'creator-badge';
                 const creatorText = meeting.isExternal ? meeting.externalCreator : meeting.pembuat;
 
                 row.innerHTML = `
                     <td>
-                        <div class="meeting-date-info">
-                            <div class="date-main">${dateDisplay}</div>
-                            <div class="date-time">⏰ ${timeDisplay}</div>
-                            <div class="date-duration">⏱️ ${duration}</div>
+                        <div class="meeting-date-card">
+                            <div class="date-primary">${dateDisplay}</div>
+                            <div class="date-time">${timeDisplay}</div>
+                            <div class="date-duration">${duration}</div>
                         </div>
                     </td>
                     <td>
-                        <div class="fw-bold text-truncate" title="${meeting.keterangan}">
+                        <div class="meeting-title" title="${meeting.keterangan}">
                             ${meeting.keterangan}
                         </div>
                     </td>
                     <td>
-                        <div class="text-truncate" title="${meeting.tempat || 'Tidak ditentukan'}">
-                            <i class="fas fa-map-marker-alt me-1"></i>
-                            ${meeting.tempat || 'Tidak ditentukan'}
+                        <div class="location-info" title="${meeting.tempat || 'Not specified'}">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${meeting.tempat || 'Not specified'}</span>
                         </div>
                     </td>
                     <td>
                         <span class="${creatorBadgeClass}" title="${creatorText}">
-                            ${creatorText.length > 8 ? creatorText.substring(0, 8) + '...' : creatorText}
+                            ${creatorText}
                         </span>
                     </td>
                     <td>
-                        <div>
+                        <div class="audience-tags">
                             ${Array.isArray(meeting.audience) ? 
                                 meeting.audience.slice(0, 2).map(aud => 
-                                    `<span class="badge-audience" title="${aud}">${aud.length > 8 ? aud.substring(0, 8) + '..' : aud}</span>`
+                                    `<span class="audience-tag" title="${aud}">${aud}</span>`
                                 ).join('') + 
-                                (meeting.audience.length > 2 ? `<span class="badge-audience" title="Dan ${meeting.audience.length - 2} lainnya">+${meeting.audience.length - 2}</span>` : '') :
-                                `<span class="badge-audience" title="${meeting.audience}">${meeting.audience.length > 8 ? meeting.audience.substring(0, 8) + '..' : meeting.audience}</span>`
+                                (meeting.audience.length > 2 ? `<span class="audience-tag more" title="${meeting.audience.slice(2).join(', ')}">+${meeting.audience.length - 2}</span>` : '') :
+                                `<span class="audience-tag" title="${meeting.audience}">${meeting.audience}</span>`
                             }
                         </div>
                     </td>
                     <td>
-                        <div class="btn-group" role="group">
-                            <button class="btn btn-sm btn-warning-gradient" onclick="editMeeting('${meeting.id}')" title="Edit Rapat">
+                        <div class="action-buttons">
+                            <button class="btn-action btn-edit" onclick="editMeeting('${meeting.id}')" title="Edit Meeting">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="btn btn-sm btn-danger-gradient" onclick="deleteMeeting('${meeting.id}')" title="Hapus Rapat">
+                            <button class="btn-action btn-delete" onclick="deleteMeeting('${meeting.id}')" title="Delete Meeting">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
@@ -1488,8 +1624,8 @@
         function resetForm() {
             isEditing = false;
             document.getElementById('editingId').value = '';
-            document.getElementById('formTitle').textContent = 'Tambah Rapat Baru';
-            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save me-2"></i>Simpan Rapat';
+            document.getElementById('formTitle').textContent = 'Add New Meeting';
+            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save"></i>Save Meeting';
             document.getElementById('meetingForm').reset();
             document.getElementById('customAudienceDiv').style.display = 'none';
             document.getElementById('externalCreatorDiv').style.display = 'none';
@@ -1506,8 +1642,8 @@
 
             isEditing = true;
             document.getElementById('editingId').value = meetingId;
-            document.getElementById('formTitle').textContent = 'Edit Rapat';
-            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save me-2"></i>Update Rapat';
+            document.getElementById('formTitle').textContent = 'Edit Meeting';
+            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save"></i>Update Meeting';
 
             // Fill form with meeting data
             if (meeting.isExternal) {
@@ -1550,12 +1686,12 @@
 
         // Delete meeting function
         window.deleteMeeting = async function(meetingId) {
-            if (confirm('Apakah Anda yakin ingin menghapus rapat ini?')) {
+            if (confirm('Are you sure you want to delete this meeting?')) {
                 try {
                     await deleteMeetingFromFirebase(meetingId);
-                    showNotification('Rapat berhasil dihapus!', 'success');
+                    showNotification('Meeting deleted successfully!', 'success');
                 } catch (error) {
-                    showNotification('Gagal menghapus rapat. Silakan coba lagi.', 'danger');
+                    showNotification('Failed to delete meeting. Please try again.', 'error');
                 }
             }
         }
@@ -1625,7 +1761,7 @@
             });
 
             if (selectedAudiences.length === 0) {
-                showNotification('Silakan pilih minimal satu audience!', 'warning');
+                showNotification('Please select at least one audience!', 'warning');
                 return;
             }
 
@@ -1635,7 +1771,7 @@
             if (isExternal) {
                 const externalCreator = document.getElementById('externalCreator').value.trim();
                 if (!externalCreator) {
-                    showNotification('Silakan isi detail pembuat external!', 'warning');
+                    showNotification('Please fill in external creator details!', 'warning');
                     document.getElementById('externalCreator').focus();
                     return;
                 }
@@ -1658,10 +1794,10 @@
                 if (isEditing) {
                     const editingId = document.getElementById('editingId').value;
                     await updateMeetingInFirebase(editingId, meetingData);
-                    showNotification('Rapat berhasil diupdate!', 'success');
+                    showNotification('Meeting updated successfully!', 'success');
                 } else {
                     await saveMeetingToFirebase(meetingData);
-                    showNotification('Rapat berhasil disimpan!', 'success');
+                    showNotification('Meeting saved successfully!', 'success');
                 }
                 
                 resetForm();
@@ -1669,7 +1805,7 @@
                 
             } catch (error) {
                 console.error('Error saving meeting:', error);
-                showNotification('Data disimpan secara lokal karena masalah koneksi.', 'warning');
+                showNotification('Data saved locally due to connection issues.', 'warning');
             }
         });
 
@@ -1680,7 +1816,7 @@
             
             generateTimeOptions();
             generateCalendar();
-            updateMeetingCards();
+            updateMeetingTable();
             
             updateConnectionStatus(false);
             
@@ -1688,10 +1824,10 @@
             
             if (connected) {
                 listenToMeetings();
-                showNotification('Terhubung ke Firebase!', 'success');
+                showNotification('Connected to Firebase!', 'success');
             } else {
                 loadFromLocalStorage();
-                showNotification('Mode offline - Data disimpan lokal', 'warning');
+                showNotification('Offline mode - Data saved locally', 'warning');
             }
             
             if (!connected) {
@@ -1700,7 +1836,7 @@
                         const reconnected = await testFirebaseConnection();
                         if (reconnected) {
                             listenToMeetings();
-                            showNotification('Kembali online! Data disinkronkan', 'success');
+                            showNotification('Back online! Data synchronized', 'success');
                         }
                     }
                 }, 30000);
