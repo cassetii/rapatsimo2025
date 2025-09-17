@@ -8,22 +8,23 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --secondary: #8b5cf6;
-            --accent: #06b6d4;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
+            --primary: #257180;
+            --primary-dark: #1e5a66;
+            --secondary: #CB6040;
+            --accent: #FD8B51;
+            --success: #257180;
+            --warning: #FD8B51;
+            --danger: #CB6040;
             --dark: #1e293b;
-            --light: #f8fafc;
+            --light: #F2E5BF;
             --surface: #ffffff;
             --muted: #64748b;
             
             --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             --gradient-accent: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
             --gradient-success: linear-gradient(135deg, var(--success) 0%, var(--accent) 100%);
-            --gradient-surface: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            --gradient-surface: linear-gradient(135deg, #ffffff 0%, var(--light) 100%);
+            --gradient-secondary: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
             
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
             --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
@@ -46,7 +47,7 @@
 
         body {
             font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             min-height: 100vh;
             color: var(--dark);
             overflow-x: hidden;
@@ -60,8 +61,8 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+                radial-gradient(circle at 25% 25%, rgba(37, 113, 128, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(203, 96, 64, 0.1) 0%, transparent 50%);
             pointer-events: none;
             z-index: -1;
         }
@@ -258,7 +259,7 @@
             gap: 1rem;
             margin-top: 1.5rem;
             padding: 1rem;
-            background: rgba(248, 250, 252, 0.8);
+            background: rgba(242, 229, 191, 0.8);
             border-radius: var(--radius-md);
         }
 
@@ -411,19 +412,17 @@
             display: flex;
             flex-wrap: wrap;
             gap: 0.25rem;
+            max-width: 200px;
         }
 
         .audience-tag {
-            background: var(--gradient-success);
+            background: var(--gradient-secondary);
             color: white;
             padding: 0.25rem 0.5rem;
             border-radius: var(--radius-sm);
             font-size: 0.7rem;
             font-weight: 500;
-        }
-
-        .audience-tag.more {
-            background: var(--muted);
+            white-space: nowrap;
         }
 
         /* Action Buttons */
@@ -456,7 +455,7 @@
         }
 
         .btn-delete {
-            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
+            background: linear-gradient(135deg, var(--danger) 0%, #a53e2b 100%);
             color: white;
         }
 
@@ -534,17 +533,17 @@
         }
 
         .form-control-modern, .form-select-modern {
-            border: 2px solid rgba(99, 102, 241, 0.1);
+            border: 2px solid rgba(37, 113, 128, 0.1);
             border-radius: var(--radius-md);
             padding: 0.875rem 1rem;
             font-size: 0.875rem;
             transition: var(--transition);
-            background: rgba(248, 250, 252, 0.5);
+            background: rgba(242, 229, 191, 0.3);
         }
 
         .form-control-modern:focus, .form-select-modern:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            box-shadow: 0 0 0 3px rgba(37, 113, 128, 0.1);
             background: white;
             outline: none;
         }
@@ -560,15 +559,15 @@
         }
 
         .external-section {
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(99, 102, 241, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(253, 139, 81, 0.1) 0%, rgba(37, 113, 128, 0.05) 100%);
             border: 2px dashed var(--accent);
             border-radius: var(--radius-lg);
             padding: 1.5rem;
         }
 
         .date-range-section {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(99, 102, 241, 0.05) 100%);
-            border: 2px solid rgba(139, 92, 246, 0.2);
+            background: linear-gradient(135deg, rgba(203, 96, 64, 0.1) 0%, rgba(37, 113, 128, 0.05) 100%);
+            border: 2px solid rgba(203, 96, 64, 0.2);
             border-radius: var(--radius-lg);
             padding: 1.5rem;
         }
@@ -580,9 +579,9 @@
             max-height: 300px;
             overflow-y: auto;
             padding: 1rem;
-            background: rgba(248, 250, 252, 0.5);
+            background: rgba(242, 229, 191, 0.3);
             border-radius: var(--radius-md);
-            border: 1px solid rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(37, 113, 128, 0.1);
         }
 
         .form-check-modern {
@@ -596,7 +595,7 @@
         }
 
         .form-check-modern:hover {
-            background: rgba(99, 102, 241, 0.05);
+            background: rgba(37, 113, 128, 0.05);
         }
 
         .form-check-input-modern {
@@ -646,11 +645,11 @@
         .btn-secondary-modern {
             background: var(--light);
             color: var(--muted);
-            border: 2px solid rgba(99, 102, 241, 0.1);
+            border: 2px solid rgba(37, 113, 128, 0.1);
         }
 
         .btn-secondary-modern:hover {
-            background: rgba(99, 102, 241, 0.05);
+            background: rgba(37, 113, 128, 0.05);
             border-color: var(--primary);
         }
 
@@ -698,7 +697,7 @@
         .loading-spinner {
             width: 40px;
             height: 40px;
-            border: 4px solid rgba(99, 102, 241, 0.1);
+            border: 4px solid rgba(37, 113, 128, 0.1);
             border-left-color: var(--primary);
             border-radius: 50%;
             animation: spin 1s linear infinite;
@@ -768,6 +767,10 @@
             .audience-grid {
                 grid-template-columns: 1fr;
             }
+
+            .audience-tags {
+                max-width: none;
+            }
         }
 
         /* Scrollbar */
@@ -776,7 +779,7 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: rgba(248, 250, 252, 0.5);
+            background: rgba(242, 229, 191, 0.5);
             border-radius: 4px;
         }
 
@@ -856,11 +859,11 @@
                     <table class="table-modern">
                         <thead>
                             <tr>
-                                <th style="width: 20%;">Schedule</th>
-                                <th style="width: 30%;">Meeting</th>
-                                <th style="width: 18%;">Location</th>
+                                <th style="width: 18%;">Schedule</th>
+                                <th style="width: 25%;">Meeting</th>
+                                <th style="width: 15%;">Location</th>
                                 <th style="width: 12%;">Creator</th>
-                                <th style="width: 15%;">Audience</th>
+                                <th style="width: 25%;">Audience</th>
                                 <th style="width: 5%;">Actions</th>
                             </tr>
                         </thead>
@@ -1212,6 +1215,15 @@
             }
         }
 
+        // Sort meetings by date and time (closest first)
+        function sortMeetingsByDateTime() {
+            meetings.sort((a, b) => {
+                const dateTimeA = new Date(`${a.tanggalMulai}T${a.jamMulai === 'tentative' ? '00:00' : a.jamMulai}`);
+                const dateTimeB = new Date(`${b.tanggalMulai}T${b.jamMulai === 'tentative' ? '00:00' : b.jamMulai}`);
+                return dateTimeA - dateTimeB;
+            });
+        }
+
         // Firebase operations
         async function saveMeetingToFirebase(meetingData) {
             try {
@@ -1233,7 +1245,7 @@
                         timestamp: Date.now()
                     };
                     meetings.push(newMeeting);
-                    meetings.sort((a, b) => new Date(a.tanggalMulai) - new Date(b.tanggalMulai));
+                    sortMeetingsByDateTime();
                     saveToLocalStorage();
                     updateMeetingTable();
                     generateCalendar();
@@ -1249,7 +1261,7 @@
                     timestamp: Date.now()
                 };
                 meetings.push(newMeeting);
-                meetings.sort((a, b) => new Date(a.tanggalMulai) - new Date(b.tanggalMulai));
+                sortMeetingsByDateTime();
                 saveToLocalStorage();
                 updateMeetingTable();
                 generateCalendar();
@@ -1273,7 +1285,7 @@
                     const index = meetings.findIndex(meeting => meeting.id === meetingId);
                     if (index !== -1) {
                         meetings[index] = { ...meetings[index], ...meetingData, updatedAt: new Date() };
-                        meetings.sort((a, b) => new Date(a.tanggalMulai) - new Date(b.tanggalMulai));
+                        sortMeetingsByDateTime();
                         saveToLocalStorage();
                         updateMeetingTable();
                         generateCalendar();
@@ -1285,7 +1297,7 @@
                 const index = meetings.findIndex(meeting => meeting.id === meetingId);
                 if (index !== -1) {
                     meetings[index] = { ...meetings[index], ...meetingData, updatedAt: new Date() };
-                    meetings.sort((a, b) => new Date(a.tanggalMulai) - new Date(b.tanggalMulai));
+                    sortMeetingsByDateTime();
                     saveToLocalStorage();
                     updateMeetingTable();
                     generateCalendar();
@@ -1326,7 +1338,7 @@
                 return;
             }
 
-            const q = query(collection(db, "meetings"), orderBy("tanggalMulai", "asc"));
+            const q = query(collection(db, "meetings"));
             
             unsubscribe = onSnapshot(q, (querySnapshot) => {
                 meetings = [];
@@ -1336,6 +1348,7 @@
                         ...doc.data()
                     });
                 });
+                sortMeetingsByDateTime();
                 updateMeetingTable();
                 generateCalendar();
                 updateConnectionStatus(true);
@@ -1561,6 +1574,12 @@
                 const creatorBadgeClass = meeting.pembuat === 'External' || meeting.isExternal ? 'creator-badge external' : 'creator-badge';
                 const creatorText = meeting.isExternal ? meeting.externalCreator : meeting.pembuat;
 
+                // Show all audiences without truncation
+                const audiences = Array.isArray(meeting.audience) ? meeting.audience : [meeting.audience];
+                const audienceTags = audiences.map(aud => 
+                    `<span class="audience-tag" title="${aud}">${aud}</span>`
+                ).join('');
+
                 row.innerHTML = `
                     <td>
                         <div class="meeting-date-card">
@@ -1587,13 +1606,7 @@
                     </td>
                     <td>
                         <div class="audience-tags">
-                            ${Array.isArray(meeting.audience) ? 
-                                meeting.audience.slice(0, 2).map(aud => 
-                                    `<span class="audience-tag" title="${aud}">${aud}</span>`
-                                ).join('') + 
-                                (meeting.audience.length > 2 ? `<span class="audience-tag more" title="${meeting.audience.slice(2).join(', ')}">+${meeting.audience.length - 2}</span>` : '') :
-                                `<span class="audience-tag" title="${meeting.audience}">${meeting.audience}</span>`
-                            }
+                            ${audienceTags}
                         </div>
                     </td>
                     <td>
