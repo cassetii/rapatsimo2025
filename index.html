@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIMO Meeting Hub - Complete</title>
+    <title>SIMO Meeting Hub - Fixed</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -1274,7 +1274,6 @@
             </div>
 
             <div class="modal-body-zoom">
-                <!-- Time Range -->
                 <div class="detail-section">
                     <div class="detail-label">
                         <i class="fas fa-clock"></i>
@@ -1292,7 +1291,6 @@
                     </div>
                 </div>
 
-                <!-- Location -->
                 <div class="detail-section">
                     <div class="detail-label">
                         <i class="fas fa-map-marker-alt"></i>
@@ -1303,7 +1301,6 @@
                     </div>
                 </div>
 
-                <!-- Organizer -->
                 <div class="detail-section">
                     <div class="detail-label">
                         <i class="fas fa-user-tie"></i>
@@ -1314,7 +1311,6 @@
                     </div>
                 </div>
 
-                <!-- Description -->
                 <div class="detail-section">
                     <div class="detail-label">
                         <i class="fas fa-align-left"></i>
@@ -1325,7 +1321,6 @@
                     </div>
                 </div>
 
-                <!-- Participants -->
                 <div class="detail-section">
                     <div class="detail-label">
                         <i class="fas fa-users"></i>
@@ -1368,11 +1363,12 @@
         </button>
     </div>
 
-    <!-- Firebase Configuration -->
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-        import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, orderBy, query, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+    <!-- Firebase SDK v9 - Compat Version -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
+    <script>
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAmTSUEiLX0K1A8mPnN0citZmDAuzLkL_A",
             authDomain: "rapat-simo-15b35.firebaseapp.com",
@@ -1388,16 +1384,17 @@
         let currentMeetingId = null;
 
         // Initialize Firebase
+        console.log('Initializing Firebase...');
         try {
-            app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
+            app = firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+            console.log('Firebase initialized successfully!');
             updateConnectionStatus(true);
             listenToMeetings();
-            showToast('Success', 'Connected to Firebase!', 'success');
         } catch (error) {
             console.error('Firebase initialization error:', error);
             updateConnectionStatus(false);
-            showToast('Error', 'Failed to connect to Firebase', 'error');
+            showToast('Error', 'Failed to connect to Firebase: ' + error.message, 'error');
         }
 
         // Connection Status
@@ -1418,26 +1415,34 @@
 
         // Listen to Firebase changes
         function listenToMeetings() {
-            const meetingsRef = collection(db, 'meetings');
-            const q = query(meetingsRef, orderBy('tanggalMulai', 'asc'));
-
-            onSnapshot(q, (snapshot) => {
-                allMeetings = [];
-                snapshot.forEach((doc) => {
-                    allMeetings.push({
-                        id: doc.id,
-                        ...doc.data()
+            console.log('Setting up Firestore listener...');
+            
+            db.collection('meetings')
+                .orderBy('tanggalMulai', 'asc')
+                .onSnapshot((snapshot) => {
+                    console.log('Received snapshot with', snapshot.size, 'documents');
+                    allMeetings = [];
+                    
+                    snapshot.forEach((doc) => {
+                        allMeetings.push({
+                            id: doc.id,
+                            ...doc.data()
+                        });
                     });
-                });
 
-                console.log('Loaded meetings:', allMeetings.length);
-                renderUpcomingMeetings();
-                renderMeetingsTable();
-                renderCalendar();
-            }, (error) => {
-                console.error('Error listening to meetings:', error);
-                showToast('Error', 'Failed to load meetings', 'error');
-            });
+                    console.log('Loaded meetings:', allMeetings);
+                    renderUpcomingMeetings();
+                    renderMeetingsTable();
+                    renderCalendar();
+                    
+                    if (allMeetings.length > 0) {
+                        showToast('Success', `Loaded ${allMeetings.length} meeting(s)`, 'success');
+                    }
+                }, (error) => {
+                    console.error('Error listening to meetings:', error);
+                    showToast('Error', 'Failed to load meetings: ' + error.message, 'error');
+                    updateConnectionStatus(false);
+                });
         }
 
         // ============================================
@@ -1683,18 +1688,19 @@
             }
         };
 
-        window.deleteMeetingFromDetail = async function() {
+        window.deleteMeetingFromDetail = function() {
             if (!currentMeetingId) return;
             
             if (confirm('Are you sure you want to delete this meeting?')) {
-                try {
-                    await deleteDoc(doc(db, 'meetings', currentMeetingId));
-                    closeMeetingDetail();
-                    showToast('Success', 'Meeting deleted successfully', 'success');
-                } catch (error) {
-                    console.error('Error deleting meeting:', error);
-                    showToast('Error', 'Failed to delete meeting', 'error');
-                }
+                db.collection('meetings').doc(currentMeetingId).delete()
+                    .then(() => {
+                        closeMeetingDetail();
+                        showToast('Success', 'Meeting deleted successfully', 'success');
+                    })
+                    .catch((error) => {
+                        console.error('Error deleting meeting:', error);
+                        showToast('Error', 'Failed to delete meeting', 'error');
+                    });
             }
         };
 
@@ -1803,15 +1809,16 @@ END:VCALENDAR`;
             }).join('');
         }
 
-        window.deleteMeetingFromTable = async function(meetingId) {
+        window.deleteMeetingFromTable = function(meetingId) {
             if (confirm('Are you sure you want to delete this meeting?')) {
-                try {
-                    await deleteDoc(doc(db, 'meetings', meetingId));
-                    showToast('Success', 'Meeting deleted successfully', 'success');
-                } catch (error) {
-                    console.error('Error deleting meeting:', error);
-                    showToast('Error', 'Failed to delete meeting', 'error');
-                }
+                db.collection('meetings').doc(meetingId).delete()
+                    .then(() => {
+                        showToast('Success', 'Meeting deleted successfully', 'success');
+                    })
+                    .catch((error) => {
+                        console.error('Error deleting meeting:', error);
+                        showToast('Error', 'Failed to delete meeting', 'error');
+                    });
             }
         };
 
@@ -1953,9 +1960,6 @@ END:VCALENDAR`;
         window.closeToast = function() {
             document.getElementById('notificationToast').classList.remove('show');
         };
-
-        window.updateConnectionStatus = updateConnectionStatus;
-        window.allMeetings = allMeetings;
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
