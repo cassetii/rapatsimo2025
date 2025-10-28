@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIMO Meeting Hub</title>
+    <title>SIMO Meeting Hub - Complete</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -956,82 +956,7 @@
             transform: rotate(90deg);
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .meeting-card {
-                min-width: 280px;
-                max-width: 280px;
-            }
-
-            .carousel-nav {
-                width: 40px;
-                height: 40px;
-            }
-
-            .carousel-nav.prev { left: -10px; }
-            .carousel-nav.next { right: -10px; }
-
-            .section-title {
-                font-size: 1.5rem;
-            }
-
-            .modal-content-zoom {
-                max-width: 100%;
-                margin: 0.5rem;
-                max-height: 95vh;
-            }
-
-            .modal-header-zoom {
-                padding: 1.5rem;
-            }
-
-            .modal-title-zoom {
-                font-size: 1.5rem;
-            }
-
-            .modal-body-zoom {
-                padding: 1.5rem;
-            }
-
-            .modal-actions {
-                flex-direction: column;
-                padding: 1rem;
-            }
-
-            .table-controls {
-                flex-direction: column;
-            }
-
-            .search-box {
-                width: 100%;
-            }
-
-            .meetings-table {
-                font-size: 0.875rem;
-            }
-
-            .meetings-table th,
-            .meetings-table td {
-                padding: 0.75rem 0.5rem;
-            }
-        }
-
-        /* Loading Spinner */
-        .loading-spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Calendar styles (keeping from original) */
+        /* Calendar styles */
         .calendar-section {
             background: white;
             padding: 2rem;
@@ -1118,6 +1043,81 @@
         .calendar-day.disabled {
             opacity: 0.3;
             pointer-events: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .meeting-card {
+                min-width: 280px;
+                max-width: 280px;
+            }
+
+            .carousel-nav {
+                width: 40px;
+                height: 40px;
+            }
+
+            .carousel-nav.prev { left: -10px; }
+            .carousel-nav.next { right: -10px; }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .modal-content-zoom {
+                max-width: 100%;
+                margin: 0.5rem;
+                max-height: 95vh;
+            }
+
+            .modal-header-zoom {
+                padding: 1.5rem;
+            }
+
+            .modal-title-zoom {
+                font-size: 1.5rem;
+            }
+
+            .modal-body-zoom {
+                padding: 1.5rem;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .table-controls {
+                flex-direction: column;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .meetings-table {
+                font-size: 0.875rem;
+            }
+
+            .meetings-table th,
+            .meetings-table td {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -1212,7 +1212,7 @@
                     <i class="fas fa-list"></i>
                     All Meetings
                 </h2>
-                <button class="btn-add-meeting" id="addMeetingBtn">
+                <button class="btn-add-meeting" onclick="alert('Form Add Meeting - Coming Soon')">
                     <i class="fas fa-plus"></i>
                     Add Meeting
                 </button>
@@ -1246,7 +1246,12 @@
                         </tr>
                     </thead>
                     <tbody id="meetingsTableBody">
-                        <!-- Table rows will be inserted here -->
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 3rem;">
+                                <div class="loading-spinner" style="display: inline-block; border-color: var(--primary); border-top-color: transparent; width: 40px; height: 40px;"></div>
+                                <p style="margin-top: 1rem; color: var(--muted);">Loading meetings...</p>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -1365,35 +1370,34 @@
 
     <!-- Firebase Configuration -->
     <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getDatabase, ref, push, set, onValue, update, remove } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, orderBy, query, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 
         const firebaseConfig = {
-            apiKey: "AIzaSyCCSH7EkhgKDmPJrINzgCy8KY-9hUiC2to",
-            authDomain: "meetinghub-bb42a.firebaseapp.com",
-            databaseURL: "https://meetinghub-bb42a-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "meetinghub-bb42a",
-            storageBucket: "meetinghub-bb42a.firebasestorage.app",
-            messagingSenderId: "877149277598",
-            appId: "1:877149277598:web:30e32fe11d03c5f9c98c02"
+            apiKey: "AIzaSyAmTSUEiLX0K1A8mPnN0citZmDAuzLkL_A",
+            authDomain: "rapat-simo-15b35.firebaseapp.com",
+            projectId: "rapat-simo-15b35",
+            storageBucket: "rapat-simo-15b35.firebasestorage.app",
+            messagingSenderId: "471527167515",
+            appId: "1:471527167515:web:7766a3f2ee1d6280e9cabe",
+            measurementId: "G-FCPTBCPHMB"
         };
 
-        let app, database, meetingsRef;
-        let isFirebaseConnected = false;
+        let app, db;
         let allMeetings = [];
         let currentMeetingId = null;
 
         // Initialize Firebase
         try {
             app = initializeApp(firebaseConfig);
-            database = getDatabase(app);
-            meetingsRef = ref(database, 'meetings');
-            isFirebaseConnected = true;
+            db = getFirestore(app);
             updateConnectionStatus(true);
             listenToMeetings();
+            showToast('Success', 'Connected to Firebase!', 'success');
         } catch (error) {
             console.error('Firebase initialization error:', error);
             updateConnectionStatus(false);
+            showToast('Error', 'Failed to connect to Firebase', 'error');
         }
 
         // Connection Status
@@ -1414,27 +1418,25 @@
 
         // Listen to Firebase changes
         function listenToMeetings() {
-            onValue(meetingsRef, (snapshot) => {
+            const meetingsRef = collection(db, 'meetings');
+            const q = query(meetingsRef, orderBy('tanggalMulai', 'asc'));
+
+            onSnapshot(q, (snapshot) => {
                 allMeetings = [];
-                if (snapshot.exists()) {
-                    snapshot.forEach((child) => {
-                        allMeetings.push({
-                            id: child.key,
-                            ...child.val()
-                        });
+                snapshot.forEach((doc) => {
+                    allMeetings.push({
+                        id: doc.id,
+                        ...doc.data()
                     });
-                }
-                
-                // Sort by date and time
-                allMeetings.sort((a, b) => {
-                    const dateA = new Date(a.tanggalMulai + ' ' + a.jamMulai);
-                    const dateB = new Date(b.tanggalMulai + ' ' + b.jamMulai);
-                    return dateA - dateB;
                 });
 
+                console.log('Loaded meetings:', allMeetings.length);
                 renderUpcomingMeetings();
                 renderMeetingsTable();
                 renderCalendar();
+            }, (error) => {
+                console.error('Error listening to meetings:', error);
+                showToast('Error', 'Failed to load meetings', 'error');
             });
         }
 
@@ -1442,7 +1444,7 @@
         // CAROUSEL FUNCTIONS
         // ============================================
         let currentSlide = 0;
-        const cardsPerView = 3; // Adjust based on screen size
+        const cardsPerView = 3;
 
         function renderUpcomingMeetings() {
             const now = new Date();
@@ -1461,18 +1463,17 @@
                 carouselTrack.innerHTML = '';
                 emptyState.style.display = 'block';
                 document.getElementById('carouselIndicators').innerHTML = '';
+                document.getElementById('carouselPrev').style.display = 'none';
+                document.getElementById('carouselNext').style.display = 'none';
                 return;
             }
 
             emptyState.style.display = 'none';
+            document.getElementById('carouselPrev').style.display = 'flex';
+            document.getElementById('carouselNext').style.display = 'flex';
 
-            // Render cards
             carouselTrack.innerHTML = upcoming.map(meeting => createMeetingCard(meeting)).join('');
-
-            // Update indicators
             updateCarouselIndicators(upcoming.length);
-            
-            // Reset to first slide
             currentSlide = 0;
             updateCarousel();
         }
@@ -1535,6 +1536,11 @@
             const indicators = document.getElementById('carouselIndicators');
             const totalSlides = Math.ceil(totalMeetings / cardsPerView);
             
+            if (totalSlides <= 1) {
+                indicators.innerHTML = '';
+                return;
+            }
+
             indicators.innerHTML = Array.from({length: totalSlides}, (_, i) => 
                 `<div class="carousel-dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></div>`
             ).join('');
@@ -1542,15 +1548,13 @@
 
         function updateCarousel() {
             const track = document.getElementById('carouselTrack');
-            const cardWidth = 350 + 24; // card width + gap
+            const cardWidth = 350 + 24;
             track.style.transform = `translateX(-${currentSlide * cardWidth * cardsPerView}px)`;
 
-            // Update indicators
             document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
                 dot.classList.toggle('active', i === currentSlide);
             });
 
-            // Update navigation buttons
             updateNavigationButtons();
         }
 
@@ -1570,7 +1574,6 @@
             nextBtn.classList.toggle('disabled', currentSlide >= totalSlides - 1);
         }
 
-        // Carousel Navigation
         document.getElementById('carouselPrev').addEventListener('click', () => {
             if (currentSlide > 0) {
                 currentSlide--;
@@ -1597,7 +1600,7 @@
             updateCarousel();
         };
 
-        // Touch/Swipe support for mobile
+        // Touch/Swipe support
         let touchStartX = 0;
         let touchEndX = 0;
 
@@ -1612,11 +1615,9 @@
 
         function handleSwipe() {
             if (touchEndX < touchStartX - 50) {
-                // Swipe left - next
                 document.getElementById('carouselNext').click();
             }
             if (touchEndX > touchStartX + 50) {
-                // Swipe right - prev
                 document.getElementById('carouselPrev').click();
             }
         }
@@ -1630,7 +1631,6 @@
 
             currentMeetingId = meetingId;
 
-            // Populate modal
             document.getElementById('detailTitle').textContent = meeting.keterangan;
             
             const meetingDate = new Date(meeting.tanggalMulai);
@@ -1654,7 +1654,6 @@
             
             document.getElementById('detailDescription').textContent = meeting.keterangan;
 
-            // Render participants
             const participants = Array.isArray(meeting.audience) ? meeting.audience : [meeting.audience];
             document.getElementById('participantCount').textContent = participants.length;
             
@@ -1669,7 +1668,6 @@
                 `;
             }).join('');
 
-            // Show modal
             document.getElementById('meetingDetailModal').classList.add('show');
         };
 
@@ -1681,25 +1679,22 @@
         window.editMeetingFromDetail = function() {
             if (currentMeetingId) {
                 closeMeetingDetail();
-                // Redirect to edit form or open edit modal
                 alert('Edit meeting: ' + currentMeetingId);
             }
         };
 
-        window.deleteMeetingFromDetail = function() {
+        window.deleteMeetingFromDetail = async function() {
             if (!currentMeetingId) return;
             
             if (confirm('Are you sure you want to delete this meeting?')) {
-                const meetingRef = ref(database, `meetings/${currentMeetingId}`);
-                remove(meetingRef)
-                    .then(() => {
-                        closeMeetingDetail();
-                        showToast('Success', 'Meeting deleted successfully', 'success');
-                    })
-                    .catch((error) => {
-                        console.error('Error deleting meeting:', error);
-                        showToast('Error', 'Failed to delete meeting', 'error');
-                    });
+                try {
+                    await deleteDoc(doc(db, 'meetings', currentMeetingId));
+                    closeMeetingDetail();
+                    showToast('Success', 'Meeting deleted successfully', 'success');
+                } catch (error) {
+                    console.error('Error deleting meeting:', error);
+                    showToast('Error', 'Failed to delete meeting', 'error');
+                }
             }
         };
 
@@ -1709,7 +1704,6 @@
             const meeting = allMeetings.find(m => m.id === currentMeetingId);
             if (!meeting) return;
 
-            // Create ICS file content
             const icsContent = `BEGIN:VCALENDAR
 VERSION:2.0
 BEGIN:VEVENT
@@ -1721,7 +1715,6 @@ DESCRIPTION:${meeting.keterangan}
 END:VEVENT
 END:VCALENDAR`;
 
-            // Download ICS file
             const blob = new Blob([icsContent], { type: 'text/calendar' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -1735,7 +1728,6 @@ END:VCALENDAR`;
             showToast('Success', 'Calendar file downloaded', 'success');
         };
 
-        // Close modal when clicking outside
         document.getElementById('meetingDetailModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeMeetingDetail();
@@ -1811,17 +1803,15 @@ END:VCALENDAR`;
             }).join('');
         }
 
-        window.deleteMeetingFromTable = function(meetingId) {
+        window.deleteMeetingFromTable = async function(meetingId) {
             if (confirm('Are you sure you want to delete this meeting?')) {
-                const meetingRef = ref(database, `meetings/${meetingId}`);
-                remove(meetingRef)
-                    .then(() => {
-                        showToast('Success', 'Meeting deleted successfully', 'success');
-                    })
-                    .catch((error) => {
-                        console.error('Error deleting meeting:', error);
-                        showToast('Error', 'Failed to delete meeting', 'error');
-                    });
+                try {
+                    await deleteDoc(doc(db, 'meetings', meetingId));
+                    showToast('Success', 'Meeting deleted successfully', 'success');
+                } catch (error) {
+                    console.error('Error deleting meeting:', error);
+                    showToast('Error', 'Failed to delete meeting', 'error');
+                }
             }
         };
 
@@ -1891,12 +1881,10 @@ END:VCALENDAR`;
             const firstDay = new Date(currentYear, currentMonth, 1).getDay();
             const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-            // Empty cells for days before month starts
             for (let i = 0; i < firstDay; i++) {
                 html += '<div class="calendar-day disabled"></div>';
             }
 
-            // Days of the month
             for (let day = 1; day <= daysInMonth; day++) {
                 const date = new Date(currentYear, currentMonth, day);
                 const dateString = date.toISOString().split('T')[0];
@@ -1941,7 +1929,6 @@ END:VCALENDAR`;
             const toastTitle = document.getElementById('toastTitle');
             const toastMessage = document.getElementById('toastMessage');
 
-            // Set icon and class
             icon.className = `toast-icon toast-${type}`;
             
             const icons = {
@@ -1958,7 +1945,6 @@ END:VCALENDAR`;
 
             toast.classList.add('show');
 
-            // Auto hide after 5 seconds
             setTimeout(() => {
                 closeToast();
             }, 5000);
@@ -1968,15 +1954,7 @@ END:VCALENDAR`;
             document.getElementById('notificationToast').classList.remove('show');
         };
 
-        // Add Meeting Button
-        document.getElementById('addMeetingBtn').addEventListener('click', function() {
-            alert('Add Meeting Form - To be implemented');
-            // This would open your existing meeting form modal
-        });
-
-        // Make functions available globally
         window.updateConnectionStatus = updateConnectionStatus;
-        window.listenToMeetings = listenToMeetings;
         window.allMeetings = allMeetings;
     </script>
 
