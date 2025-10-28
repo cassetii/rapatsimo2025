@@ -1333,7 +1333,7 @@
                     <i class="fas fa-list"></i>
                     All Meetings
                 </h2>
-                <button class="btn-add-meeting" onclick="alert('Form Add Meeting - Coming Soon')">
+                <button class="btn-add-meeting" id="addMeetingBtn">
                     <i class="fas fa-plus"></i>
                     Add Meeting
                 </button>
@@ -1482,6 +1482,290 @@
         <button class="toast-close" onclick="closeToast()">
             <i class="fas fa-times"></i>
         </button>
+    </div>
+
+    <!-- Add/Edit Meeting Form Modal -->
+    <div class="modal fade" id="meetingFormModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header" style="background: var(--gradient-primary); color: white; border: none;">
+                    <h5 class="modal-title" id="formModalTitle">
+                        <i class="fas fa-plus-circle"></i>
+                        Add New Meeting
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" style="max-height: 70vh; overflow-y: auto; padding: 2rem;">
+                    <form id="meetingForm">
+                        <input type="hidden" id="editingId">
+                        
+                        <!-- Basic Info -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3" style="color: var(--primary);">
+                                <i class="fas fa-info-circle"></i> Basic Information
+                            </h6>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">
+                                        <i class="fas fa-user"></i> Meeting Creator
+                                    </label>
+                                    <select class="form-select" id="pembuatRapat" required>
+                                        <option value="">Select Department/Division</option>
+                                        <option value="DIVISI SIMO">DIVISI SIMO</option>
+                                        <option value="Dept.Perencanaan Strategis & Kinerja Organisasi">Dept.Perencanaan Strategis & Kinerja Organisasi</option>
+                                        <option value="Dept.Pembinaan Cabang">Dept.Pembinaan Cabang</option>
+                                        <option value="Dept.Pengembangan Organisasi">Dept.Pengembangan Organisasi</option>
+                                        <option value="Dept.Change Management Office">Dept.Change Management Office</option>
+                                        <option value="Direksi Bank Sulselbar">Direksi Bank Sulselbar</option>
+                                        <option value="SKAI">SKAI</option>
+                                        <option value="DCS">DCS</option>
+                                        <option value="DHC">DHC</option>
+                                        <option value="DDL">DDL</option>
+                                        <option value="DKA">DKA</option>
+                                        <option value="DTI">DTI</option>
+                                        <option value="DUM">DUM</option>
+                                        <option value="DJS">DJS</option>
+                                        <option value="DTR">DTR</option>
+                                        <option value="DSY">DSY</option>
+                                        <option value="DIB">DIB</option>
+                                        <option value="DKK">DKK</option>
+                                        <option value="DRK">DRK</option>
+                                        <option value="SKK">SKK</option>
+                                        <option value="SKMR">SKMR</option>
+                                        <option value="DPLK">DPLK</option>
+                                        <option value="UPPK">UPPK</option>
+                                        <option value="External">External Organization</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">
+                                        <i class="fas fa-map-marker-alt"></i> Location
+                                    </label>
+                                    <input type="text" class="form-control" id="tempatRapat" placeholder="Enter meeting location" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- External Creator -->
+                        <div class="mb-4" id="externalCreatorDiv" style="display: none; background: #f0fdf4; padding: 1rem; border-radius: var(--radius-md); border: 2px dashed var(--accent);">
+                            <h6 class="fw-bold mb-3" style="color: var(--accent);">
+                                <i class="fas fa-globe"></i> External Organization Details
+                            </h6>
+                            <input type="text" class="form-control" id="externalCreator" placeholder="Company/Organization Name (e.g., PT. ABC Corporation)">
+                        </div>
+
+                        <!-- Meeting Details -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3" style="color: var(--primary);">
+                                <i class="fas fa-clipboard-list"></i> Meeting Details
+                            </h6>
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-comment-dots"></i> Meeting Description
+                            </label>
+                            <textarea class="form-control" id="keteranganRapat" rows="3" placeholder="Enter meeting description" required></textarea>
+                        </div>
+
+                        <!-- Date & Time -->
+                        <div class="mb-4" style="background: #f8f9fa; padding: 1rem; border-radius: var(--radius-md);">
+                            <h6 class="fw-bold mb-3" style="color: var(--primary);">
+                                <i class="fas fa-calendar-week"></i> Schedule & Duration
+                            </h6>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Start Date</label>
+                                    <input type="date" class="form-control" id="tanggalMulai" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">End Date</label>
+                                    <input type="date" class="form-control" id="tanggalSelesai" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Start Time</label>
+                                    <input type="time" class="form-control" id="jamMulai" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">End Time</label>
+                                    <input type="time" class="form-control" id="jamSelesai" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Audience -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3" style="color: var(--primary);">
+                                <i class="fas fa-users"></i> Meeting Participants
+                            </h6>
+                            <div class="mb-3">
+                                <button type="button" class="btn btn-sm btn-primary me-2" id="selectAllAudBtn">
+                                    <i class="fas fa-check-double"></i> Select All
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="clearAllAudBtn">
+                                    <i class="fas fa-times"></i> Clear All
+                                </button>
+                            </div>
+                            <div class="row" id="audienceCheckboxes" style="max-height: 300px; overflow-y: auto; padding: 1rem; background: #f8f9fa; border-radius: var(--radius-md);">
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DIVISI SIMO" id="aud_simo">
+                                        <label class="form-check-label" for="aud_simo">DIVISI SIMO</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Dept.Perencanaan Strategis & Kinerja Organisasi" id="aud_ps">
+                                        <label class="form-check-label" for="aud_ps">Dept.Perencanaan Strategis</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Dept.Pembinaan Cabang" id="aud_pc">
+                                        <label class="form-check-label" for="aud_pc">Dept.Pembinaan Cabang</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Dept.Pengembangan Organisasi" id="aud_po">
+                                        <label class="form-check-label" for="aud_po">Dept.Pengembangan Organisasi</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Dept.Change Management Office" id="aud_cmo">
+                                        <label class="form-check-label" for="aud_cmo">Dept.Change Management Office</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Direksi Bank Sulselbar" id="aud_direksi">
+                                        <label class="form-check-label" for="aud_direksi">Direksi Bank Sulselbar</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="SKAI" id="aud_skai">
+                                        <label class="form-check-label" for="aud_skai">SKAI</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DCS" id="aud_dcs">
+                                        <label class="form-check-label" for="aud_dcs">DCS</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DHC" id="aud_dhc">
+                                        <label class="form-check-label" for="aud_dhc">DHC</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DDL" id="aud_ddl">
+                                        <label class="form-check-label" for="aud_ddl">DDL</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DKA" id="aud_dka">
+                                        <label class="form-check-label" for="aud_dka">DKA</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DTI" id="aud_dti">
+                                        <label class="form-check-label" for="aud_dti">DTI</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DUM" id="aud_dum">
+                                        <label class="form-check-label" for="aud_dum">DUM</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DJS" id="aud_djs">
+                                        <label class="form-check-label" for="aud_djs">DJS</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DTR" id="aud_dtr">
+                                        <label class="form-check-label" for="aud_dtr">DTR</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DSY" id="aud_dsy">
+                                        <label class="form-check-label" for="aud_dsy">DSY</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DIB" id="aud_dib">
+                                        <label class="form-check-label" for="aud_dib">DIB</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DKK" id="aud_dkk">
+                                        <label class="form-check-label" for="aud_dkk">DKK</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DRK" id="aud_drk">
+                                        <label class="form-check-label" for="aud_drk">DRK</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="SKK" id="aud_skk">
+                                        <label class="form-check-label" for="aud_skk">SKK</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="SKMR" id="aud_skmr">
+                                        <label class="form-check-label" for="aud_skmr">SKMR</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DPLK" id="aud_dplk">
+                                        <label class="form-check-label" for="aud_dplk">DPLK</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="UPPK" id="aud_uppk">
+                                        <label class="form-check-label" for="aud_uppk">UPPK</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Other" id="aud_other">
+                                        <label class="form-check-label" for="aud_other">Others</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-3" id="customAudienceDiv" style="display: none;">
+                                <label class="form-label fw-bold">Other Participants</label>
+                                <input type="text" class="form-control" id="customAudience" placeholder="Enter other participants">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                    <button type="button" class="btn btn-success" id="saveMeetingBtn">
+                        <i class="fas fa-save"></i> Save Meeting
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Firebase SDK v9 - Compat Version -->
@@ -2285,6 +2569,170 @@ END:VCALENDAR`;
         window.closeToast = function() {
             document.getElementById('notificationToast').classList.remove('show');
         };
+
+        // ============================================
+        // ADD/EDIT MEETING FORM FUNCTIONS
+        // ============================================
+        let meetingFormModal;
+        let isEditMode = false;
+
+        // Initialize form modal
+        document.addEventListener('DOMContentLoaded', function() {
+            meetingFormModal = new bootstrap.Modal(document.getElementById('meetingFormModal'));
+            
+            // External creator toggle
+            document.getElementById('pembuatRapat').addEventListener('change', function() {
+                const externalDiv = document.getElementById('externalCreatorDiv');
+                if (this.value === 'External') {
+                    externalDiv.style.display = 'block';
+                    document.getElementById('externalCreator').required = true;
+                } else {
+                    externalDiv.style.display = 'none';
+                    document.getElementById('externalCreator').required = false;
+                }
+            });
+
+            // Custom audience toggle
+            document.getElementById('aud_other').addEventListener('change', function() {
+                const customDiv = document.getElementById('customAudienceDiv');
+                customDiv.style.display = this.checked ? 'block' : 'none';
+            });
+
+            // Select/Clear all buttons
+            document.getElementById('selectAllAudBtn').addEventListener('click', function() {
+                document.querySelectorAll('#audienceCheckboxes input[type="checkbox"]').forEach(cb => {
+                    cb.checked = true;
+                });
+                document.getElementById('customAudienceDiv').style.display = 'block';
+            });
+
+            document.getElementById('clearAllAudBtn').addEventListener('click', function() {
+                document.querySelectorAll('#audienceCheckboxes input[type="checkbox"]').forEach(cb => {
+                    cb.checked = false;
+                });
+                document.getElementById('customAudienceDiv').style.display = 'none';
+            });
+
+            // Add meeting button
+            document.getElementById('addMeetingBtn').addEventListener('click', openAddMeetingForm);
+
+            // Save button
+            document.getElementById('saveMeetingBtn').addEventListener('click', saveMeeting);
+        });
+
+        // Open form for new meeting
+        function openAddMeetingForm() {
+            isEditMode = false;
+            document.getElementById('formModalTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Add New Meeting';
+            document.getElementById('meetingForm').reset();
+            document.getElementById('editingId').value = '';
+            document.getElementById('externalCreatorDiv').style.display = 'none';
+            document.getElementById('customAudienceDiv').style.display = 'none';
+            meetingFormModal.show();
+        }
+
+        // Update editMeetingFromDetail to use form
+        window.editMeetingFromDetail = function() {
+            if (!currentMeetingId) return;
+            
+            const meeting = allMeetings.find(m => m.id === currentMeetingId);
+            if (!meeting) return;
+            
+            isEditMode = true;
+            document.getElementById('formModalTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Meeting';
+            document.getElementById('editingId').value = currentMeetingId;
+            
+            // Fill form
+            document.getElementById('pembuatRapat').value = meeting.isExternal ? 'External' : meeting.pembuat;
+            document.getElementById('tempatRapat').value = meeting.tempat || '';
+            document.getElementById('keteranganRapat').value = meeting.keterangan;
+            document.getElementById('tanggalMulai').value = meeting.tanggalMulai;
+            document.getElementById('tanggalSelesai').value = meeting.tanggalSelesai;
+            document.getElementById('jamMulai').value = meeting.jamMulai;
+            document.getElementById('jamSelesai').value = meeting.jamSelesai;
+            
+            if (meeting.isExternal) {
+                document.getElementById('externalCreatorDiv').style.display = 'block';
+                document.getElementById('externalCreator').value = meeting.externalCreator || '';
+            }
+            
+            // Check audiences
+            const audiences = Array.isArray(meeting.audience) ? meeting.audience : [meeting.audience];
+            document.querySelectorAll('#audienceCheckboxes input[type="checkbox"]').forEach(cb => {
+                cb.checked = audiences.includes(cb.value);
+            });
+            
+            closeMeetingDetail();
+            meetingFormModal.show();
+        };
+
+        // Save meeting
+        async function saveMeeting() {
+            // Get selected audiences
+            const selectedAudiences = [];
+            document.querySelectorAll('#audienceCheckboxes input[type="checkbox"]:checked').forEach(cb => {
+                if (cb.value === 'Other') {
+                    const custom = document.getElementById('customAudience').value.trim();
+                    if (custom) selectedAudiences.push(custom);
+                } else {
+                    selectedAudiences.push(cb.value);
+                }
+            });
+
+            if (selectedAudiences.length === 0) {
+                showToast('Warning', 'Please select at least one participant!', 'warning');
+                return;
+            }
+
+            const pembuatValue = document.getElementById('pembuatRapat').value;
+            if (!pembuatValue) {
+                showToast('Warning', 'Please select meeting creator!', 'warning');
+                return;
+            }
+
+            const isExternal = pembuatValue === 'External';
+
+            if (isExternal && !document.getElementById('externalCreator').value.trim()) {
+                showToast('Warning', 'Please fill in external organization name!', 'warning');
+                return;
+            }
+
+            const meetingData = {
+                pembuat: isExternal ? 'External' : pembuatValue,
+                isExternal: isExternal,
+                externalCreator: isExternal ? document.getElementById('externalCreator').value.trim() : null,
+                tempat: document.getElementById('tempatRapat').value.trim(),
+                audience: selectedAudiences,
+                keterangan: document.getElementById('keteranganRapat').value.trim(),
+                tanggalMulai: document.getElementById('tanggalMulai').value,
+                tanggalSelesai: document.getElementById('tanggalSelesai').value,
+                jamMulai: document.getElementById('jamMulai').value,
+                jamSelesai: document.getElementById('jamSelesai').value
+            };
+
+            try {
+                document.getElementById('saveMeetingBtn').disabled = true;
+                document.getElementById('saveMeetingBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+                if (isEditMode) {
+                    const editingId = document.getElementById('editingId').value;
+                    await db.collection('meetings').doc(editingId).update(meetingData);
+                    showToast('Success', 'Meeting updated successfully!', 'success');
+                } else {
+                    await db.collection('meetings').add(meetingData);
+                    showToast('Success', 'Meeting added successfully!', 'success');
+                }
+                
+                meetingFormModal.hide();
+                document.getElementById('meetingForm').reset();
+            } catch (error) {
+                console.error('Error saving meeting:', error);
+                showToast('Error', 'Failed to save meeting: ' + error.message, 'error');
+            } finally {
+                document.getElementById('saveMeetingBtn').disabled = false;
+                document.getElementById('saveMeetingBtn').innerHTML = '<i class="fas fa-save"></i> Save Meeting';
+            }
+        }
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
