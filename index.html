@@ -179,8 +179,28 @@
         .carousel-track {
             display: flex;
             gap: 1.5rem;
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 0.5rem;
+        }
+
+        /* Auto-zoom mode styles */
+        .carousel-track.zoom-mode {
+            justify-content: center;
+        }
+
+        .carousel-track.zoom-mode .meeting-card {
+            opacity: 0.3;
+            transform: scale(0.8);
+            filter: blur(2px);
+        }
+
+        .carousel-track.zoom-mode .meeting-card.active-zoom {
+            opacity: 1;
+            transform: scale(1.1);
+            filter: blur(0);
+            z-index: 10;
+            box-shadow: var(--shadow-xl);
+            border-color: var(--accent);
         }
 
         .meeting-card {
@@ -191,7 +211,7 @@
             box-shadow: var(--shadow-sm);
             border: 2px solid rgba(4, 55, 104, 0.1);
             overflow: hidden;
-            transition: var(--transition);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             position: relative;
         }
@@ -200,6 +220,67 @@
             transform: translateY(-8px) scale(1.02);
             box-shadow: var(--shadow-xl);
             border-color: var(--accent);
+        }
+
+        /* Carousel Auto-Play Controls */
+        .carousel-controls {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 100;
+        }
+
+        .control-btn {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-md);
+        }
+
+        .control-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .control-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .control-btn i {
+            font-size: 1rem;
+        }
+
+        /* Progress bar for auto-slide */
+        .slide-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: var(--accent);
+            transition: width 0.1s linear;
+            z-index: 50;
+        }
+
+        .slide-progress.active {
+            animation: progress 5s linear;
+        }
+
+        @keyframes progress {
+            from { width: 0%; }
+            to { width: 100%; }
         }
 
         .meeting-card-header {
@@ -1154,6 +1235,19 @@
             </div>
             
             <div class="carousel-container" id="upcomingCarousel">
+                <!-- Auto-Play Controls -->
+                <div class="carousel-controls">
+                    <button class="control-btn" id="playPauseBtn" title="Play/Pause Auto-Slide">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <button class="control-btn" id="zoomModeBtn" title="Toggle Zoom Mode">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="slide-progress" id="slideProgress"></div>
+                
                 <button class="carousel-nav prev" id="carouselPrev">
                     <i class="fas fa-chevron-left"></i>
                 </button>
@@ -1449,7 +1543,13 @@
         // CAROUSEL FUNCTIONS
         // ============================================
         let currentSlide = 0;
+        let currentZoomIndex = 0;
         const cardsPerView = 3;
+        let isAutoPlaying = false;
+        let isZoomMode = false;
+        let autoPlayInterval = null;
+        let progressInterval = null;
+        const autoPlayDelay = 5000; // 5 seconds per slide
 
         function renderUpcomingMeetings() {
             const now = new Date();
@@ -1470,20 +1570,23 @@
                 document.getElementById('carouselIndicators').innerHTML = '';
                 document.getElementById('carouselPrev').style.display = 'none';
                 document.getElementById('carouselNext').style.display = 'none';
+                document.querySelector('.carousel-controls').style.display = 'none';
                 return;
             }
 
             emptyState.style.display = 'none';
             document.getElementById('carouselPrev').style.display = 'flex';
             document.getElementById('carouselNext').style.display = 'flex';
+            document.querySelector('.carousel-controls').style.display = 'flex';
 
-            carouselTrack.innerHTML = upcoming.map(meeting => createMeetingCard(meeting)).join('');
+            carouselTrack.innerHTML = upcoming.map((meeting, index) => createMeetingCard(meeting, index)).join('');
             updateCarouselIndicators(upcoming.length);
             currentSlide = 0;
+            currentZoomIndex = 0;
             updateCarousel();
         }
 
-        function createMeetingCard(meeting) {
+        function createMeetingCard(meeting, index) {
             const meetingDate = new Date(meeting.tanggalMulai);
             const formattedDate = meetingDate.toLocaleDateString('id-ID', { 
                 weekday: 'long', 
@@ -1501,7 +1604,7 @@
             const moreCount = participants.length > 3 ? participants.length - 3 : 0;
 
             return `
-                <div class="meeting-card" onclick="viewMeetingDetail('${meeting.id}')">
+                <div class="meeting-card" data-index="${index}" onclick="viewMeetingDetail('${meeting.id}')">
                     <div class="meeting-card-header">
                         <div class="meeting-time">${meeting.jamMulai}</div>
                         <div class="meeting-date">
@@ -1539,9 +1642,9 @@
 
         function updateCarouselIndicators(totalMeetings) {
             const indicators = document.getElementById('carouselIndicators');
-            const totalSlides = Math.ceil(totalMeetings / cardsPerView);
+            const totalSlides = isZoomMode ? totalMeetings : Math.ceil(totalMeetings / cardsPerView);
             
-            if (totalSlides <= 1) {
+            if (totalSlides <= 1 && !isZoomMode) {
                 indicators.innerHTML = '';
                 return;
             }
@@ -1553,14 +1656,40 @@
 
         function updateCarousel() {
             const track = document.getElementById('carouselTrack');
-            const cardWidth = 350 + 24;
-            track.style.transform = `translateX(-${currentSlide * cardWidth * cardsPerView}px)`;
+            const cards = track.querySelectorAll('.meeting-card');
+            
+            if (isZoomMode) {
+                // Zoom mode - show one card at a time with zoom effect
+                track.classList.add('zoom-mode');
+                cards.forEach((card, index) => {
+                    card.classList.toggle('active-zoom', index === currentZoomIndex);
+                });
+                
+                // Center the active card
+                const cardWidth = 350 + 24;
+                const containerWidth = track.parentElement.offsetWidth;
+                const offset = (containerWidth / 2) - (cardWidth / 2) - (currentZoomIndex * cardWidth);
+                track.style.transform = `translateX(${offset}px)`;
+            } else {
+                // Normal mode - show multiple cards
+                track.classList.remove('zoom-mode');
+                cards.forEach(card => {
+                    card.classList.remove('active-zoom');
+                });
+                
+                const cardWidth = 350 + 24;
+                track.style.transform = `translateX(-${currentSlide * cardWidth * cardsPerView}px)`;
+            }
 
-            document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentSlide);
-            });
-
+            updateIndicators();
             updateNavigationButtons();
+        }
+
+        function updateIndicators() {
+            const activeIndex = isZoomMode ? currentZoomIndex : currentSlide;
+            document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === activeIndex);
+            });
         }
 
         function updateNavigationButtons() {
@@ -1570,39 +1699,191 @@
                 return meetingDate >= now;
             });
 
-            const totalSlides = Math.ceil(upcoming.length / cardsPerView);
-            
             const prevBtn = document.getElementById('carouselPrev');
             const nextBtn = document.getElementById('carouselNext');
 
-            prevBtn.classList.toggle('disabled', currentSlide === 0);
-            nextBtn.classList.toggle('disabled', currentSlide >= totalSlides - 1);
+            if (isZoomMode) {
+                prevBtn.classList.toggle('disabled', currentZoomIndex === 0);
+                nextBtn.classList.toggle('disabled', currentZoomIndex >= upcoming.length - 1);
+            } else {
+                const totalSlides = Math.ceil(upcoming.length / cardsPerView);
+                prevBtn.classList.toggle('disabled', currentSlide === 0);
+                nextBtn.classList.toggle('disabled', currentSlide >= totalSlides - 1);
+            }
         }
 
-        document.getElementById('carouselPrev').addEventListener('click', () => {
-            if (currentSlide > 0) {
-                currentSlide--;
-                updateCarousel();
-            }
-        });
+        // Auto-play functionality
+        function startAutoPlay() {
+            if (autoPlayInterval) return;
+            
+            isAutoPlaying = true;
+            document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-pause"></i>';
+            document.getElementById('playPauseBtn').classList.add('active');
+            
+            startProgressBar();
+            
+            autoPlayInterval = setInterval(() => {
+                nextSlide();
+            }, autoPlayDelay);
+        }
 
-        document.getElementById('carouselNext').addEventListener('click', () => {
+        function stopAutoPlay() {
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+                autoPlayInterval = null;
+            }
+            
+            if (progressInterval) {
+                clearInterval(progressInterval);
+                progressInterval = null;
+            }
+            
+            isAutoPlaying = false;
+            document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-play"></i>';
+            document.getElementById('playPauseBtn').classList.remove('active');
+            document.getElementById('slideProgress').style.width = '0%';
+        }
+
+        function startProgressBar() {
+            const progressBar = document.getElementById('slideProgress');
+            let width = 0;
+            const increment = 100 / (autoPlayDelay / 100);
+            
+            if (progressInterval) {
+                clearInterval(progressInterval);
+            }
+            
+            progressBar.style.width = '0%';
+            
+            progressInterval = setInterval(() => {
+                width += increment;
+                if (width >= 100) {
+                    width = 0;
+                }
+                progressBar.style.width = width + '%';
+            }, 100);
+        }
+
+        function nextSlide() {
             const now = new Date();
             const upcoming = allMeetings.filter(meeting => {
                 const meetingDate = new Date(meeting.tanggalMulai + ' ' + meeting.jamMulai);
                 return meetingDate >= now;
             });
-            const totalSlides = Math.ceil(upcoming.length / cardsPerView);
-            
-            if (currentSlide < totalSlides - 1) {
+
+            if (isZoomMode) {
+                currentZoomIndex++;
+                if (currentZoomIndex >= upcoming.length) {
+                    currentZoomIndex = 0;
+                }
+            } else {
+                const totalSlides = Math.ceil(upcoming.length / cardsPerView);
                 currentSlide++;
-                updateCarousel();
+                if (currentSlide >= totalSlides) {
+                    currentSlide = 0;
+                }
+            }
+            
+            updateCarousel();
+            
+            if (isAutoPlaying) {
+                startProgressBar();
+            }
+        }
+
+        function prevSlide() {
+            const now = new Date();
+            const upcoming = allMeetings.filter(meeting => {
+                const meetingDate = new Date(meeting.tanggalMulai + ' ' + meeting.jamMulai);
+                return meetingDate >= now;
+            });
+
+            if (isZoomMode) {
+                currentZoomIndex--;
+                if (currentZoomIndex < 0) {
+                    currentZoomIndex = upcoming.length - 1;
+                }
+            } else {
+                const totalSlides = Math.ceil(upcoming.length / cardsPerView);
+                currentSlide--;
+                if (currentSlide < 0) {
+                    currentSlide = totalSlides - 1;
+                }
+            }
+            
+            updateCarousel();
+            
+            if (isAutoPlaying) {
+                startProgressBar();
+            }
+        }
+
+        // Toggle zoom mode
+        function toggleZoomMode() {
+            isZoomMode = !isZoomMode;
+            
+            const zoomBtn = document.getElementById('zoomModeBtn');
+            if (isZoomMode) {
+                zoomBtn.classList.add('active');
+                zoomBtn.innerHTML = '<i class="fas fa-compress"></i>';
+                currentZoomIndex = 0;
+            } else {
+                zoomBtn.classList.remove('active');
+                zoomBtn.innerHTML = '<i class="fas fa-expand"></i>';
+                currentSlide = 0;
+            }
+            
+            const now = new Date();
+            const upcoming = allMeetings.filter(meeting => {
+                const meetingDate = new Date(meeting.tanggalMulai + ' ' + meeting.jamMulai);
+                return meetingDate >= now;
+            });
+            
+            updateCarouselIndicators(upcoming.length);
+            updateCarousel();
+        }
+
+        // Event Listeners
+        document.getElementById('carouselPrev').addEventListener('click', () => {
+            prevSlide();
+            if (isAutoPlaying) {
+                stopAutoPlay();
+                startAutoPlay();
             }
         });
 
+        document.getElementById('carouselNext').addEventListener('click', () => {
+            nextSlide();
+            if (isAutoPlaying) {
+                stopAutoPlay();
+                startAutoPlay();
+            }
+        });
+
+        document.getElementById('playPauseBtn').addEventListener('click', () => {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+            } else {
+                startAutoPlay();
+            }
+        });
+
+        document.getElementById('zoomModeBtn').addEventListener('click', () => {
+            toggleZoomMode();
+        });
+
         window.goToSlide = function(index) {
-            currentSlide = index;
+            if (isZoomMode) {
+                currentZoomIndex = index;
+            } else {
+                currentSlide = index;
+            }
             updateCarousel();
+            
+            if (isAutoPlaying) {
+                stopAutoPlay();
+                startAutoPlay();
+            }
         };
 
         // Touch/Swipe support
