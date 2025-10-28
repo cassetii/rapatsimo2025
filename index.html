@@ -1545,8 +1545,8 @@
         let currentSlide = 0;
         let currentZoomIndex = 0;
         const cardsPerView = 3;
-        let isAutoPlaying = false;
-        let isZoomMode = false;
+        let isAutoPlaying = true; // OTOMATIS AKTIF
+        let isZoomMode = true; // ZOOM MODE OTOMATIS AKTIF
         let autoPlayInterval = null;
         let progressInterval = null;
         const autoPlayDelay = 5000; // 5 seconds per slide
@@ -1583,7 +1583,19 @@
             updateCarouselIndicators(upcoming.length);
             currentSlide = 0;
             currentZoomIndex = 0;
+            
+            // Set UI buttons to active state
+            document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-pause"></i>';
+            document.getElementById('playPauseBtn').classList.add('active');
+            document.getElementById('zoomModeBtn').innerHTML = '<i class="fas fa-compress"></i>';
+            document.getElementById('zoomModeBtn').classList.add('active');
+            
             updateCarousel();
+            
+            // START AUTO-SLIDE OTOMATIS
+            setTimeout(() => {
+                startAutoPlay();
+            }, 500);
         }
 
         function createMeetingCard(meeting, index) {
