@@ -345,34 +345,61 @@
         }
 
         .meeting-participants {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
             margin-bottom: 1rem;
         }
 
-        .participant-avatars {
+        .participants-list {
             display: flex;
-            margin-left: 0.5rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
         }
 
-        .participant-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--gradient-accent);
-            border: 2px solid white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
+        .participant-badge {
+            padding: 0.375rem 0.75rem;
+            background: linear-gradient(135deg, rgba(153, 187, 28, 0.15) 0%, rgba(153, 187, 28, 0.05) 100%);
+            border: 1px solid var(--accent);
+            border-radius: 999px;
             font-size: 0.75rem;
             font-weight: 600;
-            margin-left: -8px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            transition: var(--transition);
         }
 
-        .participant-avatar:first-child {
-            margin-left: 0;
+        .participant-badge:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .participant-badge i {
+            font-size: 0.625rem;
+            color: var(--accent);
+        }
+
+        .participant-badge:hover i {
+            color: white;
+        }
+
+        .participants-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .participants-count {
+            background: var(--primary);
+            color: white;
+            padding: 0.125rem 0.5rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
         }
 
         .meeting-footer {
@@ -1608,12 +1635,14 @@
             });
 
             const participants = Array.isArray(meeting.audience) ? meeting.audience : [meeting.audience];
-            const avatars = participants.slice(0, 3).map(p => {
-                const initials = p.split(' ').map(word => word[0]).join('').toUpperCase();
-                return `<div class="participant-avatar">${initials}</div>`;
+            
+            // Create participant badges with full names
+            const participantBadges = participants.map(p => {
+                return `<div class="participant-badge">
+                    <i class="fas fa-user"></i>
+                    ${p}
+                </div>`;
             }).join('');
-
-            const moreCount = participants.length > 3 ? participants.length - 3 : 0;
 
             return `
                 <div class="meeting-card" data-index="${index}" onclick="viewMeetingDetail('${meeting.id}')">
@@ -1631,10 +1660,13 @@
                             ${meeting.tempat || 'No location specified'}
                         </div>
                         <div class="meeting-participants">
-                            <i class="fas fa-users"></i>
-                            <div class="participant-avatars">
-                                ${avatars}
-                                ${moreCount > 0 ? `<div class="participant-avatar">+${moreCount}</div>` : ''}
+                            <div class="participants-label">
+                                <i class="fas fa-users"></i>
+                                Participants
+                                <span class="participants-count">${participants.length}</span>
+                            </div>
+                            <div class="participants-list">
+                                ${participantBadges}
                             </div>
                         </div>
                         <div class="meeting-footer">
