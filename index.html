@@ -87,900 +87,309 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            animation: slideDown 0.5s ease-out;
-            overflow: hidden;
-        }
-
-        /* Floating shapes in navbar */
-        .navbar-modern::before,
-        .navbar-modern::after {
-            content: '';
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0.06;
-            z-index: 0;
-        }
-
-        .navbar-modern::before {
-            width: 200px;
-            height: 200px;
-            background: var(--gradient-accent);
-            top: -100px;
-            right: 10%;
-            animation: float-shape 8s ease-in-out infinite;
-        }
-
-        .navbar-modern::after {
-            width: 150px;
-            height: 150px;
-            background: var(--gradient-primary);
-            top: -50px;
-            right: 30%;
-            animation: float-shape 10s ease-in-out infinite reverse;
-        }
-
-        @keyframes float-shape {
-            0%, 100% { 
-                transform: translateY(0) rotate(0deg);
-            }
-            50% { 
-                transform: translateY(20px) rotate(180deg);
-            }
-        }
-
-        .container-fluid {
-            position: relative;
-            z-index: 1;
-        }
-
-        @keyframes slideDown {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
         }
 
         .brand-logo {
             display: flex;
             align-items: center;
-            gap: 1.25rem;
-            font-size: 1.75rem;
+            gap: 1rem;
+            font-size: 1.5rem;
             font-weight: 800;
             color: var(--primary);
             text-decoration: none;
-            transition: var(--transition);
-            position: relative;
         }
 
-        .brand-logo:hover {
-            transform: scale(1.05);
-        }
-
-        .logo-container {
-            position: relative;
-            width: 80px;
-            height: 80px;
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        /* Animated Background Circles */
-        .logo-bg-circle {
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0.15;
-            animation: rotate-pulse 8s ease-in-out infinite;
-        }
-
-        .logo-bg-circle-1 {
-            width: 100%;
-            height: 100%;
-            border: 3px solid var(--accent);
-            animation-delay: 0s;
-        }
-
-        .logo-bg-circle-2 {
-            width: 85%;
-            height: 85%;
-            border: 2px dashed var(--primary);
-            animation-delay: 1s;
-            animation-direction: reverse;
-        }
-
-        .logo-bg-circle-3 {
-            width: 70%;
-            height: 70%;
-            border: 2px solid var(--accent);
-            animation-delay: 2s;
-        }
-
-        @keyframes rotate-pulse {
-            0%, 100% { 
-                transform: rotate(0deg) scale(1);
-                opacity: 0.15;
-            }
-            50% { 
-                transform: rotate(180deg) scale(1.1);
-                opacity: 0.25;
-            }
-        }
-
-        .logo-svg {
-            width: 70px;
-            height: 70px;
-            transition: var(--transition);
-            position: relative;
-            z-index: 2;
-            filter: drop-shadow(0 2px 8px rgba(4, 55, 104, 0.3));
-        }
-
-        .brand-logo:hover .logo-svg {
-            transform: rotate(360deg) scale(1.1);
-            filter: drop-shadow(0 4px 12px rgba(153, 187, 28, 0.5));
-        }
-
-        .brand-logo:hover .logo-bg-circle {
-            opacity: 0.3;
-            animation-duration: 4s;
-        }
-
-        /* Logo Animation */
-        @keyframes letter-glow {
-            0%, 100% { 
-                fill: #043768;
-                filter: drop-shadow(0 0 0px #99bb1c);
-            }
-            50% { 
-                fill: #99bb1c;
-                filter: drop-shadow(0 0 8px #99bb1c);
-            }
-        }
-
-        .letter-s { animation: letter-glow 4s ease-in-out infinite; animation-delay: 0s; }
-        .letter-i { animation: letter-glow 4s ease-in-out infinite; animation-delay: 1s; }
-        .letter-m { animation: letter-glow 4s ease-in-out infinite; animation-delay: 2s; }
-        .letter-o { animation: letter-glow 4s ease-in-out infinite; animation-delay: 3s; }
-
-        .status-indicator {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1.25rem;
-            border-radius: var(--radius-lg);
-            font-size: 0.875rem;
-            font-weight: 600;
-            transition: var(--transition-bounce);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .status-indicator::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s;
-        }
-
-        .status-indicator:hover::before {
-            left: 100%;
-        }
-
-        .status-online {
-            background: var(--gradient-accent);
             color: white;
-            box-shadow: 0 4px 12px rgba(153, 187, 28, 0.3);
+            font-size: 1.5rem;
         }
 
-        .status-offline {
-            background: var(--gradient-primary);
-            color: white;
-            box-shadow: 0 4px 12px rgba(4, 55, 104, 0.3);
-        }
-
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.2); }
-        }
-
-        .status-indicator i {
-            animation: pulse-dot 2s ease-in-out infinite;
-        }
-
-        /* Main Layout */
-        .main-container {
-            padding: 2rem 1rem;
+        .container {
             max-width: 1400px;
             margin: 0 auto;
-            animation: fadeIn 0.6s ease-out;
+            padding: 2rem 1rem;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 400px 1fr;
-            gap: 2rem;
-            height: calc(100vh - 140px);
-        }
-
-        @media (max-width: 1200px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-                grid-template-rows: auto 1fr;
-                gap: 1.5rem;
-                height: auto;
-            }
-        }
-
-        /* Modern Cards */
-        .card-modern {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px) saturate(180%);
-            border-radius: var(--radius-xl);
-            border: 1px solid rgba(4, 55, 104, 0.08);
-            box-shadow: var(--shadow-lg);
-            transition: var(--transition);
-            overflow: hidden;
-            animation: scaleIn 0.5s ease-out;
-        }
-
-        @keyframes scaleIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .card-modern:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-xl);
-            border-color: rgba(153, 187, 28, 0.2);
-        }
-
-        .card-header-modern {
-            background: var(--gradient-primary);
-            color: white;
-            padding: 1.5rem 2rem;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card-header-modern::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { left: -100%; }
-            100% { left: 200%; }
-        }
-
-        .card-title-modern {
-            font-size: 1.125rem;
-            font-weight: 700;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            z-index: 1;
-        }
-
-        .card-title-modern i {
-            font-size: 1.25rem;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        .badge-modern {
-            background: rgba(153, 187, 28, 0.9);
-            color: white;
-            padding: 0.375rem 0.875rem;
-            border-radius: var(--radius-lg);
-            font-size: 0.75rem;
-            font-weight: 700;
-            box-shadow: 0 2px 8px rgba(153, 187, 28, 0.3);
-            z-index: 1;
-            animation: bounce 2s ease-in-out infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); }
-        }
-
-        /* Calendar Redesign */
-        .calendar-container {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .calendar-body {
-            flex: 1;
-            padding: 2rem;
-        }
-
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 0.75rem;
-            margin-top: 1.5rem;
-        }
-
-        .calendar-day-header {
-            padding: 1rem;
-            text-align: center;
-            font-weight: 700;
-            color: var(--primary);
-            background: linear-gradient(135deg, rgba(4, 55, 104, 0.08) 0%, rgba(153, 187, 28, 0.08) 100%);
-            border-radius: var(--radius-md);
-            font-size: 0.875rem;
-            animation: fadeInUp 0.5s ease-out backwards;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .calendar-day {
-            aspect-ratio: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            font-weight: 600;
-            background: var(--surface);
-            border: 2px solid transparent;
-            transition: var(--transition-bounce);
-            position: relative;
-            font-size: 0.875rem;
-            animation: fadeInUp 0.5s ease-out backwards;
-        }
-
-        .calendar-day:hover {
-            background: var(--gradient-accent);
-            color: white;
-            transform: scale(1.1) rotate(5deg);
-            border-color: var(--accent);
-            box-shadow: 0 4px 12px rgba(153, 187, 28, 0.3);
-        }
-
-        .calendar-day.has-meeting {
-            background: var(--gradient-accent);
-            color: white;
-            border-color: var(--accent);
-            box-shadow: 0 4px 12px rgba(153, 187, 28, 0.2);
-        }
-
-        .calendar-day.has-meeting-range {
-            background: var(--gradient-primary);
-            color: white;
-            border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(4, 55, 104, 0.2);
-        }
-
-        .calendar-day.has-meeting::after,
-        .calendar-day.has-meeting-range::after {
-            content: '';
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            width: 8px;
-            height: 8px;
-            background: white;
-            border-radius: 50%;
-            animation: pulse-ring 2s infinite;
-        }
-
-        @keyframes pulse-ring {
-            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
-            70% { box-shadow: 0 0 0 8px rgba(255, 255, 255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
-        }
-
-        .calendar-legend {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-            padding: 1rem;
-            background: linear-gradient(135deg, rgba(4, 55, 104, 0.05) 0%, rgba(153, 187, 28, 0.05) 100%);
-            border-radius: var(--radius-md);
-            border: 1px solid rgba(4, 55, 104, 0.1);
-        }
-
-        .legend-item {
+        /* Connection Status */
+        .connection-status {
             display: flex;
             align-items: center;
             gap: 0.5rem;
             font-size: 0.875rem;
-            color: var(--muted);
-            font-weight: 500;
         }
 
-        .legend-dot {
-            width: 12px;
-            height: 12px;
+        .status-dot {
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
-            animation: pulse-dot 2s ease-in-out infinite;
+            animation: pulse 2s infinite;
         }
 
-        /* Table Redesign */
-        .table-container {
-            height: 100%;
+        .status-dot.online { background: var(--success); }
+        .status-dot.offline { background: var(--danger); }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Section Headers */
+        .section-header {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(4, 55, 104, 0.1);
         }
 
-        .table-wrapper {
-            flex: 1;
-            overflow-y: auto;
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* ============================================
+           UPCOMING MEETINGS CAROUSEL SLIDER
+           ============================================ */
+        .upcoming-section {
+            margin-bottom: 3rem;
+            background: white;
             padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
         }
 
-        .table-modern {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 1rem;
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+            padding: 1rem 0;
         }
 
-        .table-modern thead th {
-            background: var(--gradient-primary);
-            color: white;
-            padding: 1rem 1.5rem;
-            text-align: left;
-            font-weight: 600;
-            border: none;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .carousel-track {
+            display: flex;
+            gap: 1.5rem;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0.5rem;
         }
 
-        .table-modern thead th:first-child {
-            border-radius: var(--radius-lg) 0 0 var(--radius-lg);
-        }
-
-        .table-modern thead th:last-child {
-            border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
-        }
-
-        .table-modern tbody tr {
-            background: var(--surface);
+        .meeting-card {
+            min-width: 350px;
+            max-width: 350px;
+            background: white;
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-sm);
-            transition: var(--transition-bounce);
-            animation: fadeInUp 0.5s ease-out backwards;
+            border: 2px solid rgba(4, 55, 104, 0.1);
+            overflow: hidden;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
         }
 
-        .table-modern tbody tr:nth-child(even) {
-            animation-delay: 0.05s;
+        .meeting-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--accent);
         }
 
-        .table-modern tbody tr:hover {
-            transform: translateX(8px) scale(1.01);
-            box-shadow: var(--shadow-md);
-            background: linear-gradient(90deg, #ffffff 0%, rgba(153, 187, 28, 0.05) 100%);
-        }
-
-        .table-modern tbody td {
-            padding: 1.5rem;
-            border: none;
-            vertical-align: middle;
-            font-size: 0.875rem;
-        }
-
-        .table-modern tbody td:first-child {
-            border-radius: var(--radius-lg) 0 0 var(--radius-lg);
-        }
-
-        .table-modern tbody td:last-child {
-            border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
-        }
-
-        .meeting-date-card {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .date-primary {
-            font-weight: 700;
-            color: var(--primary);
-            font-size: 0.9rem;
-        }
-
-        .date-time {
+        .meeting-card-header {
             background: var(--gradient-primary);
             color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: var(--radius-sm);
-            font-size: 0.75rem;
-            font-weight: 600;
-            width: fit-content;
-            box-shadow: 0 2px 8px rgba(4, 55, 104, 0.2);
+            padding: 1.25rem;
+            position: relative;
+            overflow: hidden;
         }
 
-        .date-duration {
-            background: var(--gradient-accent);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: var(--radius-sm);
-            font-size: 0.75rem;
-            font-weight: 600;
-            width: fit-content;
-            box-shadow: 0 2px 8px rgba(153, 187, 28, 0.2);
+        .meeting-card-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .meeting-time {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .meeting-date {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .meeting-card-body {
+            padding: 1.25rem;
         }
 
         .meeting-title {
-            font-weight: 600;
-            color: var(--dark);
-            line-height: 1.4;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
-        .location-info {
+        .meeting-location {
             display: flex;
             align-items: center;
             gap: 0.5rem;
             color: var(--muted);
-            font-size: 0.875rem;
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
         }
 
-        .location-info i {
-            color: var(--accent);
-        }
-
-        .creator-badge {
-            background: var(--gradient-primary);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius-lg);
-            font-size: 0.75rem;
-            font-weight: 600;
-            display: inline-block;
-            max-width: 120px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            box-shadow: 0 2px 8px rgba(4, 55, 104, 0.2);
-        }
-
-        .creator-badge.external {
-            background: var(--gradient-accent);
-            box-shadow: 0 2px 8px rgba(153, 187, 28, 0.2);
-        }
-
-        .audience-tags {
+        .meeting-participants {
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.25rem;
-            max-width: 200px;
-        }
-
-        .audience-tag {
-            background: var(--primary);
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: var(--radius-sm);
-            font-size: 0.7rem;
-            font-weight: 500;
-            white-space: nowrap;
-            box-shadow: 0 2px 4px rgba(4, 55, 104, 0.15);
-            transition: var(--transition);
-        }
-
-        .audience-tag:hover {
-            background: var(--accent);
-            transform: translateY(-2px);
-        }
-
-        /* Action Buttons */
-        .action-buttons {
-            display: flex;
+            align-items: center;
             gap: 0.5rem;
+            margin-bottom: 1rem;
         }
 
-        .btn-action {
-            width: 36px;
-            height: 36px;
-            border-radius: var(--radius-sm);
-            border: none;
+        .participant-avatars {
+            display: flex;
+            margin-left: 0.5rem;
+        }
+
+        .participant-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gradient-accent);
+            border: 2px solid white;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: -8px;
+        }
+
+        .participant-avatar:first-child {
+            margin-left: 0;
+        }
+
+        .meeting-footer {
+            display: flex;
+            gap: 0.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(4, 55, 104, 0.1);
+        }
+
+        .btn-meeting {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            border: none;
             font-size: 0.875rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: var(--transition-bounce);
-            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-view {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-view:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
         }
 
         .btn-edit {
-            background: var(--gradient-accent);
+            background: var(--accent);
             color: white;
         }
 
         .btn-edit:hover {
-            transform: scale(1.15) rotate(10deg);
-            box-shadow: var(--shadow-md);
+            background: var(--accent-dark);
+            transform: scale(1.05);
         }
 
-        .btn-delete {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            color: white;
-        }
-
-        .btn-delete:hover {
-            transform: scale(1.15) rotate(-10deg);
-            box-shadow: var(--shadow-md);
-        }
-
-        /* Floating Action Button */
-        .fab {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 64px;
-            height: 64px;
+        /* Carousel Navigation */
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            background: white;
+            border: 2px solid var(--primary);
             border-radius: 50%;
-            background: var(--gradient-accent);
-            color: white;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: 0 8px 24px rgba(153, 187, 28, 0.4);
-            transition: var(--transition-bounce);
-            z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: center;
-            animation: fab-float 3s ease-in-out infinite;
-        }
-
-        @keyframes fab-float {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-10px) scale(1.05); }
-        }
-
-        .fab:hover {
-            transform: scale(1.15) rotate(90deg) !important;
-            box-shadow: 0 12px 32px rgba(153, 187, 28, 0.5);
-        }
-
-        .fab:active {
-            transform: scale(0.95) rotate(90deg) !important;
-        }
-
-        /* Modal Redesign */
-        .modal-content {
-            border: none;
-            border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-xl);
-            background: var(--surface);
-            overflow: hidden;
-        }
-
-        .modal-header {
-            background: var(--gradient-primary);
-            color: white;
-            border: none;
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .modal-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            animation: shimmer 3s infinite;
-        }
-
-        .modal-title {
-            font-weight: 700;
-            font-size: 1.25rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            z-index: 1;
-        }
-
-        .modal-body {
-            padding: 2rem;
-        }
-
-        .form-section {
-            margin-bottom: 2rem;
-            animation: fadeInUp 0.5s ease-out backwards;
-        }
-
-        .form-section-title {
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1rem;
-        }
-
-        .form-section-title i {
-            color: var(--accent);
-        }
-
-        .form-control-modern, .form-select-modern {
-            border: 2px solid rgba(4, 55, 104, 0.15);
-            border-radius: var(--radius-md);
-            padding: 0.875rem 1rem;
-            font-size: 0.875rem;
-            transition: var(--transition);
-            background: rgba(241, 245, 249, 0.5);
-        }
-
-        .form-control-modern:focus, .form-select-modern:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(153, 187, 28, 0.15);
-            background: white;
-            outline: none;
-            transform: translateY(-2px);
-        }
-
-        .form-label-modern {
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-        }
-
-        .form-label-modern i {
-            color: var(--accent);
-        }
-
-        .external-section {
-            background: linear-gradient(135deg, rgba(153, 187, 28, 0.08) 0%, rgba(153, 187, 28, 0.03) 100%);
-            border: 2px dashed var(--accent);
-            border-radius: var(--radius-lg);
-            padding: 1.5rem;
-            animation: pulse-border 3s ease-in-out infinite;
-        }
-
-        @keyframes pulse-border {
-            0%, 100% { border-color: var(--accent); }
-            50% { border-color: var(--accent-light); }
-        }
-
-        .date-range-section {
-            background: linear-gradient(135deg, rgba(4, 55, 104, 0.08) 0%, rgba(4, 55, 104, 0.03) 100%);
-            border: 2px solid rgba(4, 55, 104, 0.15);
-            border-radius: var(--radius-lg);
-            padding: 1.5rem;
-        }
-
-        .audience-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            max-height: 300px;
-            overflow-y: auto;
-            padding: 1rem;
-            background: linear-gradient(135deg, rgba(241, 245, 249, 0.8) 0%, rgba(226, 232, 240, 0.5) 100%);
-            border-radius: var(--radius-md);
-            border: 1px solid rgba(4, 55, 104, 0.1);
-        }
-
-        .form-check-modern {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem;
-            border-radius: var(--radius-sm);
-            transition: var(--transition);
             cursor: pointer;
-            border: 1px solid transparent;
+            transition: var(--transition);
+            z-index: 10;
+            box-shadow: var(--shadow-md);
         }
 
-        .form-check-modern:hover {
-            background: rgba(153, 187, 28, 0.08);
-            border-color: var(--accent);
-            transform: translateX(4px);
+        .carousel-nav:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-50%) scale(1.1);
         }
 
-        .form-check-input-modern {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--primary);
+        .carousel-nav.prev { left: -20px; }
+        .carousel-nav.next { right: -20px; }
+
+        .carousel-nav.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(4, 55, 104, 0.2);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .carousel-dot.active {
+            width: 24px;
             border-radius: 4px;
-            background: white;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .form-check-input-modern:checked {
-            background: var(--gradient-accent);
-            border-color: var(--accent);
-            transform: scale(1.1);
-        }
-
-        .form-check-label-modern {
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--dark);
-            cursor: pointer;
-        }
-
-        .btn-modern {
-            padding: 0.875rem 2rem;
-            border-radius: var(--radius-md);
-            border: none;
-            font-weight: 600;
-            font-size: 0.875rem;
-            transition: var(--transition-bounce);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .btn-primary-modern {
-            background: var(--gradient-accent);
-            color: white;
-        }
-
-        .btn-primary-modern:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 16px rgba(153, 187, 28, 0.3);
-        }
-
-        .btn-secondary-modern {
-            background: var(--light);
-            color: var(--muted);
-            border: 2px solid rgba(4, 55, 104, 0.15);
-        }
-
-        .btn-secondary-modern:hover {
-            background: rgba(4, 55, 104, 0.05);
-            border-color: var(--primary);
-            transform: translateY(-2px);
-        }
-
-        .btn-group-modern {
-            display: flex;
-            gap: 0.75rem;
-            justify-content: flex-end;
+            background: var(--primary);
         }
 
         /* Empty State */
@@ -988,65 +397,502 @@
             text-align: center;
             padding: 4rem 2rem;
             color: var(--muted);
-            animation: fadeIn 0.8s ease-out;
         }
 
-        .empty-state-icon {
+        .empty-state i {
             font-size: 4rem;
-            opacity: 0.3;
             margin-bottom: 1rem;
-            animation: float 3s ease-in-out infinite;
+            opacity: 0.3;
         }
 
-        .empty-state-title {
-            font-size: 1.25rem;
-            font-weight: 700;
+        .empty-state h3 {
+            font-size: 1.5rem;
             margin-bottom: 0.5rem;
-            color: var(--primary);
         }
 
-        /* Loading */
-        .loading-overlay {
+        /* ============================================
+           MEETING DETAIL ZOOM MODAL
+           ============================================ */
+        .meeting-detail-modal {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(8px);
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .meeting-detail-modal.show {
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 9999;
-            animation: fadeIn 0.3s ease-out;
+            padding: 1rem;
         }
 
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(153, 187, 28, 0.2);
-            border-left-color: var(--accent);
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content-zoom {
+            background: white;
+            border-radius: var(--radius-xl);
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+            animation: zoomIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-header-zoom {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-header-zoom::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 250px;
+            height: 250px;
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 10;
         }
 
-        /* Notifications */
-        .notification {
-            position: fixed;
-            top: 100px;
-            right: 2rem;
-            max-width: 400px;
-            background: var(--surface);
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-title-zoom {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .modal-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .modal-body-zoom {
+            padding: 2rem;
+        }
+
+        .detail-section {
+            margin-bottom: 2rem;
+        }
+
+        .detail-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .detail-value {
+            font-size: 1.1rem;
+            color: var(--dark);
+            padding: 1rem;
+            background: var(--light);
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--primary);
+        }
+
+        .time-range {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .time-box {
+            flex: 1;
+            min-width: 200px;
+            padding: 1rem;
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+
+        .time-box-label {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .time-box-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .participants-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .participant-card {
+            padding: 1rem;
+            background: white;
+            border: 2px solid var(--accent);
+            border-radius: var(--radius-md);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .participant-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .participant-card-avatar {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 0.75rem;
+            background: var(--gradient-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .participant-card-name {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem 2rem;
+            background: var(--light);
+            border-top: 1px solid rgba(4, 55, 104, 0.1);
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 0.875rem 1.5rem;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .modal-btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .modal-btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .modal-btn-success {
+            background: var(--accent);
+            color: white;
+        }
+
+        .modal-btn-success:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .modal-btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .modal-btn-danger:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ============================================
+           ALL MEETINGS TABLE SECTION
+           ============================================ */
+        .meetings-table-section {
+            background: white;
+            padding: 2rem;
             border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg);
-            border-left: 4px solid var(--success);
-            padding: 1rem 1.5rem;
-            z-index: 1050;
-            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 3rem;
+        }
+
+        .table-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            border: 2px solid rgba(4, 55, 104, 0.2);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(4, 55, 104, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.25rem;
+            border: 2px solid var(--primary);
+            background: white;
+            color: var(--primary);
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-add-meeting {
+            padding: 0.875rem 1.5rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .btn-add-meeting:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(4, 55, 104, 0.1);
+        }
+
+        .meetings-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .meetings-table thead {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .meetings-table th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .meetings-table tbody tr {
+            border-bottom: 1px solid rgba(4, 55, 104, 0.1);
+            transition: var(--transition);
+        }
+
+        .meetings-table tbody tr:hover {
+            background: rgba(153, 187, 28, 0.05);
+        }
+
+        .meetings-table td {
+            padding: 1rem;
+            vertical-align: middle;
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-btn-view {
+            background: var(--primary);
+            color: white;
+        }
+
+        .action-btn-view:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+
+        .action-btn-edit {
+            background: var(--accent);
+            color: white;
+        }
+
+        .action-btn-edit:hover {
+            background: var(--accent-dark);
+            transform: scale(1.1);
+        }
+
+        .action-btn-delete {
+            background: var(--danger);
+            color: white;
+        }
+
+        .action-btn-delete:hover {
+            background: #dc2626;
+            transform: scale(1.1);
+        }
+
+        /* Status Badge */
+        .status-badge {
+            padding: 0.375rem 0.875rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+        }
+
+        .status-upcoming {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .status-today {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .status-past {
+            background: rgba(100, 116, 139, 0.1);
+            color: var(--muted);
+        }
+
+        /* Notification Toast */
+        .notification-toast {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            min-width: 300px;
+            max-width: 400px;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            padding: 1.25rem;
+            display: none;
+            align-items: center;
+            gap: 1rem;
+            z-index: 3000;
             animation: slideInRight 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
@@ -1061,1132 +907,1077 @@
             }
         }
 
-        .notification.error {
-            border-left-color: var(--danger);
+        .notification-toast.show {
+            display: flex;
         }
 
-        .notification.warning {
-            border-left-color: var(--warning);
+        .toast-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
         }
 
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
+        .toast-success { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+        .toast-error { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+        .toast-warning { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
+        .toast-info { background: rgba(4, 55, 104, 0.15); color: var(--primary); }
+
+        .toast-content {
+            flex: 1;
         }
 
-        ::-webkit-scrollbar-track {
-            background: rgba(241, 245, 249, 0.8);
-            border-radius: 5px;
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
         }
 
-        ::-webkit-scrollbar-thumb {
-            background: var(--gradient-accent);
-            border-radius: 5px;
+        .toast-message {
+            font-size: 0.875rem;
+            color: var(--muted);
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent-dark);
+        .toast-close {
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .toast-close:hover {
+            background: rgba(0, 0, 0, 0.1);
+            transform: rotate(90deg);
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .main-container {
-                padding: 1rem;
-            }
-            
-            .fab {
-                bottom: 1rem;
-                right: 1rem;
-                width: 56px;
-                height: 56px;
-                font-size: 1.25rem;
-            }
-            
-            .table-wrapper, .calendar-body {
-                padding: 1rem;
-            }
-            
-            .modal-body {
-                padding: 1.5rem;
-            }
-            
-            .audience-grid {
-                grid-template-columns: 1fr;
+            .meeting-card {
+                min-width: 280px;
+                max-width: 280px;
             }
 
-            .audience-tags {
-                max-width: none;
+            .carousel-nav {
+                width: 40px;
+                height: 40px;
             }
+
+            .carousel-nav.prev { left: -10px; }
+            .carousel-nav.next { right: -10px; }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .modal-content-zoom {
+                max-width: 100%;
+                margin: 0.5rem;
+                max-height: 95vh;
+            }
+
+            .modal-header-zoom {
+                padding: 1.5rem;
+            }
+
+            .modal-title-zoom {
+                font-size: 1.5rem;
+            }
+
+            .modal-body-zoom {
+                padding: 1.5rem;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .table-controls {
+                flex-direction: column;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .meetings-table {
+                font-size: 0.875rem;
+            }
+
+            .meetings-table th,
+            .meetings-table td {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Calendar styles (keeping from original) */
+        .calendar-section {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 3rem;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .calendar-nav button {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--primary);
+            background: white;
+            color: var(--primary);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .calendar-nav button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-weight: 600;
+            padding: 0.75rem;
+            color: var(--primary);
+            font-size: 0.875rem;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            border: 1px solid rgba(4, 55, 104, 0.1);
+        }
+
+        .calendar-day:hover {
+            background: rgba(153, 187, 28, 0.1);
+            transform: scale(1.05);
+        }
+
+        .calendar-day.today {
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+        }
+
+        .calendar-day.has-meeting::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        .calendar-day.disabled {
+            opacity: 0.3;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
-        <div class="loading-spinner"></div>
-    </div>
-
-    <!-- Navigation -->
+    <!-- Navbar -->
     <nav class="navbar-modern">
-        <div class="container-fluid">
+        <div class="container-fluid px-4">
             <div class="d-flex justify-content-between align-items-center w-100">
                 <a href="#" class="brand-logo">
-                    <div class="logo-container">
-                        <div class="logo-bg-circle logo-bg-circle-1"></div>
-                        <div class="logo-bg-circle logo-bg-circle-2"></div>
-                        <div class="logo-bg-circle logo-bg-circle-3"></div>
-                        <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                            <text x="50" y="65" font-family="'Segoe UI', Arial, sans-serif" font-size="50" font-weight="bold" text-anchor="middle" letter-spacing="3">
-                                <tspan class="letter-s">S</tspan><tspan class="letter-i">I</tspan><tspan class="letter-m">M</tspan><tspan class="letter-o">O</tspan>
-                            </text>
-                        </svg>
+                    <div class="logo-icon">
+                        <i class="fas fa-calendar-alt"></i>
                     </div>
-                    <span>Meeting Hub</span>
+                    <span>SIMO Meeting Hub</span>
                 </a>
-                <div id="connectionStatus" class="status-indicator status-offline">
-                    <i class="fas fa-wifi"></i>
-                    <span>Connecting...</span>
+                <div class="connection-status">
+                    <div class="status-dot offline" id="statusDot"></div>
+                    <span id="statusText">Connecting...</span>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="main-container">
-        <div class="dashboard-grid">
-            <!-- Calendar Section -->
-            <div class="card-modern calendar-container">
-                <div class="card-header-modern">
-                    <h5 class="card-title-modern">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span id="currentMonth">Calendar</span>
-                    </h5>
+    <!-- Main Container -->
+    <div class="container">
+        
+        <!-- Upcoming Meetings Carousel Section -->
+        <section class="upcoming-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-clock"></i>
+                    Upcoming Meetings
+                </h2>
+                <span class="badge bg-primary" id="upcomingCount">0 meetings</span>
+            </div>
+            
+            <div class="carousel-container" id="upcomingCarousel">
+                <button class="carousel-nav prev" id="carouselPrev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <div class="carousel-track" id="carouselTrack">
+                    <!-- Meeting cards will be inserted here dynamically -->
                 </div>
-                <div class="calendar-body">
-                    <div id="calendarHeader" class="calendar-grid">
-                        <!-- Calendar headers will be generated here -->
+                
+                <button class="carousel-nav next" id="carouselNext">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            
+            <div class="carousel-indicators" id="carouselIndicators">
+                <!-- Indicators will be inserted here dynamically -->
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <i class="fas fa-calendar-times"></i>
+                <h3>No Upcoming Meetings</h3>
+                <p>Your schedule is clear! Add a new meeting to get started.</p>
+            </div>
+        </section>
+
+        <!-- Calendar Section -->
+        <section class="calendar-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-calendar"></i>
+                    Calendar Overview
+                </h2>
+            </div>
+            
+            <div class="calendar-header">
+                <h3 class="mb-0" id="calendarMonth">Loading...</h3>
+                <div class="calendar-nav">
+                    <button onclick="previousMonth()">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button onclick="nextMonth()">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="calendar-grid" id="calendarGrid">
+                <!-- Calendar will be generated here -->
+            </div>
+        </section>
+
+        <!-- All Meetings Table Section -->
+        <section class="meetings-table-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-list"></i>
+                    All Meetings
+                </h2>
+                <button class="btn-add-meeting" id="addMeetingBtn">
+                    <i class="fas fa-plus"></i>
+                    Add Meeting
+                </button>
+            </div>
+
+            <div class="table-controls">
+                <div class="search-box">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search meetings...">
+                </div>
+                
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="upcoming">Upcoming</button>
+                    <button class="filter-btn" data-filter="today">Today</button>
+                    <button class="filter-btn" data-filter="past">Past</button>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="meetings-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Meeting</th>
+                            <th>Location</th>
+                            <th>Organizer</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="meetingsTableBody">
+                        <!-- Table rows will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Meeting Detail Zoom Modal -->
+    <div class="meeting-detail-modal" id="meetingDetailModal">
+        <div class="modal-content-zoom">
+            <div class="modal-header-zoom">
+                <button class="modal-close" onclick="closeMeetingDetail()">
+                    <i class="fas fa-times"></i>
+                </button>
+                <h2 class="modal-title-zoom" id="detailTitle">Meeting Details</h2>
+                <div class="modal-subtitle" id="detailSubtitle">
+                    <i class="fas fa-calendar"></i>
+                    <span>Loading...</span>
+                </div>
+            </div>
+
+            <div class="modal-body-zoom">
+                <!-- Time Range -->
+                <div class="detail-section">
+                    <div class="detail-label">
+                        <i class="fas fa-clock"></i>
+                        Schedule
                     </div>
-                    <div id="calendar" class="calendar-grid">
-                        <!-- Calendar days will be generated here -->
+                    <div class="time-range">
+                        <div class="time-box">
+                            <div class="time-box-label">Start Time</div>
+                            <div class="time-box-value" id="detailStartTime">--:--</div>
+                        </div>
+                        <div class="time-box">
+                            <div class="time-box-label">End Time</div>
+                            <div class="time-box-value" id="detailEndTime">--:--</div>
+                        </div>
                     </div>
-                    <div class="calendar-legend">
-                        <div class="legend-item">
-                            <div class="legend-dot" style="background: var(--gradient-accent);"></div>
-                            <span>Single Day</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-dot" style="background: var(--gradient-primary);"></div>
-                            <span>Multi-Day</span>
-                        </div>
+                </div>
+
+                <!-- Location -->
+                <div class="detail-section">
+                    <div class="detail-label">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Location
+                    </div>
+                    <div class="detail-value" id="detailLocation">
+                        Loading...
+                    </div>
+                </div>
+
+                <!-- Organizer -->
+                <div class="detail-section">
+                    <div class="detail-label">
+                        <i class="fas fa-user-tie"></i>
+                        Organizer
+                    </div>
+                    <div class="detail-value" id="detailOrganizer">
+                        Loading...
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="detail-section">
+                    <div class="detail-label">
+                        <i class="fas fa-align-left"></i>
+                        Description
+                    </div>
+                    <div class="detail-value" id="detailDescription">
+                        Loading...
+                    </div>
+                </div>
+
+                <!-- Participants -->
+                <div class="detail-section">
+                    <div class="detail-label">
+                        <i class="fas fa-users"></i>
+                        Participants (<span id="participantCount">0</span>)
+                    </div>
+                    <div class="participants-grid" id="participantsGrid">
+                        <!-- Participant cards will be inserted here -->
                     </div>
                 </div>
             </div>
 
-            <!-- Meetings Section -->
-            <div class="card-modern table-container">
-                <div class="card-header-modern">
-                    <h5 class="card-title-modern">
-                        <i class="fas fa-list-check"></i>
-                        Upcoming Meetings
-                    </h5>
-                    <span id="meetingCount" class="badge-modern">0</span>
-                </div>
-                <div class="table-wrapper">
-                    <table class="table-modern">
-                        <thead>
-                            <tr>
-                                <th style="width: 18%;">Schedule</th>
-                                <th style="width: 25%;">Meeting</th>
-                                <th style="width: 15%;">Location</th>
-                                <th style="width: 12%;">Creator</th>
-                                <th style="width: 25%;">Audience</th>
-                                <th style="width: 5%;">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="meetingTableBody">
-                            <tr>
-                                <td colspan="6" class="empty-state">
-                                    <div class="empty-state-icon">
-                                        <i class="fas fa-calendar-plus"></i>
-                                    </div>
-                                    <div class="empty-state-title">No meetings scheduled</div>
-                                    <div>Click the + button to add your first meeting</div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Floating Action Button -->
-    <button class="fab" id="addMeetingBtn" title="Add New Meeting">
-        <i class="fas fa-plus"></i>
-    </button>
-
-    <!-- Meeting Modal -->
-    <div class="modal fade" id="meetingModal" tabindex="-1" aria-labelledby="meetingModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="meetingModalLabel">
-                        <i class="fas fa-plus-circle"></i>
-                        <span id="formTitle">Add New Meeting</span>
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="meetingForm">
-                        <input type="hidden" id="editingId" value="">
-                        
-                        <!-- Basic Info Section -->
-                        <div class="form-section">
-                            <div class="form-section-title">
-                                <i class="fas fa-info-circle"></i>
-                                Basic Information
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label-modern">
-                                        <i class="fas fa-user"></i>
-                                        Meeting Creator
-                                    </label>
-                                    <select class="form-select-modern" id="pembuatRapat" required>
-                                        <option value="">Select Department/Division</option>
-                                        <option value="DIVISI SIMO">DIVISI SIMO</option>
-                                        <option value="Dept.Perencanaan Strategis & Kinerja Organisasi">Dept.Perencanaan Strategis & Kinerja Organisasi</option>
-                                        <option value="Dept.Pembinaan Cabang">Dept.Pembinaan Cabang</option>
-                                        <option value="Dept.Pengembangan Organisasi">Dept.Pengembangan Organisasi</option>
-                                        <option value="Dept.Change Management Office">Dept.Change Management Office</option>
-                                        <option value="Direksi Bank Sulselbar">Direksi Bank Sulselbar</option>
-                                        <option value="SKAI">SKAI</option>
-                                        <option value="DCS">DCS</option>
-                                        <option value="DHC">DHC</option>
-                                        <option value="DDL">DDL</option>
-                                        <option value="DKA">DKA</option>
-                                        <option value="DTI">DTI</option>
-                                        <option value="DUM">DUM</option>
-                                        <option value="DJS">DJS</option>
-                                        <option value="DTR">DTR</option>
-                                        <option value="DSY">DSY</option>
-                                        <option value="DIB">DIB</option>
-                                        <option value="DKK">DKK</option>
-                                        <option value="DRK">DRK</option>
-                                        <option value="SKK">SKK</option>
-                                        <option value="SKMR">SKMR</option>
-                                        <option value="DPLK">DPLK</option>
-                                        <option value="UPPK">UPPK</option>
-                                        <option value="External">External Organization</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label-modern">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        Location
-                                    </label>
-                                    <input type="text" class="form-control-modern" id="tempatRapat" placeholder="Enter meeting location" required>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- External Creator Section -->
-                        <div class="form-section external-section" id="externalCreatorDiv" style="display: none;">
-                            <div class="form-section-title" style="color: var(--accent);">
-                                <i class="fas fa-globe"></i>
-                                External Organization Details
-                            </div>
-                            <input type="text" class="form-control-modern" id="externalCreator" placeholder="Company/Organization Name">
-                            <div class="mt-2">
-                                <small class="text-muted">
-                                    <i class="fas fa-info-circle me-1"></i>
-                                    Example: PT. ABC Corporation, XYZ University, Ministry of ABC, etc.
-                                </small>
-                            </div>
-                        </div>
-
-                        <!-- Meeting Details Section -->
-                        <div class="form-section">
-                            <div class="form-section-title">
-                                <i class="fas fa-clipboard-list"></i>
-                                Meeting Details
-                            </div>
-                            <label class="form-label-modern">
-                                <i class="fas fa-comment-dots"></i>
-                                Meeting Description
-                            </label>
-                            <textarea class="form-control-modern" id="keteranganRapat" rows="3" placeholder="Enter meeting description" required></textarea>
-                        </div>
-
-                        <!-- Date & Time Section -->
-                        <div class="form-section date-range-section">
-                            <div class="form-section-title" style="color: var(--primary);">
-                                <i class="fas fa-calendar-week"></i>
-                                Schedule & Duration
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label-modern">
-                                        <i class="fas fa-calendar-day"></i>
-                                        Start Date
-                                    </label>
-                                    <input type="date" class="form-control-modern" id="tanggalMulai" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label-modern">
-                                        <i class="fas fa-calendar-check"></i>
-                                        End Date
-                                    </label>
-                                    <input type="date" class="form-control-modern" id="tanggalSelesai" required>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label-modern">
-                                        <i class="fas fa-clock"></i>
-                                        Start Time
-                                    </label>
-                                    <select class="form-select-modern" id="jamMulai" required>
-                                        <option value="">Select Start Time</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label-modern">
-                                        <i class="fas fa-clock"></i>
-                                        End Time
-                                    </label>
-                                    <select class="form-select-modern" id="jamSelesai" required>
-                                        <option value="">Select End Time</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Audience Section -->
-                        <div class="form-section">
-                            <div class="form-section-title">
-                                <i class="fas fa-users"></i>
-                                Meeting Audience
-                            </div>
-                            <div class="audience-grid">
-                                <div class="form-check-modern">
-                                    <input class="form-check-input-modern" type="checkbox" id="audience_direksi" value="Direksi Bank Sulselbar">
-                                    <label class="form-check-label-modern" for="audience_direksi">Direksi Bank Sulselbar</label>
-                                </div>
-                                <div class="form-check-modern">
-                                    <input class="form-check-input-modern" type="checkbox" id="audience_skai" value="SKAI">
-                                    <label class="form-check-label-modern" for="audience_skai">SKAI</label>
-                                </div>
-                                <div class="form-check-modern">
-                                    <input class="form-check-input-modern" type="checkbox" id="audience_dcs" value="DCS">
-                                    <label class="form-check-label-modern" for="audience_dcs">DCS</label>
-                                </div>
-                                <div class="form-check-modern">
-                                    <input class="form-check-input-modern" type="checkbox" id="audience_dhc" value="DHC">
-                                    <label class="form-check-label-modern" for="audience_dhc">DHC</label>
-                                </div>
-                                <div class="form-check-modern">
-                                    <input class="form-check-input-modern" type="checkbox" id="audience_ddl" value="DDL">
-                                    <label class="form-check-label-modern" for="audience_ddl">DDL</label>
-                                </div>
-                                <div class="form-check-modern">
-                                    <input class="form-check-input-modern" type="checkbox" id="audience_dka" value="DKA">
-                                    <label class="form-check-label-modern" for="audience_dka">DKA</label>
-                                </div>
-                                <div class="form-check-modern">
-                                    <input class="form-check-input-modern" type="checkbox" id="audience_dti" value="DTI">
-                                    <label class="form-check-label-modern" for="audience_dti">DTI</label>
-                                </div>
-                                <div class="form-check-modern">
-                                    <input class="form-check-input-modern" type="checkbox" id="audience_dum" value="DUM">
-                                    <label class="form-check-label-modern" for="audience_dum">DUM</label>
-                                </div>
-                                <div class="form-check-modern">
-                                    <input class="form-check-input-modern" type="checkbox" id="audience_djs" value="DJS">
-                                    <label class="form-check-label-modern" for="audience_djs">DJS</label>
-                                </div>
-                                <div class="form-check-modern">
-                                    <input class="form-check-input-modern" type="checkbox" id="audience_dtr" value="DTR">
-                                    <label class="form-check-label-modern" for="audience_dtr">DTR</label>
-                                </div>
-                                <div class="form-check-modern">
-                                    <input class="form-check-input-modern" type="checkbox" id="audience_dsy" value="DSY">
-                                    <label class="form-check-label-modern" for="audience_dsy">DSY</label>
-                                </div>
-                                <div class="form-check-modern">
-                                    <input class="form-check-input-modern" type="checkbox" id="audience_dib" value="DIB">
-                                    <label class="form-check-label-modern" for="audience_dib">DIB</label>
-                                </div>
-                                <div class="form-check-modern">
-                                    <input class="form-check-input-modern" type="checkbox" id="audience_dkk" value="DKK">
-                                    <label class="form-check-label-modern" for="audience_dkk">DKK</label>
-                                </div>
-                                <div class="form-check-modern">
-                                    <input class="form-check-input-modern" type="checkbox" id="audience_drk" value="DRK">
-                                    <label class="form-check-label-modern" for="audience_drk">DRK</label>
-                                </div>
-                                <div class="form-check-modern">
-                                    <input class="form-check-input-modern" type="checkbox" id="audience_skk" value="SKK">
-                                    <label class="form-check-label-modern" for="audience_skk">SKK</label>
-                                </div>
-                                <div class="form-check-modern">
-                                    <input class="form-check-input-modern" type="checkbox" id="audience_skmr" value="SKMR">
-                                    <label class="form-check-label-modern" for="audience_skmr">SKMR</label>
-                                </div>
-                                <div class="form-check-modern">
-                                    <input class="form-check-input-modern" type="checkbox" id="audience_dplk" value="DPLK">
-                                    <label class="form-check-label-modern" for="audience_dplk">DPLK</label>
-                                </div>
-                                <div class="form-check-modern">
-                                    <input class="form-check-input-modern" type="checkbox" id="audience_uppk" value="UPPK">
-                                    <label class="form-check-label-modern" for="audience_uppk">UPPK</label>
-                                </div>
-                                <div class="form-check-modern">
-                                    <input class="form-check-input-modern" type="checkbox" id="audience_lainnya" value="Lainnya">
-                                    <label class="form-check-label-modern" for="audience_lainnya">Others</label>
-                                </div>
-                            </div>
-                            <div class="mt-3 d-flex gap-2">
-                                <button type="button" class="btn-modern btn-primary-modern" id="selectAllBtn">
-                                    <i class="fas fa-check-double"></i>Select All
-                                </button>
-                                <button type="button" class="btn-modern btn-secondary-modern" id="clearAllBtn">
-                                    <i class="fas fa-times"></i>Clear All
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Custom Audience -->
-                        <div class="form-section" id="customAudienceDiv" style="display: none;">
-                            <label class="form-label-modern">
-                                <i class="fas fa-edit"></i>
-                                Other Audience
-                            </label>
-                            <input type="text" class="form-control-modern" id="customAudience" placeholder="Enter other audience">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <div class="btn-group-modern">
-                        <button type="button" class="btn-modern btn-secondary-modern" data-bs-dismiss="modal" id="cancelBtn">
-                            <i class="fas fa-times"></i>Cancel
-                        </button>
-                        <button type="submit" form="meetingForm" class="btn-modern btn-primary-modern" id="submitBtn">
-                            <i class="fas fa-save"></i>Save Meeting
-                        </button>
-                    </div>
-                </div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-primary" onclick="editMeetingFromDetail()">
+                    <i class="fas fa-edit"></i>
+                    Edit Meeting
+                </button>
+                <button class="modal-btn modal-btn-success" onclick="exportMeetingToCalendar()">
+                    <i class="fas fa-download"></i>
+                    Export to Calendar
+                </button>
+                <button class="modal-btn modal-btn-danger" onclick="deleteMeetingFromDetail()">
+                    <i class="fas fa-trash"></i>
+                    Delete
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Firebase and Application Scripts -->
-    <script type="module">
-        // Import Firebase SDKs
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-        import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, orderBy, query, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+    <!-- Notification Toast -->
+    <div class="notification-toast" id="notificationToast">
+        <div class="toast-icon toast-success" id="toastIcon">
+            <i class="fas fa-check"></i>
+        </div>
+        <div class="toast-content">
+            <div class="toast-title" id="toastTitle">Success</div>
+            <div class="toast-message" id="toastMessage">Operation completed successfully</div>
+        </div>
+        <button class="toast-close" onclick="closeToast()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
 
-        // Firebase configuration
+    <!-- Firebase Configuration -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getDatabase, ref, push, set, onValue, update, remove } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
         const firebaseConfig = {
-            apiKey: "AIzaSyAmTSUEiLX0K1A8mPnN0citZmDAuzLkL_A",
-            authDomain: "rapat-simo-15b35.firebaseapp.com",
-            projectId: "rapat-simo-15b35",
-            storageBucket: "rapat-simo-15b35.firebasestorage.app",
-            messagingSenderId: "471527167515",
-            appId: "1:471527167515:web:7766a3f2ee1d6280e9cabe",
-            measurementId: "G-FCPTBCPHMB"
+            apiKey: "AIzaSyCCSH7EkhgKDmPJrINzgCy8KY-9hUiC2to",
+            authDomain: "meetinghub-bb42a.firebaseapp.com",
+            databaseURL: "https://meetinghub-bb42a-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "meetinghub-bb42a",
+            storageBucket: "meetinghub-bb42a.firebasestorage.app",
+            messagingSenderId: "877149277598",
+            appId: "1:877149277598:web:30e32fe11d03c5f9c98c02"
         };
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // Global variables
-        let meetings = [];
-        let unsubscribe = null;
+        let app, database, meetingsRef;
         let isFirebaseConnected = false;
-        let isEditing = false;
-        let meetingModal;
+        let allMeetings = [];
+        let currentMeetingId = null;
 
-        // Test Firebase connection
-        async function testFirebaseConnection() {
-            try {
-                const testQuery = query(collection(db, "meetings"));
-                const snapshot = await getDocs(testQuery);
-                isFirebaseConnected = true;
-                updateConnectionStatus(true);
-                console.log("Firebase connected successfully");
-                return true;
-            } catch (error) {
-                console.error("Firebase connection failed:", error);
-                isFirebaseConnected = false;
-                updateConnectionStatus(false);
-                loadFromLocalStorage();
-                return false;
+        // Initialize Firebase
+        try {
+            app = initializeApp(firebaseConfig);
+            database = getDatabase(app);
+            meetingsRef = ref(database, 'meetings');
+            isFirebaseConnected = true;
+            updateConnectionStatus(true);
+            listenToMeetings();
+        } catch (error) {
+            console.error('Firebase initialization error:', error);
+            updateConnectionStatus(false);
+        }
+
+        // Connection Status
+        function updateConnectionStatus(connected) {
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            
+            if (connected) {
+                statusDot.classList.remove('offline');
+                statusDot.classList.add('online');
+                statusText.textContent = 'Online';
+            } else {
+                statusDot.classList.remove('online');
+                statusDot.classList.add('offline');
+                statusText.textContent = 'Offline';
             }
         }
 
-        // Local storage functions
-        function saveToLocalStorage() {
-            try {
-                localStorage.setItem('simo_meetings', JSON.stringify(meetings));
-            } catch (error) {
-                console.error("Error saving to localStorage:", error);
-            }
-        }
-
-        function loadFromLocalStorage() {
-            try {
-                const stored = localStorage.getItem('simo_meetings');
-                if (stored) {
-                    meetings = JSON.parse(stored);
-                    updateMeetingTable();
-                    generateCalendar();
+        // Listen to Firebase changes
+        function listenToMeetings() {
+            onValue(meetingsRef, (snapshot) => {
+                allMeetings = [];
+                if (snapshot.exists()) {
+                    snapshot.forEach((child) => {
+                        allMeetings.push({
+                            id: child.key,
+                            ...child.val()
+                        });
+                    });
                 }
-            } catch (error) {
-                console.error("Error loading from localStorage:", error);
-                meetings = [];
-            }
-        }
+                
+                // Sort by date and time
+                allMeetings.sort((a, b) => {
+                    const dateA = new Date(a.tanggalMulai + ' ' + a.jamMulai);
+                    const dateB = new Date(b.tanggalMulai + ' ' + b.jamMulai);
+                    return dateA - dateB;
+                });
 
-        // Sort meetings by date and time
-        function sortMeetingsByDateTime() {
-            meetings.sort((a, b) => {
-                const dateTimeA = new Date(`${a.tanggalMulai}T${a.jamMulai === 'tentative' ? '00:00' : a.jamMulai}`);
-                const dateTimeB = new Date(`${b.tanggalMulai}T${b.jamMulai === 'tentative' ? '00:00' : b.jamMulai}`);
-                return dateTimeA - dateTimeB;
+                renderUpcomingMeetings();
+                renderMeetingsTable();
+                renderCalendar();
             });
         }
 
-        // Firebase operations
-        async function saveMeetingToFirebase(meetingData) {
-            try {
-                showLoading(true);
-                
-                if (isFirebaseConnected) {
-                    const docRef = await addDoc(collection(db, "meetings"), {
-                        ...meetingData,
-                        createdAt: new Date(),
-                        timestamp: Date.now()
-                    });
-                    console.log("Meeting saved to Firebase with ID: ", docRef.id);
-                    return docRef.id;
-                } else {
-                    const newMeeting = {
-                        id: Date.now().toString(),
-                        ...meetingData,
-                        createdAt: new Date(),
-                        timestamp: Date.now()
-                    };
-                    meetings.push(newMeeting);
-                    sortMeetingsByDateTime();
-                    saveToLocalStorage();
-                    updateMeetingTable();
-                    generateCalendar();
-                    console.log("Meeting saved to localStorage");
-                    return newMeeting.id;
-                }
-            } catch (error) {
-                console.error("Error saving meeting: ", error);
-                const newMeeting = {
-                    id: Date.now().toString(),
-                    ...meetingData,
-                    createdAt: new Date(),
-                    timestamp: Date.now()
-                };
-                meetings.push(newMeeting);
-                sortMeetingsByDateTime();
-                saveToLocalStorage();
-                updateMeetingTable();
-                generateCalendar();
-                return newMeeting.id;
-            } finally {
-                showLoading(false);
-            }
-        }
+        // ============================================
+        // CAROUSEL FUNCTIONS
+        // ============================================
+        let currentSlide = 0;
+        const cardsPerView = 3; // Adjust based on screen size
 
-        async function updateMeetingInFirebase(meetingId, meetingData) {
-            try {
-                showLoading(true);
-                
-                if (isFirebaseConnected) {
-                    await updateDoc(doc(db, "meetings", meetingId), {
-                        ...meetingData,
-                        updatedAt: new Date()
-                    });
-                    console.log("Meeting updated in Firebase with ID: ", meetingId);
-                } else {
-                    const index = meetings.findIndex(meeting => meeting.id === meetingId);
-                    if (index !== -1) {
-                        meetings[index] = { ...meetings[index], ...meetingData, updatedAt: new Date() };
-                        sortMeetingsByDateTime();
-                        saveToLocalStorage();
-                        updateMeetingTable();
-                        generateCalendar();
-                        console.log("Meeting updated in localStorage");
-                    }
-                }
-            } catch (error) {
-                console.error("Error updating meeting: ", error);
-                const index = meetings.findIndex(meeting => meeting.id === meetingId);
-                if (index !== -1) {
-                    meetings[index] = { ...meetings[index], ...meetingData, updatedAt: new Date() };
-                    sortMeetingsByDateTime();
-                    saveToLocalStorage();
-                    updateMeetingTable();
-                    generateCalendar();
-                }
-            } finally {
-                showLoading(false);
-            }
-        }
+        function renderUpcomingMeetings() {
+            const now = new Date();
+            const upcoming = allMeetings.filter(meeting => {
+                const meetingDate = new Date(meeting.tanggalMulai + ' ' + meeting.jamMulai);
+                return meetingDate >= now;
+            });
 
-        async function deleteMeetingFromFirebase(meetingId) {
-            try {
-                showLoading(true);
-                
-                if (isFirebaseConnected) {
-                    await deleteDoc(doc(db, "meetings", meetingId));
-                    console.log("Meeting deleted from Firebase with ID: ", meetingId);
-                } else {
-                    meetings = meetings.filter(meeting => meeting.id !== meetingId);
-                    saveToLocalStorage();
-                    updateMeetingTable();
-                    generateCalendar();
-                    console.log("Meeting deleted from localStorage");
-                }
-            } catch (error) {
-                console.error("Error deleting meeting: ", error);
-                meetings = meetings.filter(meeting => meeting.id !== meetingId);
-                saveToLocalStorage();
-                updateMeetingTable();
-                generateCalendar();
-            } finally {
-                showLoading(false);
-            }
-        }
+            const carouselTrack = document.getElementById('carouselTrack');
+            const emptyState = document.getElementById('emptyState');
+            const upcomingCount = document.getElementById('upcomingCount');
 
-        function listenToMeetings() {
-            if (!isFirebaseConnected) {
-                loadFromLocalStorage();
+            upcomingCount.textContent = `${upcoming.length} meeting${upcoming.length !== 1 ? 's' : ''}`;
+
+            if (upcoming.length === 0) {
+                carouselTrack.innerHTML = '';
+                emptyState.style.display = 'block';
+                document.getElementById('carouselIndicators').innerHTML = '';
                 return;
             }
 
-            const q = query(collection(db, "meetings"));
+            emptyState.style.display = 'none';
+
+            // Render cards
+            carouselTrack.innerHTML = upcoming.map(meeting => createMeetingCard(meeting)).join('');
+
+            // Update indicators
+            updateCarouselIndicators(upcoming.length);
             
-            unsubscribe = onSnapshot(q, (querySnapshot) => {
-                meetings = [];
-                querySnapshot.forEach((doc) => {
-                    meetings.push({
-                        id: doc.id,
-                        ...doc.data()
-                    });
-                });
-                sortMeetingsByDateTime();
-                updateMeetingTable();
-                generateCalendar();
-                updateConnectionStatus(true);
-                saveToLocalStorage();
-            }, (error) => {
-                console.error("Error getting meetings: ", error);
-                updateConnectionStatus(false);
-                loadFromLocalStorage();
+            // Reset to first slide
+            currentSlide = 0;
+            updateCarousel();
+        }
+
+        function createMeetingCard(meeting) {
+            const meetingDate = new Date(meeting.tanggalMulai);
+            const formattedDate = meetingDate.toLocaleDateString('id-ID', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
             });
-        }
 
-        // UI Helper functions
-        function showLoading(show) {
-            const overlay = document.getElementById('loadingOverlay');
-            overlay.style.display = show ? 'flex' : 'none';
-        }
+            const participants = Array.isArray(meeting.audience) ? meeting.audience : [meeting.audience];
+            const avatars = participants.slice(0, 3).map(p => {
+                const initials = p.split(' ').map(word => word[0]).join('').toUpperCase();
+                return `<div class="participant-avatar">${initials}</div>`;
+            }).join('');
 
-        function updateConnectionStatus(isOnline) {
-            const statusElement = document.getElementById('connectionStatus');
-            const icon = statusElement.querySelector('i');
-            const text = statusElement.querySelector('span');
-            
-            if (isOnline && isFirebaseConnected) {
-                statusElement.className = 'status-indicator status-online';
-                icon.className = 'fas fa-cloud-check';
-                text.textContent = 'Online';
-            } else {
-                statusElement.className = 'status-indicator status-offline';
-                icon.className = 'fas fa-save';
-                text.textContent = 'Offline';
-            }
-        }
+            const moreCount = participants.length > 3 ? participants.length - 3 : 0;
 
-        function showNotification(message, type = 'success') {
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
-                    <div style="flex: 1;">${message}</div>
-                    <button onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; font-size: 1.25rem; opacity: 0.5; cursor: pointer;">&times;</button>
+            return `
+                <div class="meeting-card" onclick="viewMeetingDetail('${meeting.id}')">
+                    <div class="meeting-card-header">
+                        <div class="meeting-time">${meeting.jamMulai}</div>
+                        <div class="meeting-date">
+                            <i class="fas fa-calendar"></i>
+                            ${formattedDate}
+                        </div>
+                    </div>
+                    <div class="meeting-card-body">
+                        <h3 class="meeting-title">${meeting.keterangan}</h3>
+                        <div class="meeting-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            ${meeting.tempat || 'No location specified'}
+                        </div>
+                        <div class="meeting-participants">
+                            <i class="fas fa-users"></i>
+                            <div class="participant-avatars">
+                                ${avatars}
+                                ${moreCount > 0 ? `<div class="participant-avatar">+${moreCount}</div>` : ''}
+                            </div>
+                        </div>
+                        <div class="meeting-footer">
+                            <button class="btn-meeting btn-view" onclick="event.stopPropagation(); viewMeetingDetail('${meeting.id}')">
+                                <i class="fas fa-eye"></i>
+                                View
+                            </button>
+                            <button class="btn-meeting btn-edit" onclick="event.stopPropagation(); alert('Edit meeting: ${meeting.id}')">
+                                <i class="fas fa-edit"></i>
+                                Edit
+                            </button>
+                        </div>
+                    </div>
                 </div>
             `;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.remove();
-                }
-            }, 5000);
         }
 
-        // Generate time options
-        function generateTimeOptions() {
-            const timeSelects = ['jamMulai', 'jamSelesai'];
-            timeSelects.forEach(selectId => {
-                const timeSelect = document.getElementById(selectId);
-                timeSelect.innerHTML = '<option value="">Select Time</option>';
-                
-                const tentativeOption = document.createElement('option');
-                tentativeOption.value = 'tentative';
-                tentativeOption.textContent = 'Tentative (TBD)';
-                tentativeOption.style.cssText = 'background-color: #fef3c7; color: #92400e; font-weight: bold;';
-                timeSelect.appendChild(tentativeOption);
-                
-                const separatorOption = document.createElement('option');
-                separatorOption.disabled = true;
-                separatorOption.textContent = '──────────────';
-                timeSelect.appendChild(separatorOption);
-                
-                for (let hour = 8; hour <= 17; hour++) {
-                    for (let minute = 0; minute < 60; minute += 30) {
-                        const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-                        const option = document.createElement('option');
-                        option.value = timeString;
-                        option.textContent = timeString;
-                        timeSelect.appendChild(option);
-                    }
-                }
+        function updateCarouselIndicators(totalMeetings) {
+            const indicators = document.getElementById('carouselIndicators');
+            const totalSlides = Math.ceil(totalMeetings / cardsPerView);
+            
+            indicators.innerHTML = Array.from({length: totalSlides}, (_, i) => 
+                `<div class="carousel-dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></div>`
+            ).join('');
+        }
+
+        function updateCarousel() {
+            const track = document.getElementById('carouselTrack');
+            const cardWidth = 350 + 24; // card width + gap
+            track.style.transform = `translateX(-${currentSlide * cardWidth * cardsPerView}px)`;
+
+            // Update indicators
+            document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
             });
+
+            // Update navigation buttons
+            updateNavigationButtons();
         }
 
-        // Calculate meeting duration
-        function calculateDuration(startDate, endDate, startTime, endTime) {
-            if (startTime === 'tentative' || endTime === 'tentative') {
-                const startD = new Date(startDate);
-                const endD = new Date(endDate);
-                const diffDays = Math.floor((endD - startD) / (1000 * 60 * 60 * 24));
-                
-                if (diffDays > 0) {
-                    return `${diffDays + 1}d (TBD)`;
-                } else {
-                    return `TBD`;
-                }
-            }
-            
-            const start = new Date(`${startDate}T${startTime}`);
-            const end = new Date(`${endDate}T${endTime}`);
-            const diffMs = end - start;
-            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-            const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-            
-            if (diffDays > 0) {
-                return `${diffDays}d ${diffHours}h`;
-            } else if (diffHours > 0) {
-                return `${diffHours}h ${diffMinutes}m`;
-            } else {
-                return `${diffMinutes}m`;
-            }
-        }
-
-        // Generate calendar
-        function generateCalendar() {
+        function updateNavigationButtons() {
             const now = new Date();
-            const year = now.getFullYear();
-            const month = now.getMonth();
-            
-            document.getElementById('currentMonth').textContent = 
-                now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-
-            const firstDay = new Date(year, month, 1).getDay();
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
-            
-            const calendarHeader = document.getElementById('calendarHeader');
-            const calendar = document.getElementById('calendar');
-            
-            const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            calendarHeader.innerHTML = '';
-            daysOfWeek.forEach((day, index) => {
-                const dayHeader = document.createElement('div');
-                dayHeader.className = 'calendar-day-header';
-                dayHeader.textContent = day;
-                dayHeader.style.animationDelay = `${index * 0.05}s`;
-                calendarHeader.appendChild(dayHeader);
+            const upcoming = allMeetings.filter(meeting => {
+                const meetingDate = new Date(meeting.tanggalMulai + ' ' + meeting.jamMulai);
+                return meetingDate >= now;
             });
 
-            calendar.innerHTML = '';
+            const totalSlides = Math.ceil(upcoming.length / cardsPerView);
+            
+            const prevBtn = document.getElementById('carouselPrev');
+            const nextBtn = document.getElementById('carouselNext');
 
-            for (let i = 0; i < firstDay; i++) {
-                const emptyDay = document.createElement('div');
-                emptyDay.className = 'calendar-day';
-                emptyDay.style.visibility = 'hidden';
-                calendar.appendChild(emptyDay);
+            prevBtn.classList.toggle('disabled', currentSlide === 0);
+            nextBtn.classList.toggle('disabled', currentSlide >= totalSlides - 1);
+        }
+
+        // Carousel Navigation
+        document.getElementById('carouselPrev').addEventListener('click', () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateCarousel();
             }
+        });
 
-            for (let day = 1; day <= daysInMonth; day++) {
-                const dayElement = document.createElement('div');
-                dayElement.className = 'calendar-day';
-                dayElement.textContent = day;
-                dayElement.style.animationDelay = `${((firstDay + day - 1) * 0.02)}s`;
-                
-                const dateString = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-                
-                const hasSingleDayMeeting = meetings.some(meeting => 
-                    meeting.tanggalMulai === dateString && meeting.tanggalSelesai === dateString
-                );
-                
-                const hasMultiDayMeeting = meetings.some(meeting => {
-                    const startDate = new Date(meeting.tanggalMulai);
-                    const endDate = new Date(meeting.tanggalSelesai);
-                    const currentDate = new Date(dateString);
-                    return currentDate >= startDate && currentDate <= endDate && meeting.tanggalMulai !== meeting.tanggalSelesai;
-                });
-                
-                if (hasMultiDayMeeting) {
-                    dayElement.classList.add('has-meeting-range');
-                } else if (hasSingleDayMeeting) {
-                    dayElement.classList.add('has-meeting');
-                }
-                
-                calendar.appendChild(dayElement);
+        document.getElementById('carouselNext').addEventListener('click', () => {
+            const now = new Date();
+            const upcoming = allMeetings.filter(meeting => {
+                const meetingDate = new Date(meeting.tanggalMulai + ' ' + meeting.jamMulai);
+                return meetingDate >= now;
+            });
+            const totalSlides = Math.ceil(upcoming.length / cardsPerView);
+            
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateCarousel();
+            }
+        });
+
+        window.goToSlide = function(index) {
+            currentSlide = index;
+            updateCarousel();
+        };
+
+        // Touch/Swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.getElementById('carouselTrack').addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.getElementById('carouselTrack').addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) {
+                // Swipe left - next
+                document.getElementById('carouselNext').click();
+            }
+            if (touchEndX > touchStartX + 50) {
+                // Swipe right - prev
+                document.getElementById('carouselPrev').click();
             }
         }
 
-        // Update meeting table
-        function updateMeetingTable() {
-            const tbody = document.getElementById('meetingTableBody');
-            const countElement = document.getElementById('meetingCount');
+        // ============================================
+        // MEETING DETAIL ZOOM MODAL
+        // ============================================
+        window.viewMeetingDetail = function(meetingId) {
+            const meeting = allMeetings.find(m => m.id === meetingId);
+            if (!meeting) return;
+
+            currentMeetingId = meetingId;
+
+            // Populate modal
+            document.getElementById('detailTitle').textContent = meeting.keterangan;
             
-            countElement.textContent = meetings.length;
+            const meetingDate = new Date(meeting.tanggalMulai);
+            const formattedDate = meetingDate.toLocaleDateString('id-ID', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            document.getElementById('detailSubtitle').innerHTML = `
+                <i class="fas fa-calendar"></i>
+                <span>${formattedDate}</span>
+            `;
+
+            document.getElementById('detailStartTime').textContent = meeting.jamMulai;
+            document.getElementById('detailEndTime').textContent = meeting.jamSelesai;
+            document.getElementById('detailLocation').textContent = meeting.tempat || 'No location specified';
             
-            if (meetings.length === 0) {
+            const organizer = meeting.isExternal ? meeting.externalCreator : meeting.pembuat;
+            document.getElementById('detailOrganizer').textContent = organizer;
+            
+            document.getElementById('detailDescription').textContent = meeting.keterangan;
+
+            // Render participants
+            const participants = Array.isArray(meeting.audience) ? meeting.audience : [meeting.audience];
+            document.getElementById('participantCount').textContent = participants.length;
+            
+            const participantsGrid = document.getElementById('participantsGrid');
+            participantsGrid.innerHTML = participants.map(p => {
+                const initials = p.split(' ').map(word => word[0]).join('').toUpperCase();
+                return `
+                    <div class="participant-card">
+                        <div class="participant-card-avatar">${initials}</div>
+                        <div class="participant-card-name">${p}</div>
+                    </div>
+                `;
+            }).join('');
+
+            // Show modal
+            document.getElementById('meetingDetailModal').classList.add('show');
+        };
+
+        window.closeMeetingDetail = function() {
+            document.getElementById('meetingDetailModal').classList.remove('show');
+            currentMeetingId = null;
+        };
+
+        window.editMeetingFromDetail = function() {
+            if (currentMeetingId) {
+                closeMeetingDetail();
+                // Redirect to edit form or open edit modal
+                alert('Edit meeting: ' + currentMeetingId);
+            }
+        };
+
+        window.deleteMeetingFromDetail = function() {
+            if (!currentMeetingId) return;
+            
+            if (confirm('Are you sure you want to delete this meeting?')) {
+                const meetingRef = ref(database, `meetings/${currentMeetingId}`);
+                remove(meetingRef)
+                    .then(() => {
+                        closeMeetingDetail();
+                        showToast('Success', 'Meeting deleted successfully', 'success');
+                    })
+                    .catch((error) => {
+                        console.error('Error deleting meeting:', error);
+                        showToast('Error', 'Failed to delete meeting', 'error');
+                    });
+            }
+        };
+
+        window.exportMeetingToCalendar = function() {
+            if (!currentMeetingId) return;
+            
+            const meeting = allMeetings.find(m => m.id === currentMeetingId);
+            if (!meeting) return;
+
+            // Create ICS file content
+            const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+DTSTART:${meeting.tanggalMulai.replace(/-/g, '')}T${meeting.jamMulai.replace(/:/g, '')}00
+DTEND:${meeting.tanggalSelesai.replace(/-/g, '')}T${meeting.jamSelesai.replace(/:/g, '')}00
+SUMMARY:${meeting.keterangan}
+LOCATION:${meeting.tempat || ''}
+DESCRIPTION:${meeting.keterangan}
+END:VEVENT
+END:VCALENDAR`;
+
+            // Download ICS file
+            const blob = new Blob([icsContent], { type: 'text/calendar' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `meeting-${currentMeetingId}.ics`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+
+            showToast('Success', 'Calendar file downloaded', 'success');
+        };
+
+        // Close modal when clicking outside
+        document.getElementById('meetingDetailModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeMeetingDetail();
+            }
+        });
+
+        // ============================================
+        // MEETINGS TABLE
+        // ============================================
+        function renderMeetingsTable() {
+            const tbody = document.getElementById('meetingsTableBody');
+            const now = new Date();
+
+            if (allMeetings.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="6" class="empty-state">
-                            <div class="empty-state-icon">
-                                <i class="fas fa-calendar-plus"></i>
-                            </div>
-                            <div class="empty-state-title">No meetings scheduled</div>
-                            <div>Click the + button to add your first meeting</div>
+                        <td colspan="7" style="text-align: center; padding: 3rem; color: var(--muted);">
+                            <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                            <br>No meetings found
                         </td>
                     </tr>
                 `;
                 return;
             }
 
-            tbody.innerHTML = '';
-            meetings.forEach((meeting, index) => {
-                const row = document.createElement('tr');
-                row.style.animationDelay = `${index * 0.05}s`;
+            tbody.innerHTML = allMeetings.map(meeting => {
+                const meetingDate = new Date(meeting.tanggalMulai + ' ' + meeting.jamMulai);
+                const isToday = meetingDate.toDateString() === now.toDateString();
+                const isPast = meetingDate < now;
                 
-                const formattedStartDate = new Date(meeting.tanggalMulai).toLocaleDateString('en-US', {
-                    day: '2-digit',
-                    month: 'short'
-                });
+                let statusClass = 'status-upcoming';
+                let statusText = 'Upcoming';
                 
-                const formattedEndDate = new Date(meeting.tanggalSelesai).toLocaleDateString('en-US', {
+                if (isToday) {
+                    statusClass = 'status-today';
+                    statusText = 'Today';
+                } else if (isPast) {
+                    statusClass = 'status-past';
+                    statusText = 'Past';
+                }
+
+                const formattedDate = meetingDate.toLocaleDateString('id-ID', {
                     day: '2-digit',
-                    month: 'short'
+                    month: 'short',
+                    year: 'numeric'
                 });
 
-                const isMultiDay = meeting.tanggalMulai !== meeting.tanggalSelesai;
-                const dateDisplay = isMultiDay ? `${formattedStartDate} - ${formattedEndDate}` : formattedStartDate;
-                const timeDisplay = `${meeting.jamMulai} - ${meeting.jamSelesai}`;
-                const duration = calculateDuration(meeting.tanggalMulai, meeting.tanggalSelesai, meeting.jamMulai, meeting.jamSelesai);
+                const organizer = meeting.isExternal ? meeting.externalCreator : meeting.pembuat;
 
-                const creatorBadgeClass = meeting.pembuat === 'External' || meeting.isExternal ? 'creator-badge external' : 'creator-badge';
-                const creatorText = meeting.isExternal ? meeting.externalCreator : meeting.pembuat;
-
-                const audiences = Array.isArray(meeting.audience) ? meeting.audience : [meeting.audience];
-                const audienceTags = audiences.map(aud => 
-                    `<span class="audience-tag" title="${aud}">${aud}</span>`
-                ).join('');
-
-                row.innerHTML = `
-                    <td>
-                        <div class="meeting-date-card">
-                            <div class="date-primary">${dateDisplay}</div>
-                            <div class="date-time">${timeDisplay}</div>
-                            <div class="date-duration">${duration}</div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="meeting-title" title="${meeting.keterangan}">
-                            ${meeting.keterangan}
-                        </div>
-                    </td>
-                    <td>
-                        <div class="location-info" title="${meeting.tempat || 'Not specified'}">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>${meeting.tempat || 'Not specified'}</span>
-                        </div>
-                    </td>
-                    <td>
-                        <span class="${creatorBadgeClass}" title="${creatorText}">
-                            ${creatorText}
-                        </span>
-                    </td>
-                    <td>
-                        <div class="audience-tags">
-                            ${audienceTags}
-                        </div>
-                    </td>
-                    <td>
-                        <div class="action-buttons">
-                            <button class="btn-action btn-edit" onclick="editMeeting('${meeting.id}')" title="Edit Meeting">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn-action btn-delete" onclick="deleteMeeting('${meeting.id}')" title="Delete Meeting">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
+                return `
+                    <tr>
+                        <td><strong>${formattedDate}</strong></td>
+                        <td>${meeting.jamMulai} - ${meeting.jamSelesai}</td>
+                        <td><strong>${meeting.keterangan}</strong></td>
+                        <td>${meeting.tempat || '-'}</td>
+                        <td>${organizer}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <div class="table-actions">
+                                <button class="action-btn action-btn-view" onclick="viewMeetingDetail('${meeting.id}')" title="View Details">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn action-btn-edit" onclick="alert('Edit: ${meeting.id}')" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn action-btn-delete" onclick="deleteMeetingFromTable('${meeting.id}')" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
                 `;
-                
-                tbody.appendChild(row);
-            });
+            }).join('');
         }
 
-        // Modal functions
-        function showMeetingModal() {
-            meetingModal.show();
-        }
-
-        function hideMeetingModal() {
-            meetingModal.hide();
-        }
-
-        function resetForm() {
-            isEditing = false;
-            document.getElementById('editingId').value = '';
-            document.getElementById('formTitle').textContent = 'Add New Meeting';
-            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save"></i>Save Meeting';
-            document.getElementById('meetingForm').reset();
-            document.getElementById('customAudienceDiv').style.display = 'none';
-            document.getElementById('externalCreatorDiv').style.display = 'none';
-            document.getElementById('externalCreator').required = false;
-            
-            const allCheckboxes = document.querySelectorAll('input[type="checkbox"][id^="audience_"]');
-            allCheckboxes.forEach(checkbox => checkbox.checked = false);
-        }
-
-        // Edit meeting function
-        window.editMeeting = function(meetingId) {
-            const meeting = meetings.find(m => m.id === meetingId);
-            if (!meeting) return;
-
-            isEditing = true;
-            document.getElementById('editingId').value = meetingId;
-            document.getElementById('formTitle').textContent = 'Edit Meeting';
-            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save"></i>Update Meeting';
-
-            if (meeting.isExternal) {
-                document.getElementById('pembuatRapat').value = 'External';
-                document.getElementById('externalCreator').value = meeting.externalCreator;
-                document.getElementById('externalCreatorDiv').style.display = 'block';
-                document.getElementById('externalCreator').required = true;
-            } else {
-                document.getElementById('pembuatRapat').value = meeting.pembuat;
-                document.getElementById('externalCreatorDiv').style.display = 'none';
-                document.getElementById('externalCreator').required = false;
-            }
-            
-            document.getElementById('tempatRapat').value = meeting.tempat || '';
-            document.getElementById('keteranganRapat').value = meeting.keterangan;
-            document.getElementById('tanggalMulai').value = meeting.tanggalMulai;
-            document.getElementById('tanggalSelesai').value = meeting.tanggalSelesai;
-            document.getElementById('jamMulai').value = meeting.jamMulai;
-            document.getElementById('jamSelesai').value = meeting.jamSelesai;
-
-            const allCheckboxes = document.querySelectorAll('input[type="checkbox"][id^="audience_"]');
-            allCheckboxes.forEach(checkbox => checkbox.checked = false);
-
-            const audiences = Array.isArray(meeting.audience) ? meeting.audience : [meeting.audience];
-            audiences.forEach(aud => {
-                const checkbox = document.querySelector(`input[value="${aud}"]`);
-                if (checkbox) {
-                    checkbox.checked = true;
-                } else {
-                    document.getElementById('audience_lainnya').checked = true;
-                    document.getElementById('customAudience').value = aud;
-                    document.getElementById('customAudienceDiv').style.display = 'block';
-                }
-            });
-
-            showMeetingModal();
-        }
-
-        // Delete meeting function
-        window.deleteMeeting = async function(meetingId) {
+        window.deleteMeetingFromTable = function(meetingId) {
             if (confirm('Are you sure you want to delete this meeting?')) {
-                try {
-                    await deleteMeetingFromFirebase(meetingId);
-                    showNotification('Meeting deleted successfully!', 'success');
-                } catch (error) {
-                    showNotification('Failed to delete meeting. Please try again.', 'error');
-                }
+                const meetingRef = ref(database, `meetings/${meetingId}`);
+                remove(meetingRef)
+                    .then(() => {
+                        showToast('Success', 'Meeting deleted successfully', 'success');
+                    })
+                    .catch((error) => {
+                        console.error('Error deleting meeting:', error);
+                        showToast('Error', 'Failed to delete meeting', 'error');
+                    });
             }
-        }
+        };
 
-        // Event listeners
-        document.getElementById('addMeetingBtn').addEventListener('click', function() {
-            resetForm();
-            showMeetingModal();
-        });
-
-        document.getElementById('pembuatRapat').addEventListener('change', function() {
-            const externalDiv = document.getElementById('externalCreatorDiv');
-            const externalInput = document.getElementById('externalCreator');
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#meetingsTableBody tr');
             
-            if (this.value === 'External') {
-                externalDiv.style.display = 'block';
-                externalInput.required = true;
-            } else {
-                externalDiv.style.display = 'none';
-                externalInput.required = false;
-                externalInput.value = '';
-            }
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
         });
 
-        document.getElementById('audience_lainnya').addEventListener('change', function() {
-            const customDiv = document.getElementById('customAudienceDiv');
-            if (this.checked) {
-                customDiv.style.display = 'block';
-            } else {
-                customDiv.style.display = 'none';
-            }
+        // Filter functionality
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.dataset.filter;
+                filterMeetings(filter);
+            });
         });
 
-        document.getElementById('selectAllBtn').addEventListener('click', function() {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"][id^="audience_"]');
-            checkboxes.forEach(checkbox => checkbox.checked = true);
-            if (document.getElementById('audience_lainnya').checked) {
-                document.getElementById('customAudienceDiv').style.display = 'block';
-            }
-        });
-
-        document.getElementById('clearAllBtn').addEventListener('click', function() {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"][id^="audience_"]');
-            checkboxes.forEach(checkbox => checkbox.checked = false);
-            document.getElementById('customAudienceDiv').style.display = 'none';
-        });
-
-        document.getElementById('cancelBtn').addEventListener('click', resetForm);
-
-        // Handle form submission
-        document.getElementById('meetingForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+        function filterMeetings(filter) {
+            const now = new Date();
+            const rows = document.querySelectorAll('#meetingsTableBody tr');
             
-            const selectedAudiences = [];
-            const audienceCheckboxes = document.querySelectorAll('input[type="checkbox"][id^="audience_"]:checked');
-            
-            audienceCheckboxes.forEach(checkbox => {
-                if (checkbox.value === 'Lainnya') {
-                    const customAudience = document.getElementById('customAudience').value;
-                    if (customAudience.trim()) {
-                        selectedAudiences.push(customAudience.trim());
-                    }
+            rows.forEach(row => {
+                const statusBadge = row.querySelector('.status-badge');
+                if (!statusBadge) return;
+                
+                const status = statusBadge.textContent.toLowerCase();
+                
+                if (filter === 'all') {
+                    row.style.display = '';
+                } else if (filter === 'upcoming' && status === 'upcoming') {
+                    row.style.display = '';
+                } else if (filter === 'today' && status === 'today') {
+                    row.style.display = '';
+                } else if (filter === 'past' && status === 'past') {
+                    row.style.display = '';
                 } else {
-                    selectedAudiences.push(checkbox.value);
+                    row.style.display = 'none';
                 }
             });
+        }
 
-            if (selectedAudiences.length === 0) {
-                showNotification('Please select at least one audience!', 'warning');
-                return;
-            }
+        // ============================================
+        // CALENDAR
+        // ============================================
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
 
-            const pembuatValue = document.getElementById('pembuatRapat').value;
-            const isExternal = pembuatValue === 'External';
+        function renderCalendar() {
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'];
             
-            if (isExternal) {
-                const externalCreator = document.getElementById('externalCreator').value.trim();
-                if (!externalCreator) {
-                    showNotification('Please fill in external creator details!', 'warning');
-                    document.getElementById('externalCreator').focus();
-                    return;
-                }
+            document.getElementById('calendarMonth').textContent = `${monthNames[currentMonth]} ${currentYear}`;
+
+            const grid = document.getElementById('calendarGrid');
+            const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            
+            let html = dayHeaders.map(day => `<div class="calendar-day-header">${day}</div>`).join('');
+
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+            // Empty cells for days before month starts
+            for (let i = 0; i < firstDay; i++) {
+                html += '<div class="calendar-day disabled"></div>';
             }
 
-            const meetingData = {
-                pembuat: isExternal ? 'External' : pembuatValue,
-                isExternal: isExternal,
-                externalCreator: isExternal ? document.getElementById('externalCreator').value.trim() : null,
-                tempat: document.getElementById('tempatRapat').value,
-                audience: selectedAudiences,
-                keterangan: document.getElementById('keteranganRapat').value,
-                tanggalMulai: document.getElementById('tanggalMulai').value,
-                tanggalSelesai: document.getElementById('tanggalSelesai').value,
-                jamMulai: document.getElementById('jamMulai').value,
-                jamSelesai: document.getElementById('jamSelesai').value
+            // Days of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(currentYear, currentMonth, day);
+                const dateString = date.toISOString().split('T')[0];
+                const today = new Date().toISOString().split('T')[0];
+                
+                const hasMeeting = allMeetings.some(m => m.tanggalMulai === dateString);
+                
+                const classes = ['calendar-day'];
+                if (dateString === today) classes.push('today');
+                if (hasMeeting) classes.push('has-meeting');
+
+                html += `<div class="${classes.join(' ')}">${day}</div>`;
+            }
+
+            grid.innerHTML = html;
+        }
+
+        window.previousMonth = function() {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderCalendar();
+        };
+
+        window.nextMonth = function() {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            renderCalendar();
+        };
+
+        // ============================================
+        // NOTIFICATION TOAST
+        // ============================================
+        window.showToast = function(title, message, type = 'success') {
+            const toast = document.getElementById('notificationToast');
+            const icon = document.getElementById('toastIcon');
+            const toastTitle = document.getElementById('toastTitle');
+            const toastMessage = document.getElementById('toastMessage');
+
+            // Set icon and class
+            icon.className = `toast-icon toast-${type}`;
+            
+            const icons = {
+                success: 'fa-check',
+                error: 'fa-times',
+                warning: 'fa-exclamation',
+                info: 'fa-info'
             };
+            
+            icon.innerHTML = `<i class="fas ${icons[type] || icons.success}"></i>`;
+            
+            toastTitle.textContent = title;
+            toastMessage.textContent = message;
 
-            try {
-                if (isEditing) {
-                    const editingId = document.getElementById('editingId').value;
-                    await updateMeetingInFirebase(editingId, meetingData);
-                    showNotification('Meeting updated successfully!', 'success');
-                } else {
-                    await saveMeetingToFirebase(meetingData);
-                    showNotification('Meeting saved successfully!', 'success');
-                }
-                
-                resetForm();
-                hideMeetingModal();
-                
-            } catch (error) {
-                console.error('Error saving meeting:', error);
-                showNotification('Data saved locally due to connection issues.', 'warning');
-            }
+            toast.classList.add('show');
+
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                closeToast();
+            }, 5000);
+        };
+
+        window.closeToast = function() {
+            document.getElementById('notificationToast').classList.remove('show');
+        };
+
+        // Add Meeting Button
+        document.getElementById('addMeetingBtn').addEventListener('click', function() {
+            alert('Add Meeting Form - To be implemented');
+            // This would open your existing meeting form modal
         });
 
-        // Initialize application
-        document.addEventListener('DOMContentLoaded', async function() {
-            meetingModal = new bootstrap.Modal(document.getElementById('meetingModal'));
-            
-            generateTimeOptions();
-            generateCalendar();
-            updateMeetingTable();
-            
-            updateConnectionStatus(false);
-            
-            const connected = await testFirebaseConnection();
-            
-            if (connected) {
-                listenToMeetings();
-                showNotification('Connected to Firebase!', 'success');
-            } else {
-                loadFromLocalStorage();
-                showNotification('Offline mode - Data saved locally', 'warning');
-            }
-            
-            if (!connected) {
-                setInterval(async () => {
-                    if (!isFirebaseConnected) {
-                        const reconnected = await testFirebaseConnection();
-                        if (reconnected) {
-                            listenToMeetings();
-                            showNotification('Back online! Data synchronized', 'success');
-                        }
-                    }
-                }, 30000);
-            }
-        });
-
-        window.addEventListener('beforeunload', () => {
-            if (unsubscribe) {
-                unsubscribe();
-            }
-        });
-
+        // Make functions available globally
+        window.updateConnectionStatus = updateConnectionStatus;
+        window.listenToMeetings = listenToMeetings;
+        window.allMeetings = allMeetings;
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
