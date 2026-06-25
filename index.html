@@ -201,6 +201,15 @@
         }
 
         /* Landscape card */
+        /* Animated "digital" border for the active/zoomed card */
+        @property --bdr-angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+        @keyframes spin-border { to { --bdr-angle: 360deg; } }
+        @keyframes glow-pulse {
+            0%, 100% { box-shadow: 0 28px 70px rgba(0,0,0,0.5), 0 0 22px rgba(153,187,28,0.22); }
+            50% { box-shadow: 0 28px 70px rgba(0,0,0,0.55), 0 0 44px rgba(153,187,28,0.5); }
+        }
+        @keyframes scan-move { 0% { transform: translateX(-120%); } 100% { transform: translateX(420%); } }
+
         .lcard {
             flex: 0 0 auto;
             width: min(1040px, 86vw);
@@ -217,12 +226,43 @@
             transition: transform 0.7s cubic-bezier(0.22,0.61,0.36,1), opacity 0.7s, filter 0.7s, box-shadow 0.7s;
             cursor: pointer;
             min-height: 340px;
+            position: relative;
         }
         .lcard.is-active {
             transform: scale(1);
             opacity: 1;
             filter: none;
-            box-shadow: 0 28px 70px rgba(0,0,0,0.5), 0 0 0 1px var(--accent-glow);
+            border-color: transparent;
+            animation: glow-pulse 3s ease-in-out infinite;
+        }
+        /* animated digital border ring (masked so it only shows on the edge) */
+        .lcard.is-active::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 2.5px;
+            background: conic-gradient(from var(--bdr-angle),
+                var(--accent), var(--primary-light), var(--accent-light),
+                #ffffff, var(--accent-light), var(--primary-light), var(--accent));
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask-composite: exclude;
+            animation: spin-border 4s linear infinite;
+            z-index: 6;
+            pointer-events: none;
+        }
+        /* moving scan-line highlight (digital feel) */
+        .lcard.is-active::after {
+            content: '';
+            position: absolute;
+            top: 0; bottom: 0; left: 0;
+            width: 28%;
+            pointer-events: none; z-index: 5;
+            background: linear-gradient(100deg, transparent, rgba(180,217,63,0.10) 45%, rgba(255,255,255,0.14) 50%, rgba(180,217,63,0.10) 55%, transparent);
+            animation: scan-move 4.5s ease-in-out infinite;
+            mix-blend-mode: screen;
         }
 
         .lcard-left {
@@ -313,6 +353,18 @@
         .empty { text-align: center; padding: 4rem 1rem; color: var(--text-faint); }
         .empty i { font-size: 3.4rem; opacity: 0.35; margin-bottom: 1rem; }
         .empty h3 { font-family: 'Sora', sans-serif; font-weight: 700; color: var(--text-dim); }
+
+        /* Fullscreen header (logo + title + clock) — hidden until fullscreen */
+        .fs-header { display: none; align-items: center; justify-content: space-between; padding: 0 0.5rem 1.4rem; gap: 1rem; flex-wrap: wrap; }
+        .fs-brand { display: flex; align-items: center; gap: 1rem; }
+        .fs-logo { width: 66px; height: 60px; border-radius: 14px; background: #fff; display: grid; place-items: center; padding: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.6); }
+        .fs-logo img { width: 100%; height: 100%; object-fit: contain; display: block; }
+        .fs-brand-text h2 { font-family: 'Sora', sans-serif; font-size: clamp(1.4rem, 2.4vw, 2.2rem); font-weight: 800; letter-spacing: -0.02em; }
+        .fs-brand-text h2 span { color: var(--accent); }
+        .fs-brand-text p { color: var(--text-dim); font-size: clamp(0.78rem, 1.1vw, 1rem); letter-spacing: 0.14em; text-transform: uppercase; }
+        .fs-clock { font-family: 'Sora', sans-serif; font-size: clamp(1.6rem, 3vw, 2.7rem); font-weight: 700; font-variant-numeric: tabular-nums; }
+        .fs-clock small { font-size: 0.5em; color: var(--text-dim); font-weight: 600; }
+        .hero.is-fs .fs-header { display: flex; }
 
         /* ---- FULLSCREEN (TV) mode for the upcoming card ---- */
         .hero.is-fs {
@@ -562,6 +614,17 @@
             <div class="hero-controls">
                 <button class="ctrl" id="playPauseBtn" title="Play/Pause"><i class="fas fa-pause"></i></button>
                 <button class="ctrl" id="fsBtn" title="Layar Penuh"><i class="fas fa-expand"></i></button>
+            </div>
+
+            <div class="fs-header" id="fsHeader">
+                <div class="fs-brand">
+                    <div class="fs-logo"><img id="fsLogoImg" alt="Bank Sulselbar"></div>
+                    <div class="fs-brand-text">
+                        <h2>SIMO <span>Meeting Hub</span></h2>
+                        <p>Bank Sulselbar &middot; Divisi SIMO</p>
+                    </div>
+                </div>
+                <div class="fs-clock" id="fsClock">--:--</div>
             </div>
 
             <div class="stage">
@@ -815,6 +878,8 @@
             document.getElementById('clockTime').innerHTML = `${String(h12).padStart(2,'0')}:${m}<small> ${ampm}</small>`;
             const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
             document.getElementById('clockDate').textContent = `${days[now.getDay()]}, ${now.getDate()} ${MONTHS_ID[now.getMonth()]} ${now.getFullYear()}`;
+            const fsc = document.getElementById('fsClock');
+            if (fsc) fsc.innerHTML = `${String(h12).padStart(2,'0')}:${m}<small> ${ampm}</small>`;
         }
         tickClock();
         setInterval(tickClock, 1000);
@@ -1066,6 +1131,11 @@
             heroEl.classList.toggle('is-fs', fs);
             fsBtn.innerHTML = fs ? '<i class="fas fa-compress"></i>' : '<i class="fas fa-expand"></i>';
             fsBtn.classList.toggle('active', fs);
+            if (fs) {
+                const main = document.querySelector('.brand-mark img');
+                const fsImg = document.getElementById('fsLogoImg');
+                if (main && fsImg && !fsImg.src) fsImg.src = main.src;
+            }
             setTimeout(update, 80);
         }
         document.addEventListener('fullscreenchange', onFsChange);
