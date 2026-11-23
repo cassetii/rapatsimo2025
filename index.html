@@ -1455,6 +1455,16 @@
         let currentMeetingId = null;
         const MONTHS_ID = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 
+        // ---------- Waktu aplikasi dikunci ke WITA (UTC+8, Makassar) ----------
+        // Jam, status rapat, hitung mundur, dan kalender selalu memakai WITA, apa pun zona waktu perangkat.
+        // nowWita() mengembalikan Date yang jam "lokal"-nya (getHours, getDate, ...) berisi waktu WITA,
+        // sehingga bisa dibandingkan langsung dengan startDate()/endDate() yang dibaca sebagai jam dinding.
+        const WITA_OFFSET_MIN = 8 * 60;
+        function nowWita() {
+            const d = new Date(Date.now());
+            return new Date(d.getTime() + (d.getTimezoneOffset() + WITA_OFFSET_MIN) * 60000);
+        }
+
         // ---------- Theme (light / dark) ----------
         function applyTheme(light) {
             document.body.classList.toggle('light', light);
@@ -1481,7 +1491,7 @@
 
         // ---------- Live clock ----------
         function tickClock() {
-            const now = new Date();
+            const now = nowWita();
             let h = now.getHours();
             const m = String(now.getMinutes()).padStart(2, '0');
             const ampm = h >= 12 ? 'PM' : 'AM';
@@ -1489,7 +1499,7 @@
             document.getElementById('clockTime').innerHTML = `${String(h12).padStart(2,'0')}:${m}<small> ${ampm}</small>`;
             const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
             const dateStr = `${days[now.getDay()]}, ${now.getDate()} ${MONTHS_ID[now.getMonth()]} ${now.getFullYear()}`;
-            document.getElementById('clockDate').textContent = dateStr;
+            document.getElementById('clockDate').textContent = dateStr + ' · WITA';
             const fsc = document.getElementById('fsClock');
             if (fsc) fsc.innerHTML = `${String(h12).padStart(2,'0')}:${m}<small> ${ampm}</small>`;
             const fsd = document.getElementById('fsDate');
@@ -1549,7 +1559,7 @@
         function startDate(mt) { return new Date(mt.tanggalMulai + 'T' + (mt.jamMulai || '00:00')); }
         function endDate(mt) { return new Date((mt.tanggalSelesai || mt.tanggalMulai) + 'T' + (mt.jamSelesai || '23:59')); }
         function meetingStatus(mt) {
-            const now = new Date(), s = startDate(mt), e = endDate(mt);
+            const now = nowWita(), s = startDate(mt), e = endDate(mt);
             if (now >= s && now <= e) return 'live';
             if (s.toDateString() === now.toDateString() && now < s) return 'today';
             if (now > e) return 'past';
@@ -1558,7 +1568,7 @@
         function partsOf(mt) { return Array.isArray(mt.audience) ? mt.audience : (mt.audience ? [mt.audience] : []); }
 
         function countdownText(mt) {
-            const now = new Date(), s = startDate(mt), e = endDate(mt);
+            const now = nowWita(), s = startDate(mt), e = endDate(mt);
             if (now >= s && now <= e) return 'Sedang berlangsung';
             let diff = s - now;
             if (diff < 0) return 'Selesai';
@@ -1573,7 +1583,7 @@
 
         // ---------- KPIs ----------
         function renderKPIs() {
-            const now = new Date();
+            const now = nowWita();
             const startWeek = new Date(now); startWeek.setHours(0,0,0,0); startWeek.setDate(now.getDate() - now.getDay());
             const endWeek = new Date(startWeek); endWeek.setDate(startWeek.getDate() + 7);
 
@@ -1610,7 +1620,7 @@
         const AUTO_DELAY = 7000;
 
         function getUpcoming() {
-            const now = new Date();
+            const now = nowWita();
             return allMeetings
                 .filter(mt => endDate(mt) >= now)
                 .sort((a, b) => startDate(a) - startDate(b));
@@ -1779,7 +1789,7 @@
             return startDate(mt) < d1 && endDate(mt) >= d0;
         }
         function lbDayLabel(d) {
-            const diff = Math.round((lbDayStart(d) - lbDayStart(new Date())) / 86400000);
+            const diff = Math.round((lbDayStart(d) - lbDayStart(nowWita())) / 86400000);
             if (diff === 0) return 'Hari ini';
             if (diff === 1) return 'Besok';
             return `${LB_DAYS_S[d.getDay()]} ${d.getDate()} ${MONTHS_ID[d.getMonth()].slice(0, 3)}`;
@@ -1872,7 +1882,7 @@
 
         function renderLiveBoard() {
             if (!lbOpen()) return;
-            const now = new Date();
+            const now = nowWita();
             const valid = allMeetings.filter(mt => mt.tanggalMulai && !isNaN(startDate(mt)));
             const byStart = (a, b) => startDate(a) - startDate(b);
             const today = valid.filter(mt => lbOnDay(mt, now)).sort(byStart);
@@ -1928,7 +1938,7 @@
 
         function lbTick() {
             if (!lbOpen()) return;
-            const now = new Date();
+            const now = nowWita();
             document.getElementById('lbClock').textContent = `${lbPad(now.getHours())}:${lbPad(now.getMinutes())}`;
             document.getElementById('lbSec').textContent = ':' + lbPad(now.getSeconds());
             document.getElementById('lbDate').textContent = `${LB_DAYS[now.getDay()]}, ${now.getDate()} ${MONTHS_ID[now.getMonth()]} ${now.getFullYear()}`;
@@ -2068,11 +2078,19 @@
             if (!currentMeetingId) return;
             const mt = allMeetings.find(m => m.id === currentMeetingId);
             if (!mt) return;
+            // jam rapat adalah WITA: tulis sebagai UTC supaya benar di kalender zona waktu mana pun
+            const icsUtc = (tgl, jam) => {
+                const [y, mo, d] = tgl.split('-').map(Number);
+                const [hh, mm] = (jam || '00:00').split(':').map(Number);
+                const u = new Date(Date.UTC(y, mo - 1, d, hh, mm) - WITA_OFFSET_MIN * 60000);
+                const p2 = n => String(n).padStart(2, '0');
+                return `${u.getUTCFullYear()}${p2(u.getUTCMonth() + 1)}${p2(u.getUTCDate())}T${p2(u.getUTCHours())}${p2(u.getUTCMinutes())}00Z`;
+            };
             const ics = `BEGIN:VCALENDAR
 VERSION:2.0
 BEGIN:VEVENT
-DTSTART:${mt.tanggalMulai.replace(/-/g,'')}T${(mt.jamMulai||'00:00').replace(/:/g,'')}00
-DTEND:${(mt.tanggalSelesai||mt.tanggalMulai).replace(/-/g,'')}T${(mt.jamSelesai||'00:00').replace(/:/g,'')}00
+DTSTART:${icsUtc(mt.tanggalMulai, mt.jamMulai)}
+DTEND:${icsUtc(mt.tanggalSelesai || mt.tanggalMulai, mt.jamSelesai)}
 SUMMARY:${mt.keterangan||'Rapat'}
 LOCATION:${mt.tempat||''}
 DESCRIPTION:${mt.keterangan||''}
@@ -2149,7 +2167,7 @@ END:VCALENDAR`;
         }));
 
         // ---------- Calendar ----------
-        let calMonth = new Date().getMonth(), calYear = new Date().getFullYear();
+        let calMonth = nowWita().getMonth(), calYear = nowWita().getFullYear();
         function renderCalendar() {
             document.getElementById('calMonth').textContent = `${MONTHS_ID[calMonth]} ${calYear}`;
             const grid = document.getElementById('calGrid');
@@ -2157,7 +2175,7 @@ END:VCALENDAR`;
             let html = dh.map(d => `<div class="cal-dh">${d}</div>`).join('');
             const first = new Date(calYear, calMonth, 1).getDay();
             const days = new Date(calYear, calMonth + 1, 0).getDate();
-            const todayStr = new Date().toLocaleDateString('en-CA');
+            const todayStr = nowWita().toLocaleDateString('en-CA');
             for (let i = 0; i < first; i++) html += '<div class="cal-day empty"></div>';
             for (let d = 1; d <= days; d++) {
                 const ds = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
